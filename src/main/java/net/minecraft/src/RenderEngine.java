@@ -35,7 +35,8 @@ public class RenderEngine {
 			int i = singleIntBuffer.get(0);
 			if (s.startsWith("%%")) {
 				clampTexture = true;
-				setupTexture(readTextureImage(GL11.loadResourceBytes(s.substring(7))), i);
+				String[] s1 = s.split("%%");
+				setupTexture(readTextureImage(GL11.loadResourceBytes(s1[1])), i);
 				clampTexture = false;
 			} else {
 				useMipmaps = true;
