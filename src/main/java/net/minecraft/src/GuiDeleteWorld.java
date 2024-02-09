@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.io.File;
 import net.minecraft.client.Minecraft;
 
 public class GuiDeleteWorld extends GuiSelectWorld {
@@ -23,8 +22,7 @@ public class GuiDeleteWorld extends GuiSelectWorld {
 
 	public void deleteWorld(boolean var1, int var2) {
 		if(var1) {
-			File var3 = Minecraft.getMinecraftDir();
-			World.deleteWorld(var3, this.getWorldName(var2));
+			World.deleteWorld(this.getWorldName(var2));
 		}
 
 		this.mc.displayGuiScreen(this.parentScreen);

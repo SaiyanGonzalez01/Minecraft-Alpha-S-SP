@@ -1,6 +1,5 @@
 package net.minecraft.client;
 
-import java.io.File;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.EffectRenderer;
@@ -10,8 +9,6 @@ import net.minecraft.src.EntityRenderer;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GLAllocation;
 import net.minecraft.src.GameSettings;
-import net.minecraft.src.GameWindowListener;
-import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiConflictWarning;
 import net.minecraft.src.GuiGameOver;
 import net.minecraft.src.GuiIngame;
@@ -90,7 +87,6 @@ public class Minecraft implements Runnable {
 	public MovingObjectPosition objectMouseOver = null;
 	public GameSettings gameSettings;
 	public MouseHelper mouseHelper;
-	public File field_6297_D;
 	public static long[] field_9240_E = new long[512];
 	public static long[] field_9239_F = new long[512];
 	public static int field_9238_G = 0;
@@ -98,7 +94,6 @@ public class Minecraft implements Runnable {
 	private int field_9233_W;
 	private TextureWaterFX field_9232_X = new TextureWaterFX();
 	private TextureLavaFX field_9231_Y = new TextureLavaFX();
-	private static File minecraftDir = null;
 	public volatile boolean running = true;
 	public String field_6292_I = "";
 	boolean field_6291_J = false;
@@ -125,8 +120,7 @@ public class Minecraft implements Runnable {
 	public void startGame() {
 
 		RenderManager.instance.field_4236_f = new ItemRenderer(this);
-		this.field_6297_D = getMinecraftDir();
-		this.gameSettings = new GameSettings(this, this.field_6297_D);
+		this.gameSettings = new GameSettings(this);
 		this.renderEngine = new RenderEngine(this.gameSettings);
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine);
 		this.loadScreen();
@@ -209,14 +203,6 @@ public class Minecraft implements Runnable {
 		var9.addVertexWithUV((double)(var1 + var5), (double)(var2 + 0), 0.0D, (double)((float)(var3 + var5) * var7), (double)((float)(var4 + 0) * var8));
 		var9.addVertexWithUV((double)(var1 + 0), (double)(var2 + 0), 0.0D, (double)((float)(var3 + 0) * var7), (double)((float)(var4 + 0) * var8));
 		var9.draw();
-	}
-
-	public static File getMinecraftDir() {
-		if(minecraftDir == null) {
-			minecraftDir = new File("minecraft");
-		}
-
-		return minecraftDir;
 	}
 
 	public void displayGuiScreen(GuiScreen var1) {
@@ -775,7 +761,7 @@ public class Minecraft implements Runnable {
 	public void func_6247_b(String var1) {
 		this.func_6261_a((World)null);
 		System.gc();
-		World var2 = new World(new File(getMinecraftDir(), "saves"), var1);
+		World var2 = new World("saves", var1);
 		if(var2.field_1033_r) {
 			this.func_6263_a(var2, "Generating level");
 		} else {

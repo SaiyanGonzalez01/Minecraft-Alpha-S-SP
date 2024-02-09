@@ -1,12 +1,13 @@
 package net.minecraft.src;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 public class GameSettings {
 	private static final String[] RENDER_DISTANCES = new String[]{"FAR", "NORMAL", "SHORT", "TINY"};
@@ -33,15 +34,13 @@ public class GameSettings {
 	public KeyBinding keyBindSneak = new KeyBinding("Sneak", 42);
 	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog};
 	protected Minecraft mc;
-	private File optionsFile;
 	public int numberOfOptions = 10;
 	public int difficulty = 2;
 	public boolean thirdPersonView = false;
 	public String field_12259_z = "";
 
-	public GameSettings(Minecraft var1, File var2) {
+	public GameSettings(Minecraft var1) {
 		this.mc = var1;
-		this.optionsFile = new File(var2, "options.txt");
 		this.loadOptions();
 	}
 
@@ -119,11 +118,14 @@ public class GameSettings {
 
 	public void loadOptions() {
 		try {
-			if(!this.optionsFile.exists()) {
+			byte[] fileData = GL11.readFile("options.txt");
+			if(fileData == null) {
 				return;
 			}
 
-			BufferedReader var1 = new BufferedReader(new FileReader(this.optionsFile));
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(fileData);
+			InputStreamReader inputStreamReader = new InputStreamReader(byteArrayInputStream, "UTF-8");
+			BufferedReader var1 = new BufferedReader(inputStreamReader);
 			String var2 = "";
 
 			while(true) {
@@ -201,7 +203,8 @@ public class GameSettings {
 
 	public void saveOptions() {
 		try {
-			PrintWriter var1 = new PrintWriter(new FileWriter(this.optionsFile));
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			PrintWriter var1 = new PrintWriter(byteArrayOutputStream);
 			var1.println("music:" + this.musicVolume);
 			var1.println("sound:" + this.soundVolume);
 			var1.println("invertYMouse:" + this.invertMouse);
@@ -218,6 +221,10 @@ public class GameSettings {
 			for(int var2 = 0; var2 < this.keyBindings.length; ++var2) {
 				var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);
 			}
+			
+			var1.flush();
+			byte[] fileData = byteArrayOutputStream.toByteArray();
+			GL11.writeFile("options.txt", fileData);
 
 			var1.close();
 		} catch (Exception var3) {

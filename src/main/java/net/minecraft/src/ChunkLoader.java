@@ -1,51 +1,35 @@
 package net.minecraft.src;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.lwjgl.opengl.GL11;
+
 public class ChunkLoader implements IChunkLoader {
-	private File saveDir;
+	private String saveDir;
 	private boolean createIfNecessary;
 
-	public ChunkLoader(File var1, boolean var2) {
+	public ChunkLoader(String var1, boolean var2) {
 		this.saveDir = var1;
 		this.createIfNecessary = var2;
 	}
 
-	private File chunkFileForXZ(int var1, int var2) {
+	private String chunkFileForXZ(int var1, int var2) {
 		String var3 = "c." + Integer.toString(var1, 36) + "." + Integer.toString(var2, 36) + ".dat";
 		String var4 = Integer.toString(var1 & 63, 36);
 		String var5 = Integer.toString(var2 & 63, 36);
-		File var6 = new File(this.saveDir, var4);
-		if(!var6.exists()) {
-			if(!this.createIfNecessary) {
-				return null;
-			}
-
-			var6.mkdir();
-		}
-
-		var6 = new File(var6, var5);
-		if(!var6.exists()) {
-			if(!this.createIfNecessary) {
-				return null;
-			}
-
-			var6.mkdir();
-		}
-
-		var6 = new File(var6, var3);
-		return !var6.exists() && !this.createIfNecessary ? null : var6;
+		String var6 = this.saveDir + "/" + var4 + "/" + var3;
+		return var6;
 	}
 
 	public Chunk loadChunk(World var1, int var2, int var3) throws IOException {
-		File var4 = this.chunkFileForXZ(var2, var3);
-		if(var4 != null && var4.exists()) {
+		String var4 = this.chunkFileForXZ(var2, var3);
+		if(GL11.readFile(var4) != null) {
 			try {
-				FileInputStream var5 = new FileInputStream(var4);
+				byte[] data = GL11.readFile(var4);
+				ByteArrayInputStream var5 = new ByteArrayInputStream(data);
 				NBTTagCompound var6 = CompressedStreamTools.func_1138_a(var5);
 				if(!var6.hasKey("Level")) {
 					System.out.println("Chunk file at " + var2 + "," + var3 + " is missing level data, skipping");
@@ -76,26 +60,28 @@ public class ChunkLoader implements IChunkLoader {
 
 	public void saveChunk(World var1, Chunk var2) throws IOException {
 		var1.func_663_l();
-		File var3 = this.chunkFileForXZ(var2.xPosition, var2.zPosition);
-		if(var3.exists()) {
-			var1.sizeOnDisk -= var3.length();
+		String var3 = this.chunkFileForXZ(var2.xPosition, var2.zPosition);
+		if(GL11.readFile(var3) != null) {
+			var1.sizeOnDisk -= GL11.getFileSize(var3);
 		}
 
 		try {
-			File var4 = new File(this.saveDir, "tmp_chunk.dat");
-			FileOutputStream var5 = new FileOutputStream(var4);
+			String var4 = this.saveDir + "/tmp_chunk.dat";
+			ByteArrayOutputStream var5 = new ByteArrayOutputStream();
 			NBTTagCompound var6 = new NBTTagCompound();
 			NBTTagCompound var7 = new NBTTagCompound();
 			var6.setTag("Level", var7);
 			this.storeChunkInCompound(var2, var1, var7);
 			CompressedStreamTools.writeGzippedCompoundToOutputStream(var6, var5);
+			var5.flush();
+			GL11.writeFile(var4, var5.toByteArray());
 			var5.close();
-			if(var3.exists()) {
-				var3.delete();
+			if(GL11.readFile(var3) != null) {
+				GL11.deleteFile(var3);
 			}
 
-			var4.renameTo(var3);
-			var1.sizeOnDisk += var3.length();
+			GL11.renameFile(var4, var3);
+			var1.sizeOnDisk += GL11.getFileSize(var3);
 		} catch (Exception var8) {
 			var8.printStackTrace();
 		}

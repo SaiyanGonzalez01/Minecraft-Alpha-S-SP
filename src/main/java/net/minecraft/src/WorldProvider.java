@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import java.io.File;
-
 public class WorldProvider {
 	public World worldObj;
 	public WorldChunkManager worldChunkMgr;
@@ -36,7 +34,7 @@ public class WorldProvider {
 		return new ChunkProviderGenerate(this.worldObj, this.worldObj.randomSeed);
 	}
 
-	public IChunkLoader getChunkLoader(File var1) {
+	public IChunkLoader getChunkLoader(String var1) {
 		return new ChunkLoader(var1, true);
 	}
 

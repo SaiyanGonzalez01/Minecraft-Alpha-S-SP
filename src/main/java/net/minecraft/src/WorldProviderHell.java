@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import java.io.File;
-
 public class WorldProviderHell extends WorldProvider {
 	public void registerWorldChunkManager() {
 		this.worldChunkMgr = new WorldChunkManagerHell(MobSpawnerBase.hell, 1.0D, 0.0D);
@@ -29,9 +27,8 @@ public class WorldProviderHell extends WorldProvider {
 		return new ChunkProviderHell(this.worldObj, this.worldObj.randomSeed);
 	}
 
-	public IChunkLoader getChunkLoader(File var1) {
-		File var2 = new File(var1, "DIM-1");
-		var2.mkdirs();
+	public IChunkLoader getChunkLoader(String var1) {
+		String var2 = var1 + "/DIM-1/";
 		return new ChunkLoader(var2, true);
 	}
 

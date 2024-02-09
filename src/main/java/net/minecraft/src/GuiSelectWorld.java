@@ -1,6 +1,5 @@
 package net.minecraft.src;
 
-import java.io.File;
 import net.minecraft.client.Minecraft;
 
 public class GuiSelectWorld extends GuiScreen {
@@ -13,10 +12,8 @@ public class GuiSelectWorld extends GuiScreen {
 	}
 
 	public void initGui() {
-		File var1 = Minecraft.getMinecraftDir();
-
 		for(int var2 = 0; var2 < 5; ++var2) {
-			NBTTagCompound var3 = World.func_629_a(var1, "World" + (var2 + 1));
+			NBTTagCompound var3 = World.func_629_a("World" + (var2 + 1));
 			if(var3 == null) {
 				this.controlList.add(new GuiButton(var2, this.width / 2 - 100, this.height / 6 + 24 * var2, "- empty -"));
 			} else {
@@ -31,8 +28,7 @@ public class GuiSelectWorld extends GuiScreen {
 	}
 
 	protected String getWorldName(int var1) {
-		File var2 = Minecraft.getMinecraftDir();
-		return World.func_629_a(var2, "World" + var1) != null ? "World" + var1 : null;
+		return World.func_629_a("World" + var1) != null ? "World" + var1 : null;
 	}
 
 	public void initGui2() {
