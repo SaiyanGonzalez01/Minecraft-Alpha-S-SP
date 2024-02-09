@@ -159,39 +159,47 @@ public class Minecraft implements Runnable {
 	}
 
 	private void loadScreen() {
-		ScaledResolution var1 = new ScaledResolution(this.displayWidth, this.displayHeight);
-		int var2 = var1.getScaledWidth();
-		int var3 = var1.getScaledHeight();
-		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_COLOR_BUFFER_BIT);
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
+		int xx = displayWidth;
+		if(xx > displayHeight) {
+			xx = displayHeight;
+		}
+		GL11.glClear(16640);
+		GL11.glMatrixMode(5889 /* GL_PROJECTION */);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0.0D, (double)var2, (double)var3, 0.0D, 1000.0D, 3000.0D);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glOrtho(0.0F, displayWidth, displayHeight, 0.0F, 1000F, 3000F);
+		GL11.glMatrixMode(5888 /* GL_MODELVIEW0_ARB */);
 		GL11.glLoadIdentity();
-		GL11.glTranslatef(0.0F, 0.0F, -2000.0F);
-		GL11.glViewport(0, 0, this.displayWidth, this.displayHeight);
+		GL11.glTranslatef(0.0F, 0.0F, -2000F);
+		GL11.glViewport(0, 0, displayWidth, displayHeight);
 		GL11.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
-		Tessellator var4 = Tessellator.instance;
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_FOG);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/title/mojang.png"));
-		var4.startDrawingQuads();
-		var4.setColorOpaque_I(16777215);
-		var4.addVertexWithUV(0.0D, (double)this.displayHeight, 0.0D, 0.0D, 0.0D);
-		var4.addVertexWithUV((double)this.displayWidth, (double)this.displayHeight, 0.0D, 0.0D, 0.0D);
-		var4.addVertexWithUV((double)this.displayWidth, 0.0D, 0.0D, 0.0D, 0.0D);
-		var4.addVertexWithUV(0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
-		var4.draw();
-		short var5 = 256;
-		short var6 = 256;
+		Tessellator tessellator = Tessellator.instance;
+		GL11.glDisable(2896 /* GL_LIGHTING */);
+		GL11.glEnable(3553 /* GL_TEXTURE_2D */);
+		GL11.glDisable(2912 /* GL_FOG */);
+		GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, renderEngine.getTexture("/title/mojang.png"));
+		tessellator.startDrawingQuads();
+		tessellator.setColorOpaque_I(0xffffff);
+		tessellator.addVertexWithUV(0.0D, displayHeight, 0.0D, 0.0D, 0.0D);
+		tessellator.addVertexWithUV(displayWidth, displayHeight, 0.0D, 0.0D, 0.0D);
+		tessellator.addVertexWithUV(displayWidth, 0.0D, 0.0D, 0.0D, 0.0D);
+		tessellator.addVertexWithUV(0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
+		tessellator.draw();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		var4.setColorOpaque_I(16777215);
-		this.func_6274_a((this.displayWidth / 2 - var5) / 2, (this.displayHeight / 2 - var6) / 2, 0, 0, var5, var6);
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glDisable(GL11.GL_FOG);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+		tessellator.startDrawingQuads();
+		tessellator.setColorOpaque_I(0xffffff);
+		int marginX = (displayWidth - xx) / 2;
+		int marginY = (displayHeight - xx) / 2;
+		tessellator.addVertexWithUV(marginX, displayHeight - marginY, 0.0D, 0.0D, 1.0D);
+		tessellator.addVertexWithUV(displayWidth - marginX, displayHeight - marginY, 0.0D, 1.0D, 1.0D);
+		tessellator.addVertexWithUV(displayWidth - marginX, marginY, 0.0D, 1.0D, 0.0D);
+		tessellator.addVertexWithUV(marginX, marginY, 0.0D, 0.0D, 0.0D);
+		tessellator.draw();
+		GL11.glDisable(2896 /* GL_LIGHTING */);
+		GL11.glDisable(2912 /* GL_FOG */);
+		GL11.glEnable(3008 /* GL_ALPHA_TEST */);
+		GL11.glAlphaFunc(516, 0.1F);
+		GL11.webgl.flush();
+		GL11.updateDisplay();
 	}
 
 	public void func_6274_a(int var1, int var2, int var3, int var4, int var5, int var6) {
@@ -303,6 +311,10 @@ public class Minecraft implements Runnable {
 
 					if(this.gameSettings.limitFramerate) {
 						Thread.sleep(5L);
+					}
+					
+					if(!(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(8))) {
+						GL11.updateDisplay();
 					}
 
 					if(!this.field_6307_v) {
