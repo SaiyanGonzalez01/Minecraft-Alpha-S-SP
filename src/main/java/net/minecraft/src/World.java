@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -63,7 +64,7 @@ public class World implements IBlockAccess {
         byte[] data = GL11.readFile("saves/" + var1 + "/level.dat");
         if(!(data == null)) {
             try {
-                NBTTagCompound var5 = CompressedStreamTools.func_1138_a(new ByteArrayInputStream(data));
+                NBTTagCompound var5 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(new ByteArrayInputStream(data)));
                 NBTTagCompound var6 = var5.getCompoundTag("Data");
                 return var6;
             } catch (Exception var7) {
@@ -233,7 +234,7 @@ public class World implements IBlockAccess {
 		byte[] data = GL11.readFile(var18);
 		if(data != null) {
 			try {
-				NBTTagCompound var8 = CompressedStreamTools.func_1138_a(new ByteArrayInputStream(data));
+				NBTTagCompound var8 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(new ByteArrayInputStream(data)));
 				NBTTagCompound var9 = var8.getCompoundTag("Data");
 				this.randomSeed = var9.getLong("RandomSeed");
 				this.spawnX = var9.getInteger("SpawnX");
@@ -367,7 +368,15 @@ public class World implements IBlockAccess {
 			String var5 = field_9432_t + "/level.dat_old";
 			String var6 = field_9432_t + "/level.dat";
 			ByteArrayOutputStream data = new ByteArrayOutputStream();
-			CompressedStreamTools.writeGzippedCompoundToOutputStream(var3, data);
+			try (DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(data))) {
+				NBTBase.writeTag(var3, dos);
+				dos.flush();
+				byte[] file = data.toByteArray();
+				GL11.writeFile(var6, file);
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			
 			GL11.writeFile(var4, data.toByteArray());
 			
 			if(GL11.readFile(var5) != null) {
@@ -1953,6 +1962,9 @@ public class World implements IBlockAccess {
 	public void func_663_l() {
 		try {
 			String var1 = this.field_9432_t + "/session.lock";
+			if(GL11.readFile(var1) == null) {
+				return;
+			}
 			DataInputStream var2 = new DataInputStream(new ByteArrayInputStream(GL11.readFile(var1)));
 
 			try {

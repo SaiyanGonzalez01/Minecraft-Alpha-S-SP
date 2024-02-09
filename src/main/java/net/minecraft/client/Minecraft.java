@@ -261,116 +261,106 @@ public class Minecraft implements Runnable {
 
 	public void run() {
 		this.running = true;
+		this.startGame();
 
-		try {
-			this.startGame();
-		} catch (Exception var15) {
-			var15.printStackTrace();
-			new UnexpectedThrowable("Failed to start game", var15);
-			return;
-		}
+		long var1 = System.currentTimeMillis();
+		int var3 = 0;
 
-		try {
-			try {
-				long var1 = System.currentTimeMillis();
-				int var3 = 0;
+		while(this.running) {
+			AxisAlignedBB.clearBoundingBoxPool();
+			Vec3D.initialize();
 
-				while(this.running) {
-					AxisAlignedBB.clearBoundingBoxPool();
-					Vec3D.initialize();
-
-					if(this.field_6316_m && this.theWorld != null) {
-						float var4 = this.timer.renderPartialTicks;
-						this.timer.updateTimer();
-						this.timer.renderPartialTicks = var4;
-					} else {
-						this.timer.updateTimer();
-					}
-
-					long var19 = System.nanoTime();
-
-					for(int var6 = 0; var6 < this.timer.elapsedTicks; ++var6) {
-						++this.ticksRan;
-
-						try {
-							this.runTick();
-						} catch (MinecraftException var14) {
-							this.theWorld = null;
-							this.func_6261_a((World)null);
-							this.displayGuiScreen(new GuiConflictWarning());
-						}
-					}
-
-					long var20 = System.nanoTime() - var19;
-					this.checkGLError("Pre render");
-					GL11.glEnable(GL11.GL_TEXTURE_2D);
-					if(this.theWorld != null) {
-						while(this.theWorld.func_6465_g()) {
-						}
-					}
-
-					if(this.gameSettings.limitFramerate) {
-						Thread.sleep(5L);
-					}
-					
-					if(!(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(8))) {
-						GL11.updateDisplay();
-					}
-
-					if(!this.field_6307_v) {
-						if(this.field_6327_b != null) {
-							this.field_6327_b.func_6467_a(this.timer.renderPartialTicks);
-						}
-
-						this.field_9243_r.func_4136_b(this.timer.renderPartialTicks);
-					}
-
-					if(!GL11.isFocused()) {
-						Thread.sleep(10L);
-					}
-
-					if(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(4)) {
-						this.func_6238_a(var20);
-					} else {
-						this.field_6290_K = System.nanoTime();
-					}
-
-					Thread.yield();
-					if(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(8)) {
-						GL11.updateDisplay();
-					}
-
-					if((GL11.getCanvasWidth() != this.displayWidth || GL11.getCanvasHeight() != this.displayHeight)) {
-						this.displayWidth = GL11.getCanvasWidth();
-						this.displayHeight = GL11.getCanvasHeight();
-						if(this.displayWidth <= 0) {
-							this.displayWidth = 1;
-						}
-
-						if(this.displayHeight <= 0) {
-							this.displayHeight = 1;
-						}
-
-						this.resize(this.displayWidth, this.displayHeight);
-					}
-
-					this.checkGLError("Post render");
-					++var3;
-
-					for(this.field_6316_m = true && this.currentScreen != null && this.currentScreen.doesGuiPauseGame(); System.currentTimeMillis() >= var1 + 1000L; var3 = 0) {
-						this.field_6292_I = var3 + " fps, " + WorldRenderer.field_1762_b + " chunk updates";
-						WorldRenderer.field_1762_b = 0;
-						var1 += 1000L;
-					}
-				}
-			} catch (MinecraftError var16) {
-			} catch (Throwable var17) {
-				this.theWorld = null;
-				var17.printStackTrace();
-				new UnexpectedThrowable("Unexpected error", var17);
+			if(this.field_6316_m && this.theWorld != null) {
+				float var4 = this.timer.renderPartialTicks;
+				this.timer.updateTimer();
+				this.timer.renderPartialTicks = var4;
+			} else {
+				this.timer.updateTimer();
 			}
 
-		} finally {
+			long var19 = System.nanoTime();
+
+			for(int var6 = 0; var6 < this.timer.elapsedTicks; ++var6) {
+				++this.ticksRan;
+
+				try {
+					this.runTick();
+				} catch (MinecraftException var14) {
+					this.theWorld = null;
+					this.func_6261_a((World)null);
+					this.displayGuiScreen(new GuiConflictWarning());
+				}
+			}
+
+			long var20 = System.nanoTime() - var19;
+			this.checkGLError("Pre render");
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			if(this.theWorld != null) {
+				while(this.theWorld.func_6465_g()) {
+				}
+			}
+
+			if(this.gameSettings.limitFramerate) {
+				try {
+					Thread.sleep(5L);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+					
+			if(!(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(8))) {
+				GL11.updateDisplay();
+			}
+
+			if(!this.field_6307_v) {
+				if(this.field_6327_b != null) {
+					this.field_6327_b.func_6467_a(this.timer.renderPartialTicks);
+				}
+
+				this.field_9243_r.func_4136_b(this.timer.renderPartialTicks);
+			}
+
+			if(!GL11.isFocused()) {
+				try {
+					Thread.sleep(10L);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+
+			if(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(4)) {
+				this.func_6238_a(var20);
+			} else {
+				this.field_6290_K = System.nanoTime();
+			}
+
+			Thread.yield();
+			if(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(8)) {
+				GL11.updateDisplay();
+			}
+
+			if((GL11.getCanvasWidth() != this.displayWidth || GL11.getCanvasHeight() != this.displayHeight)) {
+				this.displayWidth = GL11.getCanvasWidth();
+				this.displayHeight = GL11.getCanvasHeight();
+				if(this.displayWidth <= 0) {
+					this.displayWidth = 1;
+				}
+
+				if(this.displayHeight <= 0) {
+					this.displayHeight = 1;
+				}
+
+				this.resize(this.displayWidth, this.displayHeight);
+			}
+
+			this.checkGLError("Post render");
+			++var3;
+
+			for(this.field_6316_m = true && this.currentScreen != null && this.currentScreen.doesGuiPauseGame(); System.currentTimeMillis() >= var1 + 1000L; var3 = 0) {
+				this.field_6292_I = var3 + " fps, " + WorldRenderer.field_1762_b + " chunk updates";
+				WorldRenderer.field_1762_b = 0;
+				var1 += 1000L;
+			}
 		}
 	}
 

@@ -74,10 +74,6 @@ public class WorldRenderer {
 		}
 	}
 
-	private void func_1203_g() {
-		GL11.glTranslatef((float)this.field_1752_l, (float)this.field_1751_m, (float)this.field_1750_n);
-	}
-
 	public void func_1198_a() {
 		if(this.needsUpdate) {
 			++field_1762_b;
@@ -113,14 +109,8 @@ public class WorldRenderer {
 								if(!var14) {
 									var14 = true;
 									GL11.glNewList(this.field_1744_C + var11, GL11.GL_COMPILE);
-									GL11.glPushMatrix();
-									this.func_1203_g();
-									float var19 = 1.000001F;
-									GL11.glTranslatef((float)(-this.field_1756_h) / 2.0F, (float)(-this.field_1757_g) / 2.0F, (float)(-this.field_1756_h) / 2.0F);
-									GL11.glScalef(var19, var19, var19);
-									GL11.glTranslatef((float)this.field_1756_h / 2.0F, (float)this.field_1757_g / 2.0F, (float)this.field_1756_h / 2.0F);
 									field_1742_D.startDrawingQuads();
-									field_1742_D.setTranslationD((double)(-this.field_1761_c), (double)(-this.field_1760_d), (double)(-this.field_1759_e));
+									field_1742_D.setTranslationD((double) (this.field_1752_l-this.field_1761_c), (double) (this.field_1751_m-this.field_1760_d), (double) (this.field_1750_n-this.field_1759_e));
 								}
 
 								if(var11 == 0 && Block.isBlockContainer[var18]) {
@@ -144,7 +134,6 @@ public class WorldRenderer {
 
 				if(var14) {
 					field_1742_D.draw();
-					GL11.glPopMatrix();
 					GL11.glEndList();
 					field_1742_D.setTranslationD(0.0D, 0.0D, 0.0D);
 				} else {

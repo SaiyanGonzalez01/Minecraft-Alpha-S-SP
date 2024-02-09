@@ -68,6 +68,8 @@ import net.lax1dude.eaglercraft.AssetRepository;
 import net.lax1dude.eaglercraft.Base64;
 import net.lax1dude.eaglercraft.Client;
 import net.lax1dude.eaglercraft.EaglerImage;
+import net.lax1dude.eaglercraft.adapter.teavm.IndexedDBFilesystem;
+import net.lax1dude.eaglercraft.adapter.teavm.IndexedDBFilesystem.OpenState;
 //import net.lax1dude.eaglercraft.adapter.teavm.IndexedDBFilesystem;
 //import net.lax1dude.eaglercraft.adapter.teavm.IndexedDBFilesystem.OpenState;
 import net.lax1dude.eaglercraft.adapter.teavm.WebGL2RenderingContext;
@@ -307,15 +309,15 @@ public class EaglerAdapterImpl2 {
 		onBeforeCloseRegister();
 		initFileChooser();
 		
-//		OpenState st = IndexedDBFilesystem.initialize();
-//		if(st != OpenState.OPENED) {
-//			if(st == OpenState.LOCKED) {
-//				Client.showDatabaseLockedScreen("\nError: World folder is locked!\n\nYou are already playing Eaglercraft in a different tab.\nClose all other Eaglercraft tabs and reload");
-//			}else {
-//				Client.showDatabaseLockedScreen("\nError: World folder could not be loaded!\n\n" + IndexedDBFilesystem.errorDetail());
-//			}
-//			throw new Client.AbortedLaunchException();
-//		}
+		OpenState st = IndexedDBFilesystem.initialize();
+		if(st != OpenState.OPENED) {
+			if(st == OpenState.LOCKED) {
+				Client.showDatabaseLockedScreen("\nError: World folder is locked!\n\nYou are already playing Eaglercraft in a different tab.\nClose all other Eaglercraft tabs and reload");
+			}else {
+				Client.showDatabaseLockedScreen("\nError: World folder could not be loaded!\n\n" + IndexedDBFilesystem.errorDetail());
+			}
+			throw new Client.AbortedLaunchException();
+		}
 		
 		downloadAssetPack(assetPackageURI);
 		
@@ -1747,54 +1749,47 @@ public class EaglerAdapterImpl2 {
 	private static native boolean isString(JSObject obj);
 	
 	public static final boolean fileExists(String path) {
-		//return IndexedDBFilesystem.fileExists(path);
-		return false;
+		return IndexedDBFilesystem.fileExists(path);
 	}
 	
 	public static final boolean directoryExists(String path) {
-		//return IndexedDBFilesystem.directoryExists(path);
-		return false;
+		return IndexedDBFilesystem.directoryExists(path);
 	}
 	
 	public static final boolean pathExists(String path) {
-		//return IndexedDBFilesystem.pathExists(path);
-		return false;
+		return IndexedDBFilesystem.pathExists(path);
 	}
 	
 	public static final void writeFile(String path, byte[] data) {
-		//IndexedDBFilesystem.writeFile(path, data);
+		IndexedDBFilesystem.writeFile(path, data);
 	}
 	
 	public static final byte[] readFile(String path) {
-		//return IndexedDBFilesystem.readFile(path);
-		return null;
+		return IndexedDBFilesystem.readFile(path);
 	}
 	
 	public static final long getLastModified(String path) {
-		//return IndexedDBFilesystem.getLastModified(path);
-		return 0L;
+		return IndexedDBFilesystem.getLastModified(path);
 	}
 	
 	public static final int getFileSize(String path) {
-		//return IndexedDBFilesystem.getFileSize(path);
-		return 0;
+		return IndexedDBFilesystem.getFileSize(path);
 	}
 	
 	public static final void renameFile(String oldPath, String newPath) {
-		//IndexedDBFilesystem.renameFile(oldPath, newPath);
+		IndexedDBFilesystem.renameFile(oldPath, newPath);
 	}
 	
 	public static final void copyFile(String oldPath, String newPath) {
-		//IndexedDBFilesystem.copyFile(oldPath, newPath);
+		IndexedDBFilesystem.copyFile(oldPath, newPath);
 	}
 	
 	public static final void deleteFile(String path) {
-		//IndexedDBFilesystem.deleteFile(path);
+		IndexedDBFilesystem.deleteFile(path);
 	}
 
 	public static final Collection<FileEntry> listFiles(String path, boolean listDirs, boolean recursiveDirs) {
-		//return IndexedDBFilesystem.listFiles(path, listDirs, recursiveDirs);
-		return null;
+		return IndexedDBFilesystem.listFiles(path, listDirs, recursiveDirs);
 	}
 	
 	public static final Collection<FileEntry> listFilesAndDirectories(String path) {
