@@ -132,6 +132,6 @@ public class Client {
 	}
 	
 	@JSBody(params = { "v" }, script = "try { return (typeof window[v] !== \"undefined\") ? JSON.stringify(window[v]) : \"[\\\"<error>\\\"]\"; } catch(e) { return \"[\\\"<error>\\\"]\"; }")
-	private static native String getArray(String var);
+	private static native String getArray(String v);
 	
 }

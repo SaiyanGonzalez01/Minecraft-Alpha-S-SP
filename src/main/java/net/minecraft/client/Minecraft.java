@@ -41,7 +41,6 @@ import net.minecraft.src.TextureFlamesFX;
 import net.minecraft.src.TextureLavaFX;
 import net.minecraft.src.TextureLavaFlowFX;
 import net.minecraft.src.TexturePortalFX;
-import net.minecraft.src.TextureWatchFX;
 import net.minecraft.src.TextureWaterFX;
 import net.minecraft.src.TexureWaterFlowFX;
 import net.minecraft.src.ThreadSleepForever;
@@ -103,6 +102,7 @@ public class Minecraft implements Runnable {
 	public boolean field_6288_M = false;
 	long field_6287_N = System.currentTimeMillis();
 	private int field_6300_ab = 0;
+	private static Minecraft mc;
 
 	public Minecraft() {
 		this.field_9236_T = GL11.getCanvasWidth();
@@ -110,6 +110,7 @@ public class Minecraft implements Runnable {
 		new ThreadSleepForever(this, "Timer hack thread");
 		this.displayWidth = GL11.getCanvasWidth();
 		this.displayHeight = GL11.getCanvasHeight();
+		mc = this;
 	}
 
 	public void func_6258_a(String var1, int var2) {
@@ -141,13 +142,13 @@ public class Minecraft implements Runnable {
 		this.checkGLError("Startup");
 		this.renderEngine.registerTextureFX(this.field_9231_Y);
 		this.renderEngine.registerTextureFX(this.field_9232_X);
-		this.renderEngine.registerTextureFX(new TexturePortalFX());
+		//this.renderEngine.registerTextureFX(new TexturePortalFX());
 		this.renderEngine.registerTextureFX(new TextureCompassFX(this));
-		this.renderEngine.registerTextureFX(new TextureWatchFX(this));
-		this.renderEngine.registerTextureFX(new TexureWaterFlowFX());
-		this.renderEngine.registerTextureFX(new TextureLavaFlowFX());
-		this.renderEngine.registerTextureFX(new TextureFlamesFX(0));
-		this.renderEngine.registerTextureFX(new TextureFlamesFX(1));
+//		this.renderEngine.registerTextureFX(new TextureWatchFX(this));
+//		this.renderEngine.registerTextureFX(new TexureWaterFlowFX());
+//		this.renderEngine.registerTextureFX(new TextureLavaFlowFX());
+//		this.renderEngine.registerTextureFX(new TextureFlamesFX(0));
+//		this.renderEngine.registerTextureFX(new TextureFlamesFX(1));
 		this.field_6323_f = new RenderGlobal(this, this.renderEngine);
 		GL11.glViewport(0, 0, this.displayWidth, this.displayHeight);
 		this.field_6321_h = new EffectRenderer(this.theWorld, this.renderEngine);
@@ -239,7 +240,6 @@ public class Minecraft implements Runnable {
 			System.out.println("########## GL ERROR ##########");
 			System.out.println("@ " + var1);
 			System.out.println(var2 + ": " + var3);
-			System.exit(0);
 		}
 
 	}
@@ -934,5 +934,9 @@ public class Minecraft implements Runnable {
 			this.displayGuiScreen((GuiScreen)null);
 		}
 
+	}
+	
+	public static Minecraft getMinecraft() {
+		return mc;
 	}
 }
