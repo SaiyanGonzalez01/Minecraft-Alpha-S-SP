@@ -4,7 +4,8 @@ This is based off of real Minecraft Alpha v1.2.6, the decompiled source code has
 
 ![Screenshot (23)](https://github.com/PeytonPlayz595/Alpha-v1.2.6/assets/106421860/84c133e9-935e-4edf-8ced-66b752bc5800)
 
-### Play the official release: https://peytonplayz595.github.io/Alpha-v1.2.6/js/
+### Play the official release (No download required): 
+### https://peytonplayz595.github.io/Alpha-v1.2.6/js/
 
 # How to decompile older Minecraft versions
 To decompile older Minecraft versions you can use RetroMCP!
