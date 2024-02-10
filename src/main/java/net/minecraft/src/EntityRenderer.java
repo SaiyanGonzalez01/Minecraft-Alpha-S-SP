@@ -371,24 +371,7 @@ public class EntityRenderer {
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glDisable(GL11.GL_CULL_FACE);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.mc.renderEngine.getTexture("/terrain.png"));
-			if(this.mc.gameSettings.fancyGraphics) {
-				GL11.glColorMask(false, false, false, false);
-				int var13 = var3.func_943_a(var2, 1, (double)var1);
-				GL11.glColorMask(true, true, true, true);
-				if(this.mc.gameSettings.anaglyph) {
-					if(var11 == 0) {
-						GL11.glColorMask(false, true, true, false);
-					} else {
-						GL11.glColorMask(true, false, false, false);
-					}
-				}
-
-				if(var13 > 0) {
-					var3.func_944_a(1, (double)var1);
-				}
-			} else {
-				var3.func_943_a(var2, 1, (double)var1);
-			}
+			var3.func_943_a(var2, 1, (double)var1);
 
 			GL11.glDepthMask(true);
 			GL11.glEnable(GL11.GL_CULL_FACE);

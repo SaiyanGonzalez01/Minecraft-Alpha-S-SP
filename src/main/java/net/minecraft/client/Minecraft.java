@@ -159,10 +159,6 @@ public class Minecraft implements Runnable {
 	}
 
 	private void loadScreen() {
-		int xx = displayWidth;
-		if(xx > displayHeight) {
-			xx = displayHeight;
-		}
 		GL11.glClear(16640);
 		GL11.glMatrixMode(5889 /* GL_PROJECTION */);
 		GL11.glLoadIdentity();
@@ -187,12 +183,10 @@ public class Minecraft implements Runnable {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		tessellator.startDrawingQuads();
 		tessellator.setColorOpaque_I(0xffffff);
-		int marginX = (displayWidth - xx) / 2;
-		int marginY = (displayHeight - xx) / 2;
-		tessellator.addVertexWithUV(marginX, displayHeight - marginY, 0.0D, 0.0D, 1.0D);
-		tessellator.addVertexWithUV(displayWidth - marginX, displayHeight - marginY, 0.0D, 1.0D, 1.0D);
-		tessellator.addVertexWithUV(displayWidth - marginX, marginY, 0.0D, 1.0D, 0.0D);
-		tessellator.addVertexWithUV(marginX, marginY, 0.0D, 0.0D, 0.0D);
+		tessellator.addVertexWithUV(0.0D, displayHeight, 0.0D, 0.0D, 1.0D);
+		tessellator.addVertexWithUV(displayWidth, displayHeight, 0.0D, 1.0D, 1.0D);
+		tessellator.addVertexWithUV(displayWidth, 0.0D, 0.0D, 1.0D, 0.0D);
+		tessellator.addVertexWithUV(0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 		tessellator.draw();
 		GL11.glDisable(2896 /* GL_LIGHTING */);
 		GL11.glDisable(2912 /* GL_FOG */);

@@ -117,12 +117,7 @@ public class EaglerAdapterImpl2 {
 		}
 	}
 	
-	public static void onWindowUnload() {
-		LocalStorageManager.saveStorageG();
-		LocalStorageManager.saveStorageP();
-	}
-	
-	@JSBody(params = { }, script = "window.onbeforeunload = function(){javaMethods.get('net.lax1dude.eaglercraft.adapter.EaglerAdapterImpl2.onWindowUnload()V').invoke();return false;};")
+	@JSBody(params = { }, script = "window.addEventListener('beforeunload', (event) => {event.preventDefault(); return '';});")
 	private static native void onBeforeCloseRegister();
 	
 	public static final String[] fileContentsLines(String path) {

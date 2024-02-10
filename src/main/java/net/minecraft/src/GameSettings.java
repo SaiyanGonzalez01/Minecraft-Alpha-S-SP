@@ -5,6 +5,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+
+import net.PeytonPlayz585.storage.LocalStorageManager;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -202,35 +204,30 @@ public class GameSettings {
 	}
 
 	public void saveOptions() {
-		try {
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			PrintWriter var1 = new PrintWriter(byteArrayOutputStream);
-			var1.println("music:" + this.musicVolume);
-			var1.println("sound:" + this.soundVolume);
-			var1.println("invertYMouse:" + this.invertMouse);
-			var1.println("mouseSensitivity:" + this.mouseSensitivity);
-			var1.println("viewDistance:" + this.renderDistance);
-			var1.println("bobView:" + this.viewBobbing);
-			var1.println("anaglyph3d:" + this.anaglyph);
-			var1.println("limitFramerate:" + this.limitFramerate);
-			var1.println("difficulty:" + this.difficulty);
-			var1.println("fancyGraphics:" + this.fancyGraphics);
-			var1.println("skin:" + this.skin);
-			var1.println("lastServer:" + this.field_12259_z);
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		PrintWriter var1 = new PrintWriter(byteArrayOutputStream);
+		var1.println("music:" + this.musicVolume);
+		var1.println("sound:" + this.soundVolume);
+		var1.println("invertYMouse:" + this.invertMouse);
+		var1.println("mouseSensitivity:" + this.mouseSensitivity);
+		var1.println("viewDistance:" + this.renderDistance);
+		var1.println("bobView:" + this.viewBobbing);
+		var1.println("anaglyph3d:" + this.anaglyph);
+		var1.println("limitFramerate:" + this.limitFramerate);
+		var1.println("difficulty:" + this.difficulty);
+		var1.println("fancyGraphics:" + this.fancyGraphics);
+		var1.println("skin:" + this.skin);
 
-			for(int var2 = 0; var2 < this.keyBindings.length; ++var2) {
-				var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);
-			}
-			
-			var1.flush();
-			byte[] fileData = byteArrayOutputStream.toByteArray();
-			GL11.writeFile("options.txt", fileData);
-
-			var1.close();
-		} catch (Exception var3) {
-			System.out.println("Failed to save options");
-			var3.printStackTrace();
+		for(int var2 = 0; var2 < this.keyBindings.length; ++var2) {
+			var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);
 		}
+			
+		var1.flush();
+		byte[] fileData = byteArrayOutputStream.toByteArray();
+		GL11.writeFile("options.txt", fileData);
 
+		var1.close();
+		LocalStorageManager.saveStorageG();
+		LocalStorageManager.saveStorageP();
 	}
 }

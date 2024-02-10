@@ -1,5 +1,11 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+
 public class MobSpawnerBase {
 	public static final MobSpawnerBase rainforest = (new MobSpawnerBase()).func_4123_b(588342).setBiomeName("Rainforest").func_4124_a(2094168);
 	public static final MobSpawnerBase swampland = (new MobSpawnerSwamp()).func_4123_b(522674).setBiomeName("Swampland").func_4124_a(9154376);
@@ -18,8 +24,8 @@ public class MobSpawnerBase {
 	public byte topBlock = (byte)Block.grass.blockID;
 	public byte fillerBlock = (byte)Block.dirt.blockID;
 	public int field_6502_q = 5169201;
-	protected Class[] biomeMonsters = new Class[]{EntitySpider.class, EntityZombie.class, EntitySkeleton.class, EntityCreeper.class};
-	protected Class[] biomeCreatures = new Class[]{EntitySheep.class, EntityPig.class, EntityChicken.class, EntityCow.class};
+	protected List biomeMonsters = new ArrayList();
+	protected List biomeCreatures = new ArrayList();
 	private static MobSpawnerBase[] biomeLookupTable = new MobSpawnerBase[4096];
 
 	public static void generateBiomeLookup() {
@@ -131,8 +137,34 @@ public class MobSpawnerBase {
 	    return (255 << 24) | (red << 16) | (green << 8) | blue;
 	}
 
-	public Class[] getEntitiesForType(EnumCreatureType var1) {
-		return var1 == EnumCreatureType.monster ? this.biomeMonsters : (var1 == EnumCreatureType.creature ? this.biomeCreatures : null);
+	public List getEntitiesForType(EnumCreatureType var1) {
+		if(var1 == EnumCreatureType.monster) {
+			if(this.biomeMonsters.isEmpty()) {
+				initBiomeMonsters();
+			}
+			return this.biomeMonsters;
+		} else if(var1 == EnumCreatureType.creature) {
+			if(this.biomeCreatures.isEmpty()) {
+				initBiomeCreatures();
+			}
+			return this.biomeCreatures;
+		} else {
+			return null;
+		}
+	}
+	
+	public void initBiomeMonsters() {
+		biomeMonsters.add(new EntitySpider(Minecraft.getMinecraft().theWorld));
+		biomeMonsters.add(new EntityZombie(Minecraft.getMinecraft().theWorld));
+		biomeMonsters.add(new EntitySkeleton(Minecraft.getMinecraft().theWorld));
+		biomeMonsters.add(new EntityCreeper(Minecraft.getMinecraft().theWorld));
+	}
+	
+	public void initBiomeCreatures() {
+		biomeCreatures.add(new EntitySheep(Minecraft.getMinecraft().theWorld));
+		biomeCreatures.add(new EntityPig(Minecraft.getMinecraft().theWorld));
+		biomeCreatures.add(new EntityChicken(Minecraft.getMinecraft().theWorld));
+		biomeCreatures.add(new EntityCow(Minecraft.getMinecraft().theWorld));
 	}
 
 	static {
