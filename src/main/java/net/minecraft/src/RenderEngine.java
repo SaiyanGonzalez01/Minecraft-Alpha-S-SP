@@ -195,17 +195,91 @@ public class RenderEngine {
 	}
 	
 	public void func_1067_a() {
-		for (int i = 0; i < textureList.size(); i++) {
-			TextureFX texturefx = (TextureFX) textureList.get(i);
-			texturefx.field_1131_c = options.anaglyph;
-			texturefx.func_783_a();
-			texturefx.func_782_a(this);
-			int tileSize = 16 * 16 * 4;
-			imageDataB1.clear();
-			imageDataB1.put(texturefx.field_1127_a);
-			imageDataB1.position(0).limit(tileSize);
-			GL11.glTexSubImage2D(3553 /* GL_TEXTURE_2D */, 0, (texturefx.field_1126_b % 16) * 16, (texturefx.field_1126_b / 16) * 16, 16, 16, 6408 /* GL_RGBA */, 5121 /* GL_UNSIGNED_BYTE */, imageDataB1);
+		int var1;
+		TextureFX var2;
+		int var3;
+		int var4;
+		int var5;
+		int var6;
+		int var7;
+		int var8;
+		int var9;
+		int var10;
+		int var11;
+		int var12;
+		for(var1 = 0; var1 < this.textureList.size(); ++var1) {
+			var2 = (TextureFX)this.textureList.get(var1);
+			var2.field_1131_c = this.options.anaglyph;
+			var2.func_783_a();
+			this.imageDataB1.clear();
+			this.imageDataB1.put(var2.field_1127_a);
+			this.imageDataB1.position(0).limit(var2.field_1127_a.length);
+			var2.func_782_a(this);
+			imageDataB2.clear();
+
+			for(var3 = 0; var3 < var2.field_1129_e; ++var3) {
+				for(var4 = 0; var4 < var2.field_1129_e; ++var4) {
+					GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, var2.field_1126_b % 16 * 16 + var3 * 16, var2.field_1126_b / 16 * 16 + var4 * 16, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)this.imageDataB1);
+					if(useMipmaps) {
+						for(var5 = 1; var5 <= 4; ++var5) {
+							var6 = 16 >> var5 - 1;
+							var7 = 16 >> var5;
+
+							for(var8 = 0; var8 < var7; ++var8) {
+								for(var9 = 0; var9 < var7; ++var9) {
+									var10 = this.imageDataB1.getInt((var8 * 2 + 0 + (var9 * 2 + 0) * var6) * 4);
+									var11 = this.imageDataB1.getInt((var8 * 2 + 1 + (var9 * 2 + 0) * var6) * 4);
+									var12 = this.imageDataB1.getInt((var8 * 2 + 1 + (var9 * 2 + 1) * var6) * 4);
+									int var13 = this.imageDataB1.getInt((var8 * 2 + 0 + (var9 * 2 + 1) * var6) * 4);
+									int var14 = this.averageColor(this.averageColor(var10, var11), this.averageColor(var12, var13));
+									this.imageDataB2.putInt((var8 + var9 * var7) * 4, var14);
+								}
+							}
+
+							GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, var5, var2.field_1126_b % 16 * var7, var2.field_1126_b / 16 * var7, var7, var7, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, this.imageDataB2);
+							ByteBuffer tmp = imageDataB1;
+							imageDataB1 = imageDataB2;
+							imageDataB2 = tmp;
+						}
+					}
+				}
+			}
 		}
+
+		for(var1 = 0; var1 < this.textureList.size(); ++var1) {
+			var2 = (TextureFX)this.textureList.get(var1);
+			if(var2.field_1130_d > 0) {
+				this.imageDataB1.clear();
+				this.imageDataB1.put(var2.field_1127_a);
+				this.imageDataB1.position(0).limit(var2.field_1127_a.length);
+				imageDataB2.clear();
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, var2.field_1130_d);
+				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)this.imageDataB1);
+				if(useMipmaps) {
+					for(var3 = 1; var3 <= 4; ++var3) {
+						var4 = 16 >> var3 - 1;
+						var5 = 16 >> var3;
+
+						for(var6 = 0; var6 < var5; ++var6) {
+							for(var7 = 0; var7 < var5; ++var7) {
+								var8 = this.imageDataB1.getInt((var6 * 2 + 0 + (var7 * 2 + 0) * var4) * 4);
+								var9 = this.imageDataB1.getInt((var6 * 2 + 1 + (var7 * 2 + 0) * var4) * 4);
+								var10 = this.imageDataB1.getInt((var6 * 2 + 1 + (var7 * 2 + 1) * var4) * 4);
+								var11 = this.imageDataB1.getInt((var6 * 2 + 0 + (var7 * 2 + 1) * var4) * 4);
+								var12 = this.averageColor(this.averageColor(var8, var9), this.averageColor(var10, var11));
+								this.imageDataB2.putInt((var6 + var7 * var5) * 4, var12);
+							}
+						}
+
+						GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, var3, 0, 0, var5, var5, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)this.imageDataB2);
+						ByteBuffer tmp = imageDataB1;
+						imageDataB1 = imageDataB2;
+						imageDataB2 = tmp;
+					}
+				}
+			}
+		}
+
 	}
 
 	public static boolean useMipmaps = false;
