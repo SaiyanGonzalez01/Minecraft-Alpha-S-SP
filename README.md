@@ -9,7 +9,7 @@ This is based off of real Minecraft Alpha v1.2.6, the decompiled source code has
 # How to decompile older Minecraft versions
 To decompile older Minecraft versions you can use RetroMCP!
 
-RetroMCP is a rewrite of MCP that adds support for many different older versions of Minecraft that were supported by MCP. To get started head over to the [RetroMCP GitHub](https://github.com/MCPHackers/RetroMCP-Java/releases) and download the latest release. Make sure you have Java 8 (or higher) installed in order to run and decompile Minecraft versions.
+RetroMCP is a rewrite of MCP that adds support for many different older versions of Minecraft that were never supported by MCP. To get started head over to the [RetroMCP GitHub](https://github.com/MCPHackers/RetroMCP-Java/releases) and download the latest release. Make sure you have Java 8 (or higher) installed in order to run and decompile Minecraft versions.
 
 # Code used within this project
 
