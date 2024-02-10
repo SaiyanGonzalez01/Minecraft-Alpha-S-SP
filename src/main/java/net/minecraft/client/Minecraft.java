@@ -21,7 +21,6 @@ import net.minecraft.src.ItemRenderer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.LoadingScreenRenderer;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.MinecraftError;
 import net.minecraft.src.MinecraftException;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.MouseHelper;
@@ -37,20 +36,16 @@ import net.minecraft.src.Session;
 import net.minecraft.src.Teleporter;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.TextureCompassFX;
-import net.minecraft.src.TextureFlamesFX;
 import net.minecraft.src.TextureLavaFX;
-import net.minecraft.src.TextureLavaFlowFX;
-import net.minecraft.src.TexturePortalFX;
 import net.minecraft.src.TextureWaterFX;
-import net.minecraft.src.TexureWaterFlowFX;
 import net.minecraft.src.ThreadSleepForever;
 import net.minecraft.src.Timer;
-import net.minecraft.src.UnexpectedThrowable;
 import net.minecraft.src.Vec3D;
 import net.minecraft.src.World;
 import net.minecraft.src.WorldProvider;
 import net.minecraft.src.WorldProviderHell;
 import net.minecraft.src.WorldRenderer;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -76,8 +71,6 @@ public class Minecraft implements Runnable {
 	public EntityRenderer field_9243_r = new EntityRenderer(this);
 	private int ticksRan = 0;
 	private int field_6282_S = 0;
-	private int field_9236_T;
-	private int field_9235_U;
 	public String field_6310_s = null;
 	public int field_6309_t = 0;
 	public GuiIngame ingameGUI;
@@ -89,8 +82,6 @@ public class Minecraft implements Runnable {
 	public static long[] field_9240_E = new long[512];
 	public static long[] field_9239_F = new long[512];
 	public static int field_9238_G = 0;
-	private String field_9234_V;
-	private int field_9233_W;
 	private TextureWaterFX field_9232_X = new TextureWaterFX();
 	private TextureLavaFX field_9231_Y = new TextureLavaFX();
 	public volatile boolean running = true;
@@ -105,17 +96,10 @@ public class Minecraft implements Runnable {
 	private static Minecraft mc;
 
 	public Minecraft() {
-		this.field_9236_T = GL11.getCanvasWidth();
-		this.field_9235_U = GL11.getCanvasHeight();
 		new ThreadSleepForever(this, "Timer hack thread");
 		this.displayWidth = GL11.getCanvasWidth();
 		this.displayHeight = GL11.getCanvasHeight();
 		mc = this;
-	}
-
-	public void func_6258_a(String var1, int var2) {
-		this.field_9234_V = var1;
-		this.field_9233_W = var2;
 	}
 
 	public void startGame() {
@@ -889,7 +873,6 @@ public class Minecraft implements Runnable {
 		}
 
 		this.loadingScreen.displayLoadingString("Simulating world for a bit");
-		boolean var9 = true;
 		this.theWorld.func_656_j();
 	}
 
@@ -934,5 +917,16 @@ public class Minecraft implements Runnable {
 	
 	public static Minecraft getMinecraft() {
 		return mc;
+	}
+
+	public final void setLighting(boolean var1) {
+		if(!var1) {
+			GL11.glDisable(2896);
+			GL11.glDisable(16384);
+		} else {
+			GL11.glEnable(2896);
+		    GL11.glEnable(16384);
+		    GL11.glEnable(2903);
+		}
 	}
 }

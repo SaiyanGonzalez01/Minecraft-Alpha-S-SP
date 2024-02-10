@@ -9,6 +9,7 @@ import java.util.HashMap;
 import org.lwjgl.opengl.GL11;
 
 import net.lax1dude.eaglercraft.EaglerImage;
+import net.minecraft.client.Minecraft;
 
 public class RenderEngine {
 
@@ -171,9 +172,12 @@ public class RenderEngine {
 	}
 
 	public void bindTexture(int i) {
+		Minecraft.getMinecraft().setLighting(true);
 		if (i < 0) {
+			Minecraft.getMinecraft().setLighting(false);
 			return;
 		} else {
+			Minecraft.getMinecraft().setLighting(false);
 			GL11.glBindTexture(3553 /* GL_TEXTURE_2D */, i);
 			return;
 		}
