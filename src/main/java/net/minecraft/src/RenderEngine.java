@@ -39,6 +39,11 @@ public class RenderEngine {
 				String[] s1 = s.split("%%");
 				setupTexture(readTextureImage(GL11.loadResourceBytes(s1[1])), i);
 				clampTexture = false;
+			} else if(s.startsWith("%blur%")) {
+				blurTexture = true;
+				String[] s1 = s.split("%blur%");
+				setupTexture(readTextureImage(GL11.loadResourceBytes(s1[1])), i);
+				blurTexture = false;
 			} else {
 				if(s.contains("terrain")) {
 					useMipmaps = true;
@@ -187,6 +192,20 @@ public class RenderEngine {
 	
 	public int getTextureForDownloadableImage(String s, String s1) {
 		return getTexture(s1);
+	}
+	
+	public void func_1067_a() {
+		for (int i = 0; i < textureList.size(); i++) {
+			TextureFX texturefx = (TextureFX) textureList.get(i);
+			texturefx.field_1131_c = options.anaglyph;
+			texturefx.func_783_a();
+			texturefx.func_782_a(this);
+			int tileSize = 16 * 16 * 4;
+			imageDataB1.clear();
+			imageDataB1.put(texturefx.field_1127_a);
+			imageDataB1.position(0).limit(tileSize);
+			GL11.glTexSubImage2D(3553 /* GL_TEXTURE_2D */, 0, (texturefx.field_1126_b % 16) * 16, (texturefx.field_1126_b / 16) * 16, 16, 16, 6408 /* GL_RGBA */, 5121 /* GL_UNSIGNED_BYTE */, imageDataB1);
+		}
 	}
 
 	public static boolean useMipmaps = false;

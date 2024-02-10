@@ -16,7 +16,11 @@ public class TextureFX {
 
 	public void func_783_a() {
 	}
-
+	
+	public static void bindTerrainTexture(RenderEngine var1) {
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, var1.getTexture("/terrain.png"));
+	}
+	
 	public void func_782_a(RenderEngine var1) {
 		if(this.field_1128_f == 0) {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var1.getTexture("/terrain.png"));

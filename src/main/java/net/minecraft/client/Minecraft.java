@@ -36,8 +36,12 @@ import net.minecraft.src.Session;
 import net.minecraft.src.Teleporter;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.TextureCompassFX;
+import net.minecraft.src.TextureFlamesFX;
 import net.minecraft.src.TextureLavaFX;
+import net.minecraft.src.TextureLavaFlowFX;
+import net.minecraft.src.TexturePortalFX;
 import net.minecraft.src.TextureWaterFX;
+import net.minecraft.src.TexureWaterFlowFX;
 import net.minecraft.src.ThreadSleepForever;
 import net.minecraft.src.Timer;
 import net.minecraft.src.Vec3D;
@@ -126,13 +130,13 @@ public class Minecraft implements Runnable {
 		this.checkGLError("Startup");
 		this.renderEngine.registerTextureFX(this.field_9231_Y);
 		this.renderEngine.registerTextureFX(this.field_9232_X);
-		//this.renderEngine.registerTextureFX(new TexturePortalFX());
+		this.renderEngine.registerTextureFX(new TexturePortalFX());
 		this.renderEngine.registerTextureFX(new TextureCompassFX(this));
 //		this.renderEngine.registerTextureFX(new TextureWatchFX(this));
-//		this.renderEngine.registerTextureFX(new TexureWaterFlowFX());
-//		this.renderEngine.registerTextureFX(new TextureLavaFlowFX());
-//		this.renderEngine.registerTextureFX(new TextureFlamesFX(0));
-//		this.renderEngine.registerTextureFX(new TextureFlamesFX(1));
+		this.renderEngine.registerTextureFX(new TexureWaterFlowFX());
+		this.renderEngine.registerTextureFX(new TextureLavaFlowFX());
+		this.renderEngine.registerTextureFX(new TextureFlamesFX(0));
+		this.renderEngine.registerTextureFX(new TextureFlamesFX(1));
 		this.field_6323_f = new RenderGlobal(this, this.renderEngine);
 		GL11.glViewport(0, 0, this.displayWidth, this.displayHeight);
 		this.field_6321_h = new EffectRenderer(this.theWorld, this.renderEngine);
@@ -578,9 +582,9 @@ public class Minecraft implements Runnable {
 		}
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.renderEngine.getTexture("/terrain.png"));
-//		if(!this.field_6316_m) {
-//			this.renderEngine.func_1067_a();
-//		}
+		if(!this.field_6316_m) {
+			this.renderEngine.func_1067_a();
+		}
 
 		if(this.currentScreen == null && this.thePlayer != null && this.thePlayer.health <= 0) {
 			this.displayGuiScreen((GuiScreen)null);
