@@ -35,6 +35,7 @@ public class TileEntity {
 			var1.setInteger("x", this.xCoord);
 			var1.setInteger("y", this.yCoord);
 			var1.setInteger("z", this.zCoord);
+			
 		}
 	}
 

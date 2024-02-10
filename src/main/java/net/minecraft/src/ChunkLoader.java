@@ -113,10 +113,12 @@ public class ChunkLoader implements IChunkLoader {
 
 			while(var6.hasNext()) {
 				Entity var7 = (Entity)var6.next();
-				var1.hasEntities = true;
-				var8 = new NBTTagCompound();
-				if(var7.func_358_c(var8)) {
-					var4.setTag(var8);
+				if(!(var7 instanceof EntityPlayer) && !(var7 instanceof EntityPlayerSP)) {
+					var1.hasEntities = true;
+					var8 = new NBTTagCompound();
+					if(var7.func_358_c(var8)) {
+						var4.setTag(var8);
+					}
 				}
 			}
 		}
@@ -167,7 +169,9 @@ public class ChunkLoader implements IChunkLoader {
 				Entity var8 = EntityList.createEntityFromNBT(var7, var0);
 				var4.hasEntities = true;
 				if(var8 != null) {
-					var4.addEntity(var8);
+					if(!(var8 instanceof EntityPlayer) && !(var8 instanceof EntityPlayerSP)) {
+						var4.addEntity(var8);
+					}
 				}
 			}
 		}

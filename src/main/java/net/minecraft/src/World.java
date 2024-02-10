@@ -76,19 +76,18 @@ public class World implements IBlockAccess {
 
     public static void deleteWorld(String var1) {
         String path = "saves/" + var1 + "/";
-        Collection<GL11.FileEntry> files = GL11.listFiles(path, true, false);
-        
-        for(GL11.FileEntry entry : files) {
-            byte[] data = GL11.readFile(entry.path);
-            if(data != null) {
-                GL11.deleteFile(entry.path);
-            }
-        }
-        
-        byte[] data = GL11.readFile("saves/" + var1 + "/");
-        if(data != null) {
-            GL11.deleteFile("saves/" + var1 + "/");
-        }
+        Collection<GL11.FileEntry> lst = GL11.listFiles(path, true, true);
+		for(GL11.FileEntry t : lst) {
+			if(!t.isDirectory) {
+				GL11.deleteFile(t.path);
+			}
+		}
+		for(GL11.FileEntry t : lst) {
+			if(t.isDirectory) {
+				GL11.deleteFile(t.path);
+			}
+		}
+		GL11.deleteFile(path);
     }
 
 	public WorldChunkManager func_4075_a() {

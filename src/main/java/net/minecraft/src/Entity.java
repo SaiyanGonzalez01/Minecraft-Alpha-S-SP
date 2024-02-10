@@ -681,7 +681,9 @@ public abstract class Entity {
 
 	public void writeToNBT(NBTTagCompound var1) {
 		var1.setTag("Pos", this.func_375_a(new double[]{this.posX, this.posY, this.posZ}));
-		var1.setTag("Motion", this.func_375_a(new double[]{this.motionX, this.motionY, this.motionZ}));
+		var1.setDouble("MotionX", this.motionX);
+		var1.setDouble("MotionY", this.motionY);
+		var1.setDouble("MotionZ", this.motionZ);
 		var1.setTag("Rotation", this.func_377_a(new float[]{this.rotationYaw, this.rotationPitch}));
 		var1.setFloat("FallDistance", this.fallDistance);
 		var1.setShort("Fire", (short)this.fire);
@@ -692,12 +694,11 @@ public abstract class Entity {
 
 	public void readFromNBT(NBTTagCompound var1) {
 		NBTTagList var2 = var1.getTagList("Pos");
-		NBTTagList var3 = var1.getTagList("Motion");
 		NBTTagList var4 = var1.getTagList("Rotation");
 		this.setPosition(0.0D, 0.0D, 0.0D);
-		this.motionX = ((NBTTagDouble)var3.tagAt(0)).doubleValue;
-		this.motionY = ((NBTTagDouble)var3.tagAt(1)).doubleValue;
-		this.motionZ = ((NBTTagDouble)var3.tagAt(2)).doubleValue;
+		this.motionX = var1.getDouble("MotionX");
+		this.motionY = var1.getDouble("MotionY");
+		this.motionZ = var1.getDouble("MotionZ");
 		this.prevPosX = this.lastTickPosX = this.posX = ((NBTTagDouble)var2.tagAt(0)).doubleValue;
 		this.prevPosY = this.lastTickPosY = this.posY = ((NBTTagDouble)var2.tagAt(1)).doubleValue;
 		this.prevPosZ = this.lastTickPosZ = this.posZ = ((NBTTagDouble)var2.tagAt(2)).doubleValue;

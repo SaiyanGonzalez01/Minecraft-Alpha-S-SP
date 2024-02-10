@@ -40,7 +40,9 @@ public class RenderEngine {
 				setupTexture(readTextureImage(GL11.loadResourceBytes(s1[1])), i);
 				clampTexture = false;
 			} else {
-				useMipmaps = true;
+				if(s.contains("terrain")) {
+					useMipmaps = true;
+				}
 				setupTexture(readTextureImage(GL11.loadResourceBytes(s)), i);
 				useMipmaps = false;
 			}

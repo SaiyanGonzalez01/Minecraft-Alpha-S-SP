@@ -3,13 +3,15 @@ package net.minecraft.src;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
+
 public class EntityList {
 	private static Map stringToClassMapping = new HashMap();
 	private static Map classToStringMapping = new HashMap();
 	private static Map IDtoClassMapping = new HashMap();
 	private static Map classToIDMapping = new HashMap();
 
-	private static void addMapping(Class var0, String var1, int var2) {
+	private static void addMapping(Object var0, String var1, int var2) {
 		stringToClassMapping.put(var1, var0);
 		classToStringMapping.put(var0, var1);
 		IDtoClassMapping.put(Integer.valueOf(var2), var0);
@@ -21,8 +23,9 @@ public class EntityList {
 
 		try {
 			Class var3 = (Class)stringToClassMapping.get(var0);
-			if(var3 != null) {
-				var2 = (Entity)var3.getConstructor(new Class[]{World.class}).newInstance(new Object[]{var1});
+			Entity entity = getEntity(var3);
+			if(var3 != null && entity != null & !(entity instanceof EntityPlayer || entity instanceof EntityPlayerSP)) {
+				var2 = entity;
 			}
 		} catch (Exception var4) {
 			var4.printStackTrace();
@@ -36,8 +39,9 @@ public class EntityList {
 
 		try {
 			Class var3 = (Class)stringToClassMapping.get(var0.getString("id"));
-			if(var3 != null) {
-				var2 = (Entity)var3.getConstructor(new Class[]{World.class}).newInstance(new Object[]{var1});
+			Entity entity = getEntity(var3);
+			if(var3 != null && entity != null && !(entity instanceof EntityPlayer || entity instanceof EntityPlayerSP)) {
+				var2 = entity;
 			}
 		} catch (Exception var4) {
 			var4.printStackTrace();
@@ -57,8 +61,9 @@ public class EntityList {
 
 		try {
 			Class var3 = (Class)IDtoClassMapping.get(Integer.valueOf(var0));
-			if(var3 != null) {
-				var2 = (Entity)var3.getConstructor(new Class[]{World.class}).newInstance(new Object[]{var1});
+			Entity entity = getEntity(var3);
+			if(var3 != null && entity != null && !(entity instanceof EntityPlayer || entity instanceof EntityPlayerSP)) {
+				var2 = entity;
 			}
 		} catch (Exception var4) {
 			var4.printStackTrace();
@@ -77,6 +82,103 @@ public class EntityList {
 
 	public static String getEntityString(Entity var0) {
 		return (String)classToStringMapping.get(var0.getClass());
+	}
+	
+	public static Entity getEntity(Class c) {
+		
+		if(c == EntityPlayer.class || c == EntityPlayerSP.class) {
+			return null;
+		}
+		
+		if(c == EntityArrow.class) {
+			return new EntityArrow(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntitySnowball.class) {
+			return new EntitySnowball(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityItem.class) {
+			return new EntityItem(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityPainting.class) {
+			return new EntityPainting(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityCreeper.class) {
+			return new EntityCreeper(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntitySkeleton.class) {
+			return new EntitySkeleton(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntitySpider.class) {
+			return new EntitySpider(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityZombieSimple.class) {
+			return new EntityZombieSimple(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityZombie.class) {
+			return new EntityZombie(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntitySlime.class) {
+			return new EntitySlime(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityGhast.class) {
+			return new EntityGhast(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityPigZombie.class) {
+			return new EntityPigZombie(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityPig.class) {
+			return new EntityPig(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntitySheep.class) {
+			return new EntitySheep(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityCow.class) {
+			return new EntityCow(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityChicken.class) {
+			return new EntityChicken(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityTNTPrimed.class) {
+			return new EntityTNTPrimed(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityFallingSand.class) {
+			return new EntityFallingSand(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityMinecart.class) {
+			return new EntityMinecart(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityBoat.class) {
+			return new EntityBoat(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityMobs.class) {
+			return new EntityMobs(Minecraft.getMinecraft().theWorld);
+		}
+		
+		if(c == EntityLiving.class) {
+			return new EntityLiving(Minecraft.getMinecraft().theWorld);
+		}
+		
+		return null;
 	}
 
 	static {
