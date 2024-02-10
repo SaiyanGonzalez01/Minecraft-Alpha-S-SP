@@ -3,6 +3,8 @@ package net.minecraft.src;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
+
 public class TileEntity {
 	private static Map nameToClassMap = new HashMap();
 	private static Map classToNameMap = new HashMap();
@@ -48,7 +50,7 @@ public class TileEntity {
 		try {
 			Class var2 = (Class)nameToClassMap.get(var0.getString("id"));
 			if(var2 != null) {
-				var1 = (TileEntity)var2.newInstance();
+				var1 = getTileEntity(var2);
 			}
 		} catch (Exception var3) {
 			var3.printStackTrace();
@@ -80,6 +82,26 @@ public class TileEntity {
 
 	public Block getBlockType() {
 		return Block.blocksList[this.worldObj.getBlockId(this.xCoord, this.yCoord, this.zCoord)];
+	}
+	
+	public static TileEntity getTileEntity(Class c) {
+		if(c == TileEntityFurnace.class) {
+			return new TileEntityFurnace();
+		}
+		
+		if(c == TileEntityChest.class) {
+			return new TileEntityChest();
+		}
+		
+		if(c == TileEntitySign.class) {
+			return new TileEntitySign();
+		}
+		
+		if(c == TileEntityMobSpawner.class) {
+			return new TileEntityMobSpawner();
+		}
+		
+		return null;
 	}
 
 	static {
