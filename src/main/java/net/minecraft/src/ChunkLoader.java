@@ -13,13 +13,54 @@ public class ChunkLoader implements IChunkLoader {
 		this.saveDir = var1;
 		this.createIfNecessary = var2;
 	}
-
+	
 	private String chunkFileForXZ(int var1, int var2) {
 		String var3 = "c." + Integer.toString(var1, 36) + "." + Integer.toString(var2, 36) + ".dat";
 		String var4 = Integer.toString(var1 & 63, 36);
 		String var5 = Integer.toString(var2 & 63, 36);
-		String var6 = this.saveDir + "/" + var4 + "/" + var3;
-		return var6;
+		String var6;
+		if(saveDir.endsWith("/")) {
+			var6 = saveDir + var4;
+		} else {
+			var6 = saveDir + "/" + var4;
+		}
+		
+		byte[] data = GL11.readFile(var6);
+		
+		if(data == null) {
+			if(!this.createIfNecessary) {
+				return null;
+			}
+
+			GL11.writeFile(var6, new byte[0]);
+		}
+
+		if(var6.endsWith("/")) {
+			var6 = var6 + var5;
+		} else {
+			var6 = var6 + "/" + var5;
+		}
+		
+		data = null;
+		data = GL11.readFile(var6);
+		
+		if(data == null) {
+			if(!this.createIfNecessary) {
+				return null;
+			}
+
+			GL11.writeFile(var6, new byte[0]);
+		}
+		
+		if(var6.endsWith("/")) {
+			var6 = var6 + var3;
+		} else {
+			var6 = var6 + "/" + var3;
+		}
+		
+		data = null;
+		data = GL11.readFile(var6);
+		return data == null && !this.createIfNecessary ? null : var6;
 	}
 
 	public Chunk loadChunk(World var1, int var2, int var3) throws IOException {

@@ -117,7 +117,6 @@ public class Minecraft implements Runnable {
 
 		this.checkGLError("Pre startup");
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
 		GL11.glClearDepth(1.0F);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthFunc(GL11.GL_LEQUAL);
@@ -921,16 +920,5 @@ public class Minecraft implements Runnable {
 	
 	public static Minecraft getMinecraft() {
 		return mc;
-	}
-
-	public final void setLighting(boolean var1) {
-		if(!var1) {
-			GL11.glDisable(2896);
-			GL11.glDisable(16384);
-		} else {
-			GL11.glEnable(2896);
-		    GL11.glEnable(16384);
-		    GL11.glEnable(2903);
-		}
 	}
 }

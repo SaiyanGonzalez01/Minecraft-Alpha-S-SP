@@ -477,7 +477,6 @@ public class RenderGlobal implements IWorldAccess {
 			float var11;
 			if(var15 != null) {
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
-				GL11.glShadeModel(GL11.GL_SMOOTH);
 				GL11.glPushMatrix();
 				GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
 				var8 = this.worldObj.getCelestialAngle(var1);
@@ -497,7 +496,6 @@ public class RenderGlobal implements IWorldAccess {
 
 				var14.draw();
 				GL11.glPopMatrix();
-				GL11.glShadeModel(GL11.GL_FLAT);
 			}
 
 			GL11.glEnable(GL11.GL_TEXTURE_2D);

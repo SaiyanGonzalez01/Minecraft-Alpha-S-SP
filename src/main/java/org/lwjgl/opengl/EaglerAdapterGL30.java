@@ -10,6 +10,9 @@ import net.PeytonPlayz585.glemu.FixedFunctionShader;
 import net.PeytonPlayz585.glemu.GLObjectMap;
 
 import net.lax1dude.eaglercraft.adapter.EaglerAdapterImpl2;
+import net.minecraft.client.Minecraft;
+import net.minecraft.src.GLAllocation;
+import net.minecraft.src.Vec3D;
 import net.PeytonPlayz585.glemu.vector.*;
 
 public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
@@ -245,10 +248,6 @@ public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
 		}
 	}
 
-	public static final void glShadeModel(int p1) {
-
-	}
-
 	public static final void glClearDepth(float p1) {
 		_wglClearDepth(-p1);
 	}
@@ -422,19 +421,11 @@ public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
 		_wglTexImage2D(_wGL_TEXTURE_2D, p2, _wGL_RGBA8, p4, p5, p6, _wGL_RGBA, _wGL_UNSIGNED_BYTE, p9);
 	}
 
-	public static final void glLight(int p1, int p2, FloatBuffer p3) {
-
-	}
-
-	public static final void glLightModel(int p1, FloatBuffer p2) {
-
-	}
-
 	private static Vector4f lightPos0vec0 = new Vector4f();
 	private static Vector4f lightPos1vec0 = new Vector4f();
 	private static Vector4f lightPos0vec = new Vector4f();
 	private static Vector4f lightPos1vec = new Vector4f();
-
+	
 	public static final void copyModelToLightMatrix() {
 		lightPos0vec0.set(lightPos0vec);
 		lightPos1vec0.set(lightPos1vec);

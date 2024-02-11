@@ -10,8 +10,8 @@ public class ColorizerFoliage {
 			field_6529_a = GL11.loadPNG(GL11.loadResourceBytes("/misc/foliagecolor.png")).data;
 		}
 		var2 *= var0;
-		int i = (int) ((1.0D - var0) * 255D);
-		int j = (int) ((1.0D - var2) * 255D);
-		return field_6529_a[j << 8 | i];
-	}
+		int var4 = (int)((1.0D - var0) * 255.0D);
+		int var5 = (int)((1.0D - var2) * 255.0D);
+		return field_6529_a[var5 << 8 | var4];
+	}	
 }
