@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,7 +20,8 @@ public class GuiMainMenu extends GuiScreen {
 	public GuiMainMenu() {
 		try {
 			ArrayList var1 = new ArrayList();
-			BufferedReader var2 = new BufferedReader(new InputStreamReader(GuiMainMenu.class.getResourceAsStream("/title/splashes.txt")));
+			byte[] splash = GL11.loadResourceBytes("/title/splashes.txt");
+			BufferedReader var2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(splash)));
 			String var3 = "";
 
 			while(true) {
