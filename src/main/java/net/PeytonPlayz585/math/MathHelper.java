@@ -1,6 +1,6 @@
 package net.PeytonPlayz585.math;
 
-public final class MathHelper {
+public class MathHelper {
 
    private static float[] SIN_TABLE = new float[4096];
 

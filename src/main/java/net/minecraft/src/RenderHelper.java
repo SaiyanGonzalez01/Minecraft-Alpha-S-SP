@@ -15,6 +15,5 @@ public class RenderHelper {
 	    GL11.glEnable(2903);
 	    GL11.glColorMaterial(1032, 5634);
 	    GL11.copyModelToLightMatrix();
-	    GL11.flipLightMatrix();
 	}
 }

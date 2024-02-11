@@ -435,9 +435,6 @@ public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
 		lightPos1vec.normalise();
 		Matrix4f.transform(matModelV[matModelPointer], lightPos0vec, lightPos0vec).normalise();
 		Matrix4f.transform(matModelV[matModelPointer], lightPos1vec, lightPos1vec).normalise();
-	}
-
-	public static final void flipLightMatrix() {
 		lightPos0vec.x = -lightPos0vec.x;
 		lightPos1vec.x = -lightPos1vec.x;
 		lightPos0vec.y = -lightPos0vec.y;
