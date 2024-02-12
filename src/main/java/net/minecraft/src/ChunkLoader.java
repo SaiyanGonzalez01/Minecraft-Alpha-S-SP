@@ -69,7 +69,12 @@ public class ChunkLoader implements IChunkLoader {
 			try {
 				byte[] data = GL11.readFile(var4);
 				ByteArrayInputStream var5 = new ByteArrayInputStream(data);
-				NBTTagCompound var6 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(var5));
+				NBTTagCompound var6;
+				if(GL11.isCompressed(data)) {
+					var6 = CompressedStreamTools.func_1138_a(var5);
+				} else {
+					var6 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(var5));
+				}
 				if(!var6.hasKey("Level")) {
 					System.out.println("Chunk file at " + var2 + "," + var3 + " is missing level data, skipping");
 					return null;
@@ -111,15 +116,10 @@ public class ChunkLoader implements IChunkLoader {
 			NBTTagCompound var7 = new NBTTagCompound();
 			var6.setTag("Level", var7);
 			this.storeChunkInCompound(var2, var1, var7);
-			try (DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(var5))) {
-				NBTBase.writeTag(var6, dos);
-				dos.flush();
-				var5.flush();
-				GL11.writeFile(var4, var5.toByteArray());
-				var5.close();
-			} catch(IOException e) {
-				e.printStackTrace();
-			}
+			CompressedStreamTools.writeGzippedCompoundToOutputStream(var6, var5);
+			var5.flush();
+			GL11.writeFile(var4, var5.toByteArray());
+			var5.close();
 			
 			if(GL11.readFile(var3) != null) {
 				GL11.deleteFile(var3);

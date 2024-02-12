@@ -1781,4 +1781,11 @@ public class EaglerAdapterImpl2 {
 		downloadFile0(filename, b.getBuffer());
 	}
 	
+	public static boolean isCompressed(byte[] b) {
+		if(b == null || b.length < 2) {
+			return false;
+		}
+		return (b[0] == (byte) 0x1F) && (b[1] == (byte) 0x8B);
+	}
+	
 }
