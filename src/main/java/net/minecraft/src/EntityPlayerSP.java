@@ -32,10 +32,14 @@ public class EntityPlayerSP extends EntityPlayer {
 	public void onLivingUpdate() {
 		this.field_4133_d = this.field_4134_c;
 		if(this.field_9374_bx) {
+			if(this.field_4134_c == 0.0F) {
+				this.mc.sndManager.func_337_a("portal.trigger", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
+			}
 			this.field_4134_c += 0.0125F;
 			if(this.field_4134_c >= 1.0F) {
 				this.field_4134_c = 1.0F;
 				this.field_9373_b = 10;
+				this.mc.sndManager.func_337_a("portal.travel", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
 				this.mc.func_6237_k();
 			}
 

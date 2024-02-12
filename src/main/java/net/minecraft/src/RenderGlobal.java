@@ -954,12 +954,17 @@ public class RenderGlobal implements IWorldAccess {
 			this.mc.ingameGUI.func_553_b("C418 - " + var1);
 		}
 
+		this.mc.sndManager.func_336_b(var1, (float)var2, (float)var3, (float)var4, 1.0F, 1.0F);
 	}
 
 	public void playSound(String var1, double var2, double var4, double var6, float var8, float var9) {
 		float var10 = 16.0F;
 		if(var8 > 1.0F) {
 			var10 *= var8;
+		}
+		
+		if(this.mc.thePlayer.getDistanceSq(var2, var4, var6) < (double)(var10 * var10)) {
+			this.mc.sndManager.func_336_b(var1, (float)var2, (float)var4, (float)var6, var8, var9);
 		}
 	}
 

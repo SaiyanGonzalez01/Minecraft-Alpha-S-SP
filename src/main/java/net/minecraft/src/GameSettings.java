@@ -61,10 +61,12 @@ public class GameSettings {
 	public void setOptionFloatValue(int var1, float var2) {
 		if(var1 == 0) {
 			this.musicVolume = var2;
+			this.mc.sndManager.onSoundOptionsChanged();
 		}
 
 		if(var1 == 1) {
 			this.soundVolume = var2;
+			this.mc.sndManager.onSoundOptionsChanged();
 		}
 
 		if(var1 == 3) {

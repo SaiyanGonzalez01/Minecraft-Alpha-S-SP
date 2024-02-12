@@ -24,6 +24,7 @@ public class PlayerController {
 		int var7 = var5.getBlockMetadata(var1, var2, var3);
 		boolean var8 = var5.setBlockWithNotify(var1, var2, var3, 0);
 		if(var6 != null && var8) {
+			this.mc.sndManager.func_336_b(var6.stepSound.func_1146_a(), (float)var1 + 0.5F, (float)var2 + 0.5F, (float)var3 + 0.5F, (var6.stepSound.func_1147_b() + 1.0F) / 2.0F, var6.stepSound.func_1144_c() * 0.8F);
 			var6.onBlockDestroyedByPlayer(var5, var1, var2, var3, var7);
 		}
 

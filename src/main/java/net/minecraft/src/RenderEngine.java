@@ -18,7 +18,6 @@ public class RenderEngine {
 		textureNameToImageMap = new HashMap<Integer, EaglerImage>();
 		singleIntBuffer = GLAllocation.createDirectIntBuffer(1);
 		imageDataB1 = GLAllocation.createDirectByteBuffer(0x100000);
-		imageDataB2 = GLAllocation.createDirectByteBuffer(0x100000);
 		textureList = new ArrayList<TextureFX>();
 		clampTexture = false;
 		blurTexture = false;
@@ -149,46 +148,24 @@ public class RenderEngine {
 	}
 	
 	public void func_1067_a() {
-		int var1;
-		TextureFX var2;
-		int var3;
-		int var4;
-		for(var1 = 0; var1 < this.textureList.size(); ++var1) {
-			var2 = (TextureFX)this.textureList.get(var1);
-			var2.field_1131_c = this.options.anaglyph;
-			var2.func_783_a();
-			this.imageDataB1.clear();
-			this.imageDataB1.put(var2.field_1127_a);
-			this.imageDataB1.position(0).limit(var2.field_1127_a.length);
-			var2.func_782_a(this);
-			imageDataB2.clear();
-
-			for(var3 = 0; var3 < var2.field_1129_e; ++var3) {
-				for(var4 = 0; var4 < var2.field_1129_e; ++var4) {
-					GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, var2.field_1126_b % 16 * 16 + var3 * 16, var2.field_1126_b / 16 * 16 + var4 * 16, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)this.imageDataB1);
-				}
-			}
+		for (int i = 0; i < textureList.size(); i++) {
+			TextureFX texturefx = (TextureFX) textureList.get(i);
+			texturefx.field_1131_c = options.anaglyph;
+			texturefx.func_783_a();
+			texturefx.func_782_a(this);
+			int tileSize = 16 * 16 * 4;
+			imageDataB1.clear();
+			imageDataB1.put(texturefx.field_1127_a);
+			imageDataB1.position(0).limit(tileSize);
+			GL11.glTexSubImage2D(3553 /* GL_TEXTURE_2D */, 0, (texturefx.field_1126_b % 16) * 16, (texturefx.field_1126_b / 16) * 16, 16, 16,
+					6408 /* GL_RGBA */, 5121 /* GL_UNSIGNED_BYTE */, imageDataB1);
 		}
-
-		for(var1 = 0; var1 < this.textureList.size(); ++var1) {
-			var2 = (TextureFX)this.textureList.get(var1);
-			if(var2.field_1130_d > 0) {
-				this.imageDataB1.clear();
-				this.imageDataB1.put(var2.field_1127_a);
-				this.imageDataB1.position(0).limit(var2.field_1127_a.length);
-				imageDataB2.clear();
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, var2.field_1130_d);
-				GL11.glTexSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, 16, 16, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)this.imageDataB1);
-			}
-		}
-
 	}
 
 	private static HashMap<String, Integer> textureMap;
 	private HashMap<Integer, EaglerImage> textureNameToImageMap;
 	private IntBuffer singleIntBuffer;
 	private ByteBuffer imageDataB1;
-	private ByteBuffer imageDataB2;
 	private java.util.List<TextureFX> textureList;
 	private GameSettings options;
 	private boolean clampTexture;

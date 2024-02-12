@@ -1226,7 +1226,7 @@ public class EaglerAdapterImpl2 {
 		});
 	}
 	
-	private static final HashMap<Integer,AudioBufferSourceNodeX> activeSoundEffects = new HashMap();
+	public static final HashMap<Integer,AudioBufferSourceNodeX> activeSoundEffects = new HashMap();
 	
 	private static class AudioBufferX {
 		private final AudioBuffer buffer;
@@ -1235,7 +1235,7 @@ public class EaglerAdapterImpl2 {
 		}
 	}
 
-	private static class AudioBufferSourceNodeX {
+	public static class AudioBufferSourceNodeX {
 		private final AudioBufferSourceNode source;
 		private final PannerNode panner;
 		private final GainNode gain;
@@ -1259,48 +1259,12 @@ public class EaglerAdapterImpl2 {
 		return ret.buffer;
 	}
 	
-	public static int beginPlayback(String fileName) {
+	public static final int beginPlayback(String fileName, float x, float y, float z, float volume, float pitch) {
 		AudioBuffer b = getBufferFor(fileName);
 		if(b == null) return -1;
 		AudioBufferSourceNode s = audioctx.createBufferSource();
 		s.setBuffer(b);
-		PannerNode p = audioctx.createPanner();
-		GainNode g = audioctx.createGain();
-		g.getGain().setValue(1.0f);
-		s.connect(g);
-		g.connect(p);
-		p.connect(audioctx.getDestination());
-		s.start(0.0d, playbackOffsetDelay);
-		final int theId = ++playbackId;
-		activeSoundEffects.put(theId, new AudioBufferSourceNodeX(s, p, g));
-		s.setOnEnded(new EventListener<MediaEvent>() {
-
-			public void handleEvent(MediaEvent evt) {
-				activeSoundEffects.remove(theId);
-			}
-			
-		});
-		return theId;
-	}
-	public static void beginPlayback(String fileName, float volume) {
-		AudioBuffer b = getBufferFor(fileName);
-		if(b == null) return;
-		AudioBufferSourceNode s = audioctx.createBufferSource();
-		s.setBuffer(b);
-		PannerNode p = audioctx.createPanner();
-		GainNode g = audioctx.createGain();
-		g.getGain().setValue(volume > 1.0f ? 1.0f : volume);
-		s.connect(g);
-		g.connect(p);
-		p.connect(audioctx.getDestination());
-		s.start(0.0d, playbackOffsetDelay);
-	}
-	public static final int beginPlayback(String fileName, float x, float y, float z, float volume) {
-		AudioBuffer b = getBufferFor(fileName);
-		if(b == null) return -1;
-		AudioBufferSourceNode s = audioctx.createBufferSource();
-		s.setBuffer(b);
-		//s.getPlaybackRate().setValue(pitch);
+		s.getPlaybackRate().setValue(pitch);
 		PannerNode p = audioctx.createPanner();
 		p.setPosition(x, y, z);
 		p.setMaxDistance(volume * 16f + 0.1f);
@@ -1322,6 +1286,7 @@ public class EaglerAdapterImpl2 {
 		activeSoundEffects.put(theId, new AudioBufferSourceNodeX(s, p, g));
 		s.setOnEnded(new EventListener<MediaEvent>() {
 
+			@Override
 			public void handleEvent(MediaEvent evt) {
 				activeSoundEffects.remove(theId);
 			}
@@ -1343,6 +1308,7 @@ public class EaglerAdapterImpl2 {
 		final int theId = ++playbackId;
 		activeSoundEffects.put(theId, new AudioBufferSourceNodeX(s, null, g));
 		s.setOnEnded(new EventListener<MediaEvent>() {
+			@Override
 			public void handleEvent(MediaEvent evt) {
 				activeSoundEffects.remove(theId);
 			}
@@ -1359,9 +1325,16 @@ public class EaglerAdapterImpl2 {
 	public static final void setVolume(int id, float volume) {
 		AudioBufferSourceNodeX b = activeSoundEffects.get(id);
 		if(b != null) {
-			b.gain.getGain().setValue(volume > 1.0f ? 1.0f : volume);
+			b.gain.getGain().setValue(volume);
 			if(b.panner != null) b.panner.setMaxDistance(volume * 16f + 0.1f);
 		}
+	}
+	public static float getVolume(int id) {
+		AudioBufferSourceNodeX b = activeSoundEffects.get(id);
+		if(b != null) {
+			return b.gain.getGain().getValue();
+		}
+		return 0.0F;
 	}
 	public static final void moveSound(int id, float x, float y, float z, float vx, float vy, float vz) {
 		AudioBufferSourceNodeX b = activeSoundEffects.get(id);

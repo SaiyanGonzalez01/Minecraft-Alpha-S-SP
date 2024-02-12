@@ -69,6 +69,9 @@ public class PlayerControllerSP extends PlayerController {
 
 				Block var6 = Block.blocksList[var5];
 				this.field_1071_f += var6.func_225_a(this.mc.thePlayer);
+				if(this.field_1069_h % 4.0F == 0.0F && var6 != null) {
+					this.mc.sndManager.func_336_b(var6.stepSound.func_1145_d(), (float)var1 + 0.5F, (float)var2 + 0.5F, (float)var3 + 0.5F, (var6.stepSound.func_1147_b() + 1.0F) / 8.0F, var6.stepSound.func_1144_c() * 0.5F);
+				}
 
 				++this.field_1069_h;
 				if(this.field_1071_f >= 1.0F) {

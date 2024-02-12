@@ -38,6 +38,7 @@ public class GuiScreen extends Gui {
 				GuiButton var5 = (GuiButton)this.controlList.get(var4);
 				if(var5.mousePressed(this.mc, var1, var2)) {
 					this.selectedButton = var5;
+					this.mc.sndManager.func_337_a("random.click", 1.0F, 1.0F);
 					this.actionPerformed(var5);
 				}
 			}

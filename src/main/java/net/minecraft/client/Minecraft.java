@@ -1,5 +1,6 @@
 package net.minecraft.client;
 
+import net.PeytonPlayz585.sound.SoundManager;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.EffectRenderer;
@@ -40,6 +41,7 @@ import net.minecraft.src.TextureFlamesFX;
 import net.minecraft.src.TextureLavaFX;
 import net.minecraft.src.TextureLavaFlowFX;
 import net.minecraft.src.TexturePortalFX;
+import net.minecraft.src.TextureWatchFX;
 import net.minecraft.src.TextureWaterFX;
 import net.minecraft.src.TexureWaterFlowFX;
 import net.minecraft.src.ThreadSleepForever;
@@ -49,6 +51,8 @@ import net.minecraft.src.World;
 import net.minecraft.src.WorldProvider;
 import net.minecraft.src.WorldProviderHell;
 import net.minecraft.src.WorldRenderer;
+
+import java.io.FileNotFoundException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -73,7 +77,7 @@ public class Minecraft implements Runnable {
 	public GuiScreen currentScreen = null;
 	public LoadingScreenRenderer loadingScreen = new LoadingScreenRenderer(this);
 	public EntityRenderer field_9243_r = new EntityRenderer(this);
-	private int ticksRan = 0;
+	public int ticksRan = 0;
 	private int field_6282_S = 0;
 	public String field_6310_s = null;
 	public int field_6309_t = 0;
@@ -82,6 +86,7 @@ public class Minecraft implements Runnable {
 	public ModelBiped field_9242_w = new ModelBiped(0.0F);
 	public MovingObjectPosition objectMouseOver = null;
 	public GameSettings gameSettings;
+	public SoundManager sndManager = new SoundManager();
 	public MouseHelper mouseHelper;
 	public static long[] field_9240_E = new long[512];
 	public static long[] field_9239_F = new long[512];
@@ -131,7 +136,7 @@ public class Minecraft implements Runnable {
 		this.renderEngine.registerTextureFX(this.field_9232_X);
 		this.renderEngine.registerTextureFX(new TexturePortalFX());
 		this.renderEngine.registerTextureFX(new TextureCompassFX(this));
-//		this.renderEngine.registerTextureFX(new TextureWatchFX(this));
+		this.renderEngine.registerTextureFX(new TextureWatchFX(this));
 		this.renderEngine.registerTextureFX(new TexureWaterFlowFX());
 		this.renderEngine.registerTextureFX(new TextureLavaFlowFX());
 		this.renderEngine.registerTextureFX(new TextureFlamesFX(0));
@@ -274,6 +279,7 @@ public class Minecraft implements Runnable {
 			}
 
 			long var20 = System.nanoTime() - var19;
+			this.sndManager.func_338_a(this.thePlayer, this.timer.renderPartialTicks);
 			this.checkGLError("Pre render");
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			if(this.theWorld != null) {
@@ -574,6 +580,12 @@ public class Minecraft implements Runnable {
 		this.field_9243_r.func_910_a(1.0F);
 		if(this.thePlayer != null) {
 			this.thePlayer.func_6420_o();
+		}
+		
+		try {
+			this.sndManager.musicTick();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 
 		if(!this.field_6316_m && this.theWorld != null) {
