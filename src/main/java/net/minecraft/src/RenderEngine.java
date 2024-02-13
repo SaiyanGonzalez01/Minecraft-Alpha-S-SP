@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.lwjgl.opengl.GL11;
 
@@ -164,7 +165,44 @@ public class RenderEngine {
 	}
 	
 	public void refreshTextures() {
-		textureMap.clear();
+		System.out.println("Refreshing Textures!");
+		TexturePackBase var1 = this.field_6527_k.selectedTexturePack;
+		Iterator var2 = this.textureNameToImageMap.keySet().iterator();
+
+		EaglerImage var4;
+		while(var2.hasNext()) {
+			int var3 = ((Integer)var2.next()).intValue();
+			var4 = (EaglerImage)this.textureNameToImageMap.get(Integer.valueOf(var3));
+			this.setupTexture(var4, var3);
+		}
+
+		var2 = this.textureMap.keySet().iterator();
+
+		while(var2.hasNext()) {
+			String var8 = (String)var2.next();
+
+			try {
+				if(var8.startsWith("%%")) {
+					this.clampTexture = true;
+					String[] s1 = var8.split("%%");
+					var4 = this.readTextureImage(var1.func_6481_a(s1[1]));
+				} else if(var8.startsWith("%blur%")) {
+					this.blurTexture = true;
+					String[] s1 = var8.split("%blur%");
+					var4 = this.readTextureImage(var1.func_6481_a(s1[1]));
+				} else {
+					var4 = this.readTextureImage(var1.func_6481_a(var8));
+				}
+
+				int var5 = ((Integer)this.textureMap.get(var8)).intValue();
+				this.setupTexture(var4, var5);
+				this.blurTexture = false;
+				this.clampTexture = false;
+			} catch (IOException var6) {
+				var6.printStackTrace();
+			}
+		}
+
 	}
 
 	private static HashMap<String, Integer> textureMap;
