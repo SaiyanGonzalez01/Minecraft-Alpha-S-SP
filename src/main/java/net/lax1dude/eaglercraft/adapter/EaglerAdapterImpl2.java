@@ -36,9 +36,11 @@ import org.teavm.jso.dom.html.HTMLCanvasElement;
 import org.teavm.jso.dom.html.HTMLDocument;
 import org.teavm.jso.dom.html.HTMLElement;
 import org.teavm.jso.dom.html.HTMLImageElement;
+import org.teavm.jso.dom.html.HTMLInputElement;
 import org.teavm.jso.typedarrays.ArrayBuffer;
 import org.teavm.jso.typedarrays.Float32Array;
 import org.teavm.jso.typedarrays.Int32Array;
+import org.teavm.jso.typedarrays.Int8Array;
 import org.teavm.jso.typedarrays.Uint8Array;
 import org.teavm.jso.typedarrays.Uint8ClampedArray;
 import org.teavm.jso.webaudio.AudioBuffer;
@@ -1172,25 +1174,77 @@ public class EaglerAdapterImpl2 {
 		Window.current().getLocation().setFullURL(url);
 	}
 
-	@JSBody(params = { "ext", "mime" }, script = "window.eagsFileChooser.openFileChooser(ext, mime);")
-	public static native void openFileChooser(String ext, String mime);
-	
-	public static final byte[] getFileChooserResult() {
-		ArrayBuffer b = getFileChooserResult0();
-		if(b == null) return null;
-		Uint8Array array = Uint8Array.create(b);
-		byte[] ret = new byte[array.getByteLength()];
-		for(int i = 0; i < ret.length; ++i) {
-			ret[i] = (byte) array.get(i);
-		}
-		return ret;
+	@JSFunctor
+	private static interface FileChooserCallback extends JSObject {
+		void accept(String name, ArrayBuffer buffer);
 	}
 
-	@JSBody(params = {  }, script = "var ret = window.eagsFileChooser.getFileChooserResult; window.eagsFileChooser.getFileChooserResult = null; return ret;")
-	private static native ArrayBuffer getFileChooserResult0();
+	private static class FileChooserCallbackImpl implements FileChooserCallback {
 
-	@JSBody(params = { }, script = "var ret = window.eagsFileChooser.getFileChooserResultName; window.eagsFileChooser.getFileChooserResultName = null; return ret;")
-	public static native String getFileChooserResultName();
+		private static final FileChooserCallbackImpl instance = new FileChooserCallbackImpl();
+
+		@Override
+		public void accept(String name, ArrayBuffer buffer) {
+			fileChooserHasResult = true;
+			if(name == null) {
+				fileChooserResultObject = null;
+			}else {
+				Int8Array typedArray = Int8Array.create(buffer);
+				byte[] bytes = new byte[typedArray.getByteLength()];
+				for(int i = 0; i < bytes.length; ++i) {
+					bytes[i] = typedArray.get(i);
+				}
+				fileChooserResultObject = new FileChooserResult(name, bytes);
+			}
+		}
+
+	}
+
+	private static volatile boolean fileChooserHasResult = false;
+	private static volatile FileChooserResult fileChooserResultObject = null;
+
+	@JSBody(params = { "inputElement", "callback" }, script = 
+			"if(inputElement.files.length > 0) {"
+			+ "const value = inputElement.files[0];"
+			+ "value.arrayBuffer().then(function(arr){ callback(value.name, arr); })"
+			+ ".catch(function(){ callback(null, null); });"
+			+ "} else callback(null, null);")
+	private static native void getFileChooserResult(HTMLInputElement inputElement, FileChooserCallback callback);
+
+	@JSBody(params = { "inputElement", "value" }, script = "inputElement.accept = value;")
+	private static native void setAcceptSelection(HTMLInputElement inputElement, String value);
+
+	@JSBody(params = { "inputElement", "enable" }, script = "inputElement.multiple = enable;")
+	private static native void setMultipleSelection(HTMLInputElement inputElement, boolean enable);
+
+	public static void displayFileChooser(String mime, String ext) {
+		final HTMLInputElement inputElement = (HTMLInputElement) Window.current().getDocument().createElement("input");
+		inputElement.setType("file");
+		if(mime == null) {
+			setAcceptSelection(inputElement, "." + ext);
+		}else {
+			setAcceptSelection(inputElement, mime);
+		}
+		setMultipleSelection(inputElement, false);
+		inputElement.addEventListener("change", new EventListener<Event>() {
+			@Override
+			public void handleEvent(Event evt) {
+				getFileChooserResult(inputElement, FileChooserCallbackImpl.instance);
+			}
+		});
+		inputElement.click();
+	}
+
+	public static boolean fileChooserHasResult() {
+		return fileChooserHasResult;
+	}
+
+	public static FileChooserResult getFileChooserResult() {
+		fileChooserHasResult = false;
+		FileChooserResult res = fileChooserResultObject;
+		fileChooserResultObject = null;
+		return res;
+	}
 	
 	public static final void setListenerPos(float x, float y, float z, float vx, float vy, float vz, float pitch, float yaw) {
 		float var2 = MathHelper.cos(-yaw * 0.017453292F);

@@ -40,6 +40,7 @@ import net.minecraft.src.TextureCompassFX;
 import net.minecraft.src.TextureFlamesFX;
 import net.minecraft.src.TextureLavaFX;
 import net.minecraft.src.TextureLavaFlowFX;
+import net.minecraft.src.TexturePackList;
 import net.minecraft.src.TexturePortalFX;
 import net.minecraft.src.TextureWatchFX;
 import net.minecraft.src.TextureWaterFX;
@@ -53,6 +54,7 @@ import net.minecraft.src.WorldProviderHell;
 import net.minecraft.src.WorldRenderer;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -88,6 +90,7 @@ public class Minecraft implements Runnable {
 	public GameSettings gameSettings;
 	public SoundManager sndManager = new SoundManager();
 	public MouseHelper mouseHelper;
+	public TexturePackList texturePackList;
 	public static long[] field_9240_E = new long[512];
 	public static long[] field_9239_F = new long[512];
 	public static int field_9238_G = 0;
@@ -115,11 +118,12 @@ public class Minecraft implements Runnable {
 
 		RenderManager.instance.field_4236_f = new ItemRenderer(this);
 		this.gameSettings = new GameSettings(this);
-		this.renderEngine = new RenderEngine(this.gameSettings);
+		this.texturePackList = new TexturePackList(this);
+		this.renderEngine = new RenderEngine(texturePackList, this.gameSettings);
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine);
 		this.loadScreen();
 		this.mouseHelper = new MouseHelper();
-
+		
 		this.checkGLError("Pre startup");
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glClearDepth(1.0F);

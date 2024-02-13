@@ -9,11 +9,11 @@ import java.util.HashMap;
 import org.lwjgl.opengl.GL11;
 
 import net.lax1dude.eaglercraft.EaglerImage;
-import net.minecraft.client.Minecraft;
 
 public class RenderEngine {
 
-	public RenderEngine(GameSettings gamesettings) {
+	public RenderEngine(TexturePackList var1, GameSettings gamesettings) {
+		field_6527_k = var1;
 		textureMap = new HashMap<String, Integer>();
 		textureNameToImageMap = new HashMap<Integer, EaglerImage>();
 		singleIntBuffer = GLAllocation.createDirectIntBuffer(1);
@@ -25,6 +25,7 @@ public class RenderEngine {
 	}
 
 	public int getTexture(String s) {
+		TexturePackBase var2 = this.field_6527_k.selectedTexturePack;
 		Integer integer = (Integer) textureMap.get(s);
 		if (integer != null) {
 			return integer.intValue();
@@ -36,15 +37,15 @@ public class RenderEngine {
 			if (s.startsWith("%%")) {
 				clampTexture = true;
 				String[] s1 = s.split("%%");
-				setupTexture(readTextureImage(GL11.loadResourceBytes(s1[1])), i);
+				setupTexture(readTextureImage(var2.func_6481_a(s1[1])), i);
 				clampTexture = false;
 			} else if(s.startsWith("%blur%")) {
 				blurTexture = true;
 				String[] s1 = s.split("%blur%");
-				setupTexture(readTextureImage(GL11.loadResourceBytes(s1[1])), i);
+				setupTexture(readTextureImage(var2.func_6481_a(s1[1])), i);
 				blurTexture = false;
 			} else {
-				setupTexture(readTextureImage(GL11.loadResourceBytes(s)), i);
+				setupTexture(readTextureImage(var2.func_6481_a(s)), i);
 			}
 			textureMap.put(s, Integer.valueOf(i));
 			return i;
@@ -130,7 +131,7 @@ public class RenderEngine {
 		texturefx.func_783_a();
 	}
 
-	private EaglerImage readTextureImage(byte[] inputstream) throws IOException {
+	public EaglerImage readTextureImage(byte[] inputstream) throws IOException {
 		return GL11.loadPNG(inputstream);
 	}
 
@@ -161,10 +162,15 @@ public class RenderEngine {
 					6408 /* GL_RGBA */, 5121 /* GL_UNSIGNED_BYTE */, imageDataB1);
 		}
 	}
+	
+	public void refreshTextures() {
+		textureMap.clear();
+	}
 
 	private static HashMap<String, Integer> textureMap;
+	private TexturePackList field_6527_k;
 	private HashMap<Integer, EaglerImage> textureNameToImageMap;
-	private IntBuffer singleIntBuffer;
+	public IntBuffer singleIntBuffer;
 	private ByteBuffer imageDataB1;
 	private java.util.List<TextureFX> textureList;
 	private GameSettings options;

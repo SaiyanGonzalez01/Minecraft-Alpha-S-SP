@@ -3,6 +3,7 @@ package net.minecraft.src;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
@@ -44,6 +45,13 @@ public class GameSettings {
 	public GameSettings(Minecraft var1) {
 		this.mc = var1;
 		this.loadOptions();
+		System.out.println("Loading texture packs!");
+//		try {
+//			//TexturePack.loadTexturePacks();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		System.out.println("Done!");
 	}
 
 	public GameSettings() {
@@ -121,6 +129,7 @@ public class GameSettings {
 	}
 
 	public void loadOptions() {
+		//int i = GL11.listFiles("texturepacks/", false, false).size();
 		try {
 			byte[] fileData = GL11.readFile("options.txt");
 			if(fileData == null) {
@@ -187,6 +196,12 @@ public class GameSettings {
 				if(var3[0].equals("lastServer")) {
 					this.field_12259_z = var3[1];
 				}
+				
+//				for(int i1 = 0; i1 < i; ++i1) {
+//					if(var3[0].equals("texturepack-" + i)) {
+//						TexturePack.texturePackOrder.add(var3[1]);
+//					}
+//				}
 
 				for(int var4 = 0; var4 < this.keyBindings.length; ++var4) {
 					if(var3[0].equals("key_" + this.keyBindings[var4].keyDescription)) {
@@ -219,6 +234,14 @@ public class GameSettings {
 		var1.println("difficulty:" + this.difficulty);
 		var1.println("fancyGraphics:" + this.fancyGraphics);
 		var1.println("skin:" + this.skin);
+		
+//		if(!TexturePack.texturePackOrder.isEmpty()) {
+//			int i = 0;
+//			for(String s : TexturePack.texturePackOrder) {
+//				++i;
+//				var1.println("texturepack-" + i + ":" + s);
+//			}
+//		}
 
 		for(int var2 = 0; var2 < this.keyBindings.length; ++var2) {
 			var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);
