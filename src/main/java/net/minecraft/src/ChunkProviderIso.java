@@ -1,9 +1,11 @@
 package net.minecraft.src;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChunkProviderIso implements IChunkProvider {
-	private Chunk[] chunks = new Chunk[256];
+	private Map<Integer, Chunk> chunks = new HashMap<Integer, Chunk>();
 	private World worldObj;
 	private IChunkLoader chunkLoader;
 	byte[] field_899_a = new byte[-Short.MIN_VALUE];
@@ -15,7 +17,7 @@ public class ChunkProviderIso implements IChunkProvider {
 
 	public boolean chunkExists(int var1, int var2) {
 		int var3 = var1 & 15 | (var2 & 15) * 16;
-		return this.chunks[var3] != null && this.chunks[var3].isAtLocation(var1, var2);
+		return this.chunks.containsKey(var3) && this.chunks.get(var3).isAtLocation(var1, var2);
 	}
 
 	public Chunk provideChunk(int var1, int var2) {
@@ -30,10 +32,10 @@ public class ChunkProviderIso implements IChunkProvider {
 					var4.neverSave = true;
 				}
 
-				this.chunks[var3] = var4;
+				this.chunks.put(var3, var4);
 			}
 
-			return this.chunks[var3];
+			return this.chunks.get(var3);
 		} catch (Exception var5) {
 			var5.printStackTrace();
 			return null;

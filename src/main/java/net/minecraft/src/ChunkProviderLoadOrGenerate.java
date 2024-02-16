@@ -1,12 +1,14 @@
 package net.minecraft.src;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 	private Chunk blankChunk;
 	private IChunkProvider chunkProvider;
 	private IChunkLoader chunkLoader;
-	private Chunk[] chunks = new Chunk[1024];
+	private Map<Integer, Chunk> chunks = new HashMap<Integer, Chunk>();
 	private World worldObj;
 	int lastQueriedChunkXPos = -999999999;
 	int lastQueriedChunkZPos = -999999999;
@@ -28,7 +30,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 			int var3 = var1 & 31;
 			int var4 = var2 & 31;
 			int var5 = var3 + var4 * 32;
-			return this.chunks[var5] != null && (this.chunks[var5] == this.blankChunk || this.chunks[var5].isAtLocation(var1, var2));
+			return this.chunks.containsKey(var5) && (this.chunks.get(var5) == this.blankChunk || this.chunks.get(var5).isAtLocation(var1, var2));
 		}
 	}
 
@@ -40,10 +42,10 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 			int var4 = var2 & 31;
 			int var5 = var3 + var4 * 32;
 			if(!this.chunkExists(var1, var2)) {
-				if(this.chunks[var5] != null) {
-					this.chunks[var5].onChunkUnload();
-					this.saveChunk(this.chunks[var5]);
-					this.saveExtraChunkData(this.chunks[var5]);
+				if(this.chunks.containsKey(var5)) {
+					this.chunks.get(var5).onChunkUnload();
+					this.saveChunk(this.chunks.get(var5));
+					this.saveExtraChunkData(this.chunks.get(var5));
 				}
 
 				Chunk var6 = this.func_542_c(var1, var2);
@@ -55,13 +57,13 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 					}
 				}
 
-				this.chunks[var5] = var6;
+				this.chunks.put(var5, var6);
 				var6.func_4143_d();
-				if(this.chunks[var5] != null) {
-					this.chunks[var5].onChunkLoad();
+				if(this.chunks.containsKey(var5)) {
+					this.chunks.get(var5).onChunkLoad();
 				}
 
-				if(!this.chunks[var5].isTerrainPopulated && this.chunkExists(var1 + 1, var2 + 1) && this.chunkExists(var1, var2 + 1) && this.chunkExists(var1 + 1, var2)) {
+				if(!this.chunks.get(var5).isTerrainPopulated && this.chunkExists(var1 + 1, var2 + 1) && this.chunkExists(var1, var2 + 1) && this.chunkExists(var1 + 1, var2)) {
 					this.populate(this, var1, var2);
 				}
 
@@ -80,8 +82,8 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 
 			this.lastQueriedChunkXPos = var1;
 			this.lastQueriedChunkZPos = var2;
-			this.lastQueriedChunk = this.chunks[var5];
-			return this.chunks[var5];
+			this.lastQueriedChunk = this.chunks.get(var5);
+			return this.chunks.get(var5);
 		}
 	}
 
@@ -143,8 +145,8 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 		int var4 = 0;
 		int var5;
 		if(var2 != null) {
-			for(var5 = 0; var5 < this.chunks.length; ++var5) {
-				if(this.chunks[var5] != null && this.chunks[var5].needsSaving(var1)) {
+			for(var5 = 0; var5 < this.chunks.size(); ++var5) {
+				if(this.chunks.get(var5) != null && this.chunks.get(var5).needsSaving(var1)) {
 					++var4;
 				}
 			}
@@ -152,15 +154,15 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 
 		var5 = 0;
 
-		for(int var6 = 0; var6 < this.chunks.length; ++var6) {
-			if(this.chunks[var6] != null) {
-				if(var1 && !this.chunks[var6].neverSave) {
-					this.saveExtraChunkData(this.chunks[var6]);
+		for(int var6 = 0; var6 < this.chunks.size(); ++var6) {
+			if(this.chunks.get(var6) != null) {
+				if(var1 && !this.chunks.get(var6).neverSave) {
+					this.saveExtraChunkData(this.chunks.get(var6));
 				}
 
-				if(this.chunks[var6].needsSaving(var1)) {
-					this.saveChunk(this.chunks[var6]);
-					this.chunks[var6].isModified = false;
+				if(this.chunks.get(var6).needsSaving(var1)) {
+					this.saveChunk(this.chunks.get(var6));
+					this.chunks.get(var6).isModified = false;
 					++var3;
 					if(var3 == 2 && !var1) {
 						return false;

@@ -23,11 +23,11 @@ sourceSets {
 }
 
 teavm.js {
-    addedToWebApp = true
+    addedToWebApp = true;
     mainClass = "net.lax1dude.eaglercraft.Client"
     outputDir = file("web");
-    targetFileName = "app.js"
-    obfuscated = false;
+    targetFileName = "app.js";
+    obfuscated = true;
     sourceMap = true;
     entryPointName = 'main';
     properties = null;

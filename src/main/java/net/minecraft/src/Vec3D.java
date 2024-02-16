@@ -27,15 +27,15 @@ public class Vec3D {
 	}
 
 	public Vec3D(double var1, double var3, double var5) {
-		if(var1 == -0.0D) {
+		if(var1 == -0D) {
 			var1 = 0.0D;
 		}
 
-		if(var3 == -0.0D) {
+		if(var3 == -0D) {
 			var3 = 0.0D;
 		}
 
-		if(var5 == -0.0D) {
+		if(var5 == -0D) {
 			var5 = 0.0D;
 		}
 
