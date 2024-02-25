@@ -145,8 +145,7 @@ package net.minecraft.src;
 
 import java.io.IOException;
 
-import org.lwjgl.opengl.GL11;
-
+import net.PeytonPlayz585.opengl.GL11;
 import net.minecraft.client.Minecraft;
 
 public class TextureCompassFX extends TextureFX {

@@ -1,8 +1,9 @@
 package net.minecraft.src;
 
 import java.util.Random;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+
+import net.PeytonPlayz585.opengl.GL11;
+import net.PeytonPlayz585.opengl.GL12;
 
 public class RenderItem extends Render {
 	private RenderBlocks renderBlocks = new RenderBlocks();

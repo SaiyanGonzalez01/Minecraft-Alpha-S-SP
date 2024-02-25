@@ -1,6 +1,10 @@
 package net.minecraft.client;
 
+import net.PeytonPlayz585.input.Keyboard;
+import net.PeytonPlayz585.input.Mouse;
+import net.PeytonPlayz585.opengl.GL11;
 import net.PeytonPlayz585.sound.SoundManager;
+import net.PeytonPlayz585.util.glu.GLU;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
 import net.minecraft.src.EffectRenderer;
@@ -18,6 +22,7 @@ import net.minecraft.src.GuiInventory;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiUnused;
+import net.minecraft.src.IProgressUpdate;
 import net.minecraft.src.ItemRenderer;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.LoadingScreenRenderer;
@@ -56,16 +61,11 @@ import net.minecraft.src.WorldRenderer;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
-
 public class Minecraft implements Runnable {
 	public PlayerController field_6327_b;
 	public int displayWidth;
 	public int displayHeight;
-	private Timer timer = new Timer(20.0F);
+	public Timer timer = new Timer(20.0F);
 	public World theWorld;
 	public RenderGlobal field_6323_f;
 	public EntityPlayerSP thePlayer;
@@ -96,7 +96,7 @@ public class Minecraft implements Runnable {
 	public static int field_9238_G = 0;
 	private TextureWaterFX field_9232_X = new TextureWaterFX();
 	private TextureLavaFX field_9231_Y = new TextureLavaFX();
-	public volatile boolean running = true;
+	public boolean running = true;
 	public String field_6292_I = "";
 	boolean field_6291_J = false;
 	long field_6290_K = -1L;
@@ -188,7 +188,7 @@ public class Minecraft implements Runnable {
 		GL11.glDisable(2912 /* GL_FOG */);
 		GL11.glEnable(3008 /* GL_ALPHA_TEST */);
 		GL11.glAlphaFunc(516, 0.1F);
-		GL11.webgl.flush();
+		GL11.glFlush();
 		GL11.updateDisplay();
 	}
 
@@ -431,10 +431,17 @@ public class Minecraft implements Runnable {
 	}
 
 	public void shutdown() {
+		System.out.println("Stopping!");
+		if(this.theWorld != null) {
+			this.theWorld.saveLevel();
+			this.theWorld.chunkProvider.saveChunks(false, (IProgressUpdate)null);
+		}
 		this.running = false;
+        GL11.exit();
 	}
 
 	public void func_6259_e() {
+		awaitMousePointer = true;
 		if(GL11.isFocused()) {
 			if(!this.field_6289_L) {
 				this.field_6289_L = true;
@@ -446,6 +453,7 @@ public class Minecraft implements Runnable {
 	}
 
 	public void func_6273_f() {
+		awaitMousePointer = false;
 		if(this.field_6289_L) {
 			if(this.thePlayer != null) {
 				this.thePlayer.func_458_k();
@@ -578,8 +586,40 @@ public class Minecraft implements Runnable {
 		}
 
 	}
+	
+	public boolean pauseFlag = false;
+	public boolean justLeftWorld = true;
+	public boolean awaitMousePointer = false;
+	public int prevPauseTicks = 0;
 
 	public void runTick() {
+		if(GL11.isWebGL) {
+			if((this.theWorld == null || justLeftWorld) && (GL11.isPointerLocked() || GL11.isPointerLocked2())) {
+				mouseHelper.func_773_b();
+			}
+		
+			if(this.currentScreen == null && this.theWorld != null && pauseFlag && (!GL11.isPointerLocked() || !GL11.isPointerLocked2()) && awaitMousePointer) {
+				mouseHelper.func_774_a();
+			}
+		
+			if(GL11.isPointerLocked2() && this.currentScreen == null) {
+				if(!pauseFlag) {
+					if(prevPauseTicks == 0) {
+						prevPauseTicks = this.ticksRan;
+					}
+				
+					if(this.ticksRan >= prevPauseTicks + 1 && prevPauseTicks != 0) {
+						pauseFlag = true;
+						prevPauseTicks = 0;
+					}
+				}
+			}
+		
+			if(currentScreen == null && !Mouse.isPointerLocked2() && pauseFlag) {
+				func_6252_g();
+			}
+		}
+		
 		this.ingameGUI.func_555_a();
 		this.field_9243_r.func_910_a(1.0F);
 		if(this.thePlayer != null) {

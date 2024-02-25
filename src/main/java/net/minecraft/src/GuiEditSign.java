@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
+import net.PeytonPlayz585.input.Keyboard;
+import net.PeytonPlayz585.opengl.GL11;
+import net.minecraft.client.Minecraft;
 
 public class GuiEditSign extends GuiScreen {
 	protected String screenTitle = "Edit sign message:";
@@ -14,6 +15,8 @@ public class GuiEditSign extends GuiScreen {
 	}
 
 	public void initGui() {
+		Minecraft.getMinecraft().pauseFlag = false;
+		Minecraft.getMinecraft().prevPauseTicks = 0;
 		this.controlList.clear();
 		Keyboard.enableRepeatEvents(true);
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, "Done"));
@@ -24,6 +27,8 @@ public class GuiEditSign extends GuiScreen {
 	}
 
 	public void updateScreen() {
+		Minecraft.getMinecraft().pauseFlag = false;
+		Minecraft.getMinecraft().prevPauseTicks = 0;
 		++this.updateCounter;
 	}
 

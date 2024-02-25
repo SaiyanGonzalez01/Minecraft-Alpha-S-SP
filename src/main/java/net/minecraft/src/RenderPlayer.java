@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
+import net.PeytonPlayz585.opengl.GL11;
 
 public class RenderPlayer extends RenderLiving {
 	private ModelBiped field_209_f = (ModelBiped)this.e;

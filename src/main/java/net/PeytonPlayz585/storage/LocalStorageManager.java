@@ -6,8 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import org.lwjgl.opengl.GL11;
-
+import net.PeytonPlayz585.opengl.GL11;
 import net.PeytonPlayz595.nbt.NBTBase;
 import net.PeytonPlayz595.nbt.NBTTagCompound;
 import net.lax1dude.eaglercraft.Base64;

@@ -173,7 +173,7 @@ public class TileEntityFurnace extends TileEntity implements IInventory {
 	}
 
 	private int getSmeltingResultItem(int var1) {
-		return var1 == Block.oreIron.blockID ? Item.ingotIron.shiftedIndex : (var1 == Block.oreGold.blockID ? Item.ingotGold.shiftedIndex : (var1 == Block.oreDiamond.blockID ? Item.diamond.shiftedIndex : (var1 == Block.sand.blockID ? Block.glass.blockID : (var1 == Item.porkRaw.shiftedIndex ? Item.porkCooked.shiftedIndex : (var1 == Item.fishRaw.shiftedIndex ? Item.fishCooked.shiftedIndex : (var1 == Block.cobblestone.blockID ? Block.stone.blockID : (var1 == Item.clay.shiftedIndex ? Item.brick.shiftedIndex : -1)))))));
+		return var1 == Block.oreIron.blockID ? Item.ingotIron.shiftedIndex : (var1 == Block.oreGold.blockID ? Item.ingotGold.shiftedIndex : (var1 == Block.oreDiamond.blockID ? Item.diamond.shiftedIndex : (var1 == Block.sand.blockID ? Block.glass.blockID : (var1 == Item.porkRaw.shiftedIndex ? Item.porkCooked.shiftedIndex : (var1 == Item.fishRaw.shiftedIndex ? Item.fishCooked.shiftedIndex : (var1 == Block.cobblestone.blockID ? Block.stone.blockID : (var1 == Item.clay.shiftedIndex ? Item.brick.shiftedIndex : (var1 == Block.wood.blockID ? Item.coal.shiftedIndex : -1))))))));
 	}
 
 	private int getItemBurnTime(ItemStack var1) {

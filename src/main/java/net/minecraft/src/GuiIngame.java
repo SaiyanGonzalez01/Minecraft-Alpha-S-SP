@@ -3,10 +3,11 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import net.PeytonPlayz585.input.Keyboard;
+import net.PeytonPlayz585.opengl.GL11;
+import net.PeytonPlayz585.opengl.GL12;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 public class GuiIngame extends Gui {
 	private static RenderItem itemRenderer = new RenderItem();

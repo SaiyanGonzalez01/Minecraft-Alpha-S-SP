@@ -8,8 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.opengl.GL11;
-
+import net.PeytonPlayz585.opengl.GL11;
 import net.lax1dude.eaglercraft.adapter.EaglerAdapterImpl2.FileEntry;
 import net.minecraft.client.Minecraft;
 

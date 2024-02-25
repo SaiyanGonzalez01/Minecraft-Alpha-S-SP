@@ -5,8 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
+import net.PeytonPlayz585.opengl.GL11;
 import net.lax1dude.eaglercraft.EaglerImage;
 
 public class FontRenderer {

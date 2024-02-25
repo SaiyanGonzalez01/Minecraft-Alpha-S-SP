@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
-import org.lwjgl.input.Keyboard;
+import net.PeytonPlayz585.input.Keyboard;
+import net.minecraft.client.Minecraft;
 
 public class GuiChat extends GuiScreen {
 	private String message = "";
@@ -15,6 +16,8 @@ public class GuiChat extends GuiScreen {
 	}
 
 	public void updateScreen() {
+		Minecraft.getMinecraft().pauseFlag = false;
+		Minecraft.getMinecraft().prevPauseTicks = 0;
 		++this.updateCounter;
 	}
 

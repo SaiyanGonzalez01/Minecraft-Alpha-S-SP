@@ -10,8 +10,8 @@ import java.util.Collection;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import net.PeytonPlayz585.opengl.GL11;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.opengl.GL11;
 
 public class TexturePackCustom extends TexturePackBase {
 	

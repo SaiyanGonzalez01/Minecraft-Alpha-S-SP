@@ -9,6 +9,7 @@ import java.io.DataOutputStream;
 //import java.io.FileInputStream;
 //import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,7 +19,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.lwjgl.opengl.GL11;
+import net.PeytonPlayz585.opengl.GL11;
 
 public class World implements IBlockAccess {
 	public boolean field_4214_a;
@@ -35,7 +36,7 @@ public class World implements IBlockAccess {
 	protected int field_9437_g;
 	protected int field_9436_h;
 	public boolean field_1043_h;
-	private long field_1054_E;
+	public long field_1054_E;
 	protected int autosavePeriod;
 	public int difficultySetting;
 	public Random rand;
@@ -45,7 +46,7 @@ public class World implements IBlockAccess {
 	public boolean field_1033_r;
 	public final WorldProvider worldProvider;
 	protected List worldAccesses;
-	private IChunkProvider chunkProvider;
+	public IChunkProvider chunkProvider;
 	public String field_9433_s;
 	public String field_9432_t;
 	public long randomSeed;
@@ -61,6 +62,10 @@ public class World implements IBlockAccess {
 	private List field_1012_M;
 
 	public static NBTTagCompound func_629_a(String var1) {
+		if(!GL11.isWebGL) {
+			return net.PeytonPlayz585.minecraft.World.func_629_a(var1);
+		}
+		
         byte[] data = GL11.readFile("saves/" + var1 + "/level.dat");
         if(!(data == null)) {
             try {
@@ -80,6 +85,11 @@ public class World implements IBlockAccess {
     }
 
     public static void deleteWorld(String var1) {
+    	if(!GL11.isWebGL) {
+    		net.PeytonPlayz585.minecraft.World.deleteWorld(var1);
+    		return;
+    	}
+    	
         String path = "saves/" + var1 + "/";
         Collection<GL11.FileEntry> lst = GL11.listFiles(path, true, true);
 		for(GL11.FileEntry t : lst) {
@@ -214,17 +224,28 @@ public class World implements IBlockAccess {
 		this.field_1012_M = new ArrayList();
 		this.field_9433_s = var1;
 		this.field_9431_w = var2;
+		if(!GL11.isWebGL) {
+			net.PeytonPlayz585.minecraft.World.mkdirs(var1, var2);
+		}
 		this.field_9432_t = var1 + "/" + var2;
 
 		try {
-			ByteArrayOutputStream data = new ByteArrayOutputStream();
-			DataOutputStream var7 = new DataOutputStream(data);
+			DataOutputStream var7 = null;
+			ByteArrayOutputStream data = null;
+			if(!GL11.isWebGL) {
+				var7 = net.PeytonPlayz585.minecraft.World.getSessionLockOutputStream(field_9432_t);
+			} else {
+				data = new ByteArrayOutputStream();
+				var7 = new DataOutputStream(data);
+			}
 
 			try {
 				var7.writeLong(this.field_1054_E);
 			} finally {
-				var7.flush();
-				GL11.writeFile(this.field_9432_t + "/session.lock", data.toByteArray());
+				if(GL11.isWebGL) {
+					var7.flush();
+					GL11.writeFile(this.field_9432_t + "/session.lock", data.toByteArray());
+				}
 				var7.close();
 			}
 		} catch (IOException var16) {
@@ -233,16 +254,28 @@ public class World implements IBlockAccess {
 		}
 
 		Object var17 = new WorldProvider();
+		boolean exists = false;
 		String var18 = this.field_9432_t + "/level.dat";
-		this.field_1033_r = GL11.readFile(var18) == null;
-		byte[] data = GL11.readFile(var18);
-		if(data != null) {
+		byte[] data = null;
+		if(!GL11.isWebGL) {
+			this.field_1033_r = !net.PeytonPlayz585.minecraft.World.doesLevelExist(this.field_9432_t);
+			exists = net.PeytonPlayz585.minecraft.World.doesLevelExist(this.field_9432_t);
+		} else {
+			data = GL11.readFile(var18);
+			this.field_1033_r = data == null;
+			exists = data != null;
+		}
+		if(exists) {
 			try {
 				NBTTagCompound var8;
-				if(GL11.isCompressed(data)) {
-					var8 = CompressedStreamTools.func_1138_a(new ByteArrayInputStream(data));
+				if(!GL11.isWebGL) {
+					var8 = net.PeytonPlayz585.minecraft.World.getNBTDataFromLevel(var18);
 				} else {
-					var8 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(new ByteArrayInputStream(data)));
+					if(GL11.isCompressed(data)) {
+						var8 = CompressedStreamTools.func_1138_a(new ByteArrayInputStream(data));
+					} else {
+						var8 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(new ByteArrayInputStream(data)));
+					}
 				}
 				NBTTagCompound var9 = var8.getCompoundTag("Data");
 				this.randomSeed = var9.getLong("RandomSeed");
@@ -347,7 +380,12 @@ public class World implements IBlockAccess {
 		}
 	}
 
-	private void saveLevel() {
+	public void saveLevel() {
+		if(!GL11.isWebGL) {
+			net.PeytonPlayz585.minecraft.World.saveLevel(this);
+			return;
+		}
+		
 		this.func_663_l();
 		NBTTagCompound var1 = new NBTTagCompound();
 		var1.setLong("RandomSeed", this.randomSeed);
@@ -1961,6 +1999,10 @@ public class World implements IBlockAccess {
 	}
 
 	public void func_663_l() {
+		if(!GL11.isWebGL) {
+			net.PeytonPlayz585.minecraft.World.checkSessionLock(this);
+		}
+		
 		try {
 			String var1 = this.field_9432_t + "/session.lock";
 			if(GL11.readFile(var1) == null) {

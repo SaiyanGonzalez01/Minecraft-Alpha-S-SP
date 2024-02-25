@@ -3,11 +3,12 @@ package net.minecraft.src;
 import java.nio.FloatBuffer;
 import java.util.List;
 import java.util.Random;
+
+import net.PeytonPlayz585.input.Keyboard;
+import net.PeytonPlayz585.input.Mouse;
+import net.PeytonPlayz585.opengl.GL11;
+import net.PeytonPlayz585.util.glu.GLU;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
 
 public class EntityRenderer {
 	private Minecraft mc;

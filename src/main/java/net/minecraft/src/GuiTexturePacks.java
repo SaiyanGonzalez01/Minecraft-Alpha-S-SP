@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
 import java.util.List;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
+import net.PeytonPlayz585.input.Mouse;
+import net.PeytonPlayz585.opengl.GL11;
 import net.lax1dude.eaglercraft.adapter.FileChooserResult;
 import net.minecraft.client.Minecraft;
 

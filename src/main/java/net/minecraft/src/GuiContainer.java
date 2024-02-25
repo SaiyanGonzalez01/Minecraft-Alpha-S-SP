@@ -2,8 +2,10 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+
+import net.PeytonPlayz585.opengl.GL11;
+import net.PeytonPlayz585.opengl.GL12;
+import net.minecraft.client.Minecraft;
 
 public abstract class GuiContainer extends GuiScreen {
 	private static RenderItem itemRenderer = new RenderItem();
@@ -12,6 +14,8 @@ public abstract class GuiContainer extends GuiScreen {
 	protected List inventorySlots = new ArrayList();
 
 	public void drawScreen(int var1, int var2, float var3) {
+		Minecraft.getMinecraft().pauseFlag = false;
+		Minecraft.getMinecraft().prevPauseTicks = 0;
 		this.drawDefaultBackground();
 		int var4 = (this.width - this.xSize) / 2;
 		int var5 = (this.height - this.ySize) / 2;

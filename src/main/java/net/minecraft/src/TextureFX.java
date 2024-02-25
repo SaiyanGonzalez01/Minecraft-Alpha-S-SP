@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
+import net.PeytonPlayz585.opengl.GL11;
 
 public class TextureFX {
 	public byte[] field_1127_a = new byte[1024];

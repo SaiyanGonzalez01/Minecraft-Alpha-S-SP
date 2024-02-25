@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import net.PeytonPlayz585.input.Keyboard;
+import net.PeytonPlayz585.opengl.GL11;
 import net.PeytonPlayz585.storage.LocalStorageManager;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 public class GameSettings {
 	private static final String[] RENDER_DISTANCES = new String[]{"FAR", "NORMAL", "SHORT", "TINY"};
@@ -45,13 +45,6 @@ public class GameSettings {
 	public GameSettings(Minecraft var1) {
 		this.mc = var1;
 		this.loadOptions();
-		System.out.println("Loading texture packs!");
-//		try {
-//			//TexturePack.loadTexturePacks();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-		System.out.println("Done!");
 	}
 
 	public GameSettings() {
@@ -129,7 +122,11 @@ public class GameSettings {
 	}
 
 	public void loadOptions() {
-		//int i = GL11.listFiles("texturepacks/", false, false).size();
+		if(!GL11.isWebGL) {
+			net.PeytonPlayz585.minecraft.GameSettings.loadOptions();
+			return;
+		}
+		
 		try {
 			byte[] fileData = GL11.readFile("options.txt");
 			if(fileData == null) {
@@ -197,12 +194,6 @@ public class GameSettings {
 					this.field_12259_z = var3[1];
 				}
 				
-//				for(int i1 = 0; i1 < i; ++i1) {
-//					if(var3[0].equals("texturepack-" + i)) {
-//						TexturePack.texturePackOrder.add(var3[1]);
-//					}
-//				}
-
 				for(int var4 = 0; var4 < this.keyBindings.length; ++var4) {
 					if(var3[0].equals("key_" + this.keyBindings[var4].keyDescription)) {
 						this.keyBindings[var4].keyCode = Integer.parseInt(var3[1]);
@@ -221,6 +212,11 @@ public class GameSettings {
 	}
 
 	public void saveOptions() {
+		if(!GL11.isWebGL) {
+			net.PeytonPlayz585.minecraft.GameSettings.saveOptions();
+			return;
+		}
+		
 		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 		PrintWriter var1 = new PrintWriter(byteArrayOutputStream);
 		var1.println("music:" + this.musicVolume);
@@ -234,14 +230,6 @@ public class GameSettings {
 		var1.println("difficulty:" + this.difficulty);
 		var1.println("fancyGraphics:" + this.fancyGraphics);
 		var1.println("skin:" + this.skin);
-		
-//		if(!TexturePack.texturePackOrder.isEmpty()) {
-//			int i = 0;
-//			for(String s : TexturePack.texturePackOrder) {
-//				++i;
-//				var1.println("texturepack-" + i + ":" + s);
-//			}
-//		}
 
 		for(int var2 = 0; var2 < this.keyBindings.length; ++var2) {
 			var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);

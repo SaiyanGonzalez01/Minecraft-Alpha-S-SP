@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
+
+import net.PeytonPlayz585.opengl.GL11;
+import net.PeytonPlayz585.util.glu.GLU;
+import net.minecraft.client.Minecraft;
 
 public class GuiMainMenu extends GuiScreen {
 	private static final Random rand = new Random();
@@ -57,6 +59,7 @@ public class GuiMainMenu extends GuiScreen {
 	}
 
 	public void initGui() {
+		Minecraft.getMinecraft().justLeftWorld = false;
 		Calendar var1 = Calendar.getInstance();
 		var1.setTime(new Date());
 		if(var1.get(2) + 1 == 11 && var1.get(5) == 9) {
@@ -75,10 +78,6 @@ public class GuiMainMenu extends GuiScreen {
 		//button.enabled = false;
 		this.controlList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 + 72, "Mods and Texture Packs"));
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, "Options..."));
-		if(this.mc.field_6320_i == null) {
-			((GuiButton)this.controlList.get(1)).enabled = false;
-		}
-
 	}
 
 	protected void actionPerformed(GuiButton var1) {

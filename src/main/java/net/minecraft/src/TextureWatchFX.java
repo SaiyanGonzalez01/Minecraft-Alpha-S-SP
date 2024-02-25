@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
-
+import net.PeytonPlayz585.opengl.GL11;
 import net.lax1dude.eaglercraft.EaglerImage;
 import net.minecraft.client.Minecraft;
 

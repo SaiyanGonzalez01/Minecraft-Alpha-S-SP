@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.lwjgl.opengl.GL11;
-
+import net.PeytonPlayz585.opengl.GL11;
 import net.lax1dude.eaglercraft.EaglerImage;
 
 public class RenderEngine {
