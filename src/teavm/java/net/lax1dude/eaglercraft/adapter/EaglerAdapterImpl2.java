@@ -1846,9 +1846,6 @@ public class EaglerAdapterImpl2 {
 	}
 
 	public static boolean escapeKeyPressed() {
-		if(escapeKeyPressed2()) {
-			System.out.println("Escape Key Pressed!");
-		}
 		return getEventKey() == 1 || escapeKeyPressed2();		
 	}
 
