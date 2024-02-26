@@ -264,18 +264,24 @@ public class Chunk {
 			int var9 = this.xPosition * 16 + var1;
 			int var10 = this.zPosition * 16 + var3;
 			this.blocks[var1 << 11 | var3 << 7 | var2] = var6;
-			if(var8 != 0) {
+			if(var8 != 0 && !this.worldObj.multiplayerWorld) {
 				Block.blocksList[var8].onBlockRemoval(this.worldObj, var9, var2, var10);
 			}
 
 			this.data.setNibble(var1, var2, var3, var5);
 			if(!this.worldObj.worldProvider.field_6478_e) {
-				if(Block.lightOpacity[var6] != 0) {
-					if(var2 >= var7) {
-						this.func_1003_g(var1, var2 + 1, var3);
+				if(!(var6 < 0 || var6 > 256)) {
+					if(Block.lightOpacity[var6] != 0) {
+						if(var2 >= var7) {
+							this.func_1003_g(var1, var2 + 1, var3);
+						}
+					} else if(var2 == var7 - 1) {
+						this.func_1003_g(var1, var2, var3);
 					}
-				} else if(var2 == var7 - 1) {
-					this.func_1003_g(var1, var2, var3);
+				} else {
+					if(var2 == var7 - 1) {
+						this.func_1003_g(var1, var2, var3);
+					}
 				}
 
 				this.worldObj.func_616_a(EnumSkyBlock.Sky, var9, var2, var10, var9, var2, var10);
@@ -283,7 +289,7 @@ public class Chunk {
 
 			this.worldObj.func_616_a(EnumSkyBlock.Block, var9, var2, var10, var9, var2, var10);
 			this.func_996_c(var1, var3);
-			if(var4 != 0) {
+			if(var4 != 0 && !(var4 < 0 || var4 > 256)) {
 				Block.blocksList[var4].onBlockAdded(this.worldObj, var9, var2, var10);
 			}
 
@@ -319,7 +325,7 @@ public class Chunk {
 			this.worldObj.func_616_a(EnumSkyBlock.Sky, var8, var2, var9, var8, var2, var9);
 			this.worldObj.func_616_a(EnumSkyBlock.Block, var8, var2, var9, var8, var2, var9);
 			this.func_996_c(var1, var3);
-			if(var4 != 0) {
+			if(var4 != 0 && !this.worldObj.multiplayerWorld) {
 				Block.blocksList[var4].onBlockAdded(this.worldObj, var8, var2, var9);
 			}
 

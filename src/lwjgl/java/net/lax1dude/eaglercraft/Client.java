@@ -1,7 +1,6 @@
 package net.lax1dude.eaglercraft;
 
 import javax.swing.JOptionPane;
-
 import net.PeytonPlayz585.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Session;

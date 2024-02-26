@@ -132,9 +132,9 @@ public class BlockButton extends Block {
 	}
 
 	public boolean blockActivated(World var1, int var2, int var3, int var4, EntityPlayer var5) {
-		//if(var1.multiplayerWorld) {
-			//return true;
-		//} else {
+		if(var1.multiplayerWorld) {
+			return true;
+		} else {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
 			int var7 = var6 & 7;
 			int var8 = 8 - (var6 & 8);
@@ -160,7 +160,7 @@ public class BlockButton extends Block {
 				var1.scheduleBlockUpdate(var2, var3, var4, this.blockID);
 				return true;
 			}
-		//}
+		}
 	}
 
 	public void onBlockRemoval(World var1, int var2, int var3, int var4) {
@@ -203,7 +203,7 @@ public class BlockButton extends Block {
 	}
 
 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
-		//if(!var1.multiplayerWorld) {
+		if(!var1.multiplayerWorld) {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
 			if((var6 & 8) != 0) {
 				var1.setBlockMetadataWithNotify(var2, var3, var4, var6 & 7);
@@ -224,7 +224,7 @@ public class BlockButton extends Block {
 				var1.playSoundEffect((double)var2 + 0.5D, (double)var3 + 0.5D, (double)var4 + 0.5D, "random.click", 0.3F, 0.5F);
 				var1.func_701_b(var2, var3, var4, var2, var3, var4);
 			}
-		//}
+		}
 	}
 
 	public void func_237_e() {

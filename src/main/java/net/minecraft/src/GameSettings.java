@@ -41,6 +41,7 @@ public class GameSettings {
 	public int difficulty = 2;
 	public boolean thirdPersonView = false;
 	public String field_12259_z = "";
+	public String username = "";
 
 	public GameSettings(Minecraft var1) {
 		this.mc = var1;
@@ -194,6 +195,10 @@ public class GameSettings {
 					this.field_12259_z = var3[1];
 				}
 				
+				if(var3[0].equals("username")) {
+					this.username = var3[1];
+				}
+				
 				for(int var4 = 0; var4 < this.keyBindings.length; ++var4) {
 					if(var3[0].equals("key_" + this.keyBindings[var4].keyDescription)) {
 						this.keyBindings[var4].keyCode = Integer.parseInt(var3[1]);
@@ -230,6 +235,8 @@ public class GameSettings {
 		var1.println("difficulty:" + this.difficulty);
 		var1.println("fancyGraphics:" + this.fancyGraphics);
 		var1.println("skin:" + this.skin);
+		var1.println("lastServer:" + this.field_12259_z);
+		var1.println("username:" + this.username);
 
 		for(int var2 = 0; var2 < this.keyBindings.length; ++var2) {
 			var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);

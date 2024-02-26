@@ -133,9 +133,9 @@ public class BlockLever extends Block {
 	}
 
 	public boolean blockActivated(World var1, int var2, int var3, int var4, EntityPlayer var5) {
-		//if(var1.multiplayerWorld) {
-			//return true;
-		//} else {
+		if(var1.multiplayerWorld) {
+			return true;
+		} else {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
 			int var7 = var6 & 7;
 			int var8 = 8 - (var6 & 8);
@@ -156,7 +156,7 @@ public class BlockLever extends Block {
 			}
 
 			return true;
-		//}
+		}
 	}
 
 	public void onBlockRemoval(World var1, int var2, int var3, int var4) {

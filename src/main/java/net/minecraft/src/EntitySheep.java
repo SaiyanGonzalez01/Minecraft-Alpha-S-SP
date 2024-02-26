@@ -10,7 +10,7 @@ public class EntitySheep extends EntityAnimals {
 	}
 
 	public boolean canAttackEntity(Entity var1, int var2) {
-		if(!this.sheared && var1 instanceof EntityLiving) {
+		if(!this.worldObj.multiplayerWorld && !this.sheared && var1 instanceof EntityLiving) {
 			this.sheared = true;
 			int var3 = 1 + this.rand.nextInt(3);
 

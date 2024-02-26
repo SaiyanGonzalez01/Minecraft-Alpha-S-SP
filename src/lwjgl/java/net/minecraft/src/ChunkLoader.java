@@ -6,8 +6,12 @@ import java.util.*;
 public class ChunkLoader implements IChunkLoader {
 
 	public ChunkLoader(String file, boolean flag) {
-		File file1 = new File("filesystem");
-		saveDir = new File(file1, file);
+		if(file != null) {
+			File file1 = new File("filesystem");
+			saveDir = new File(file1, file);
+		} else {
+			saveDir = null;
+		}
 		createIfNecessary = flag;
 	}
 

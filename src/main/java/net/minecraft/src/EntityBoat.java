@@ -55,7 +55,7 @@ public class EntityBoat extends Entity {
 	}
 
 	public boolean canAttackEntity(Entity var1, int var2) {
-		if(!this.isDead) {
+		if(!this.worldObj.multiplayerWorld && !this.isDead) {
 			this.field_808_c = -this.field_808_c;
 			this.field_806_b = 10;
 			this.field_807_a += var2 * 10;
@@ -136,41 +136,41 @@ public class EntityBoat extends Entity {
 		double var8;
 		double var10;
 		double var23;
-		//if(this.worldObj.multiplayerWorld) {
-			//if(this.field_9394_d > 0) {
-				//var23 = this.posX + (this.field_9393_e - this.posX) / (double)this.field_9394_d;
-				//var6 = this.posY + (this.field_9392_f - this.posY) / (double)this.field_9394_d;
-				//var8 = this.posZ + (this.field_9391_g - this.posZ) / (double)this.field_9394_d;
+		if(this.worldObj.multiplayerWorld) {
+			if(this.field_9394_d > 0) {
+				var23 = this.posX + (this.field_9393_e - this.posX) / (double)this.field_9394_d;
+				var6 = this.posY + (this.field_9392_f - this.posY) / (double)this.field_9394_d;
+				var8 = this.posZ + (this.field_9391_g - this.posZ) / (double)this.field_9394_d;
 
-				//for(var10 = this.field_9390_h - (double)this.rotationYaw; var10 < -180.0D; var10 += 360.0D) {
-				//}
+				for(var10 = this.field_9390_h - (double)this.rotationYaw; var10 < -180.0D; var10 += 360.0D) {
+				}
 
-				//while(var10 >= 180.0D) {
-					//var10 -= 360.0D;
-				//}
+				while(var10 >= 180.0D) {
+					var10 -= 360.0D;
+				}
 
-				//this.rotationYaw = (float)((double)this.rotationYaw + var10 / (double)this.field_9394_d);
-				//this.rotationPitch = (float)((double)this.rotationPitch + (this.field_9389_i - (double)this.rotationPitch) / (double)this.field_9394_d);
-				//--this.field_9394_d;
-				//this.setPosition(var23, var6, var8);
-				//this.setRotation(this.rotationYaw, this.rotationPitch);
-			//} else {
-				//var23 = this.posX + this.motionX;
-				//var6 = this.posY + this.motionY;
-				//var8 = this.posZ + this.motionZ;
-				//this.setPosition(var23, var6, var8);
-				//if(this.onGround) {
-					//this.motionX *= 0.5D;
-					//this.motionY *= 0.5D;
-					//this.motionZ *= 0.5D;
-				//}
+				this.rotationYaw = (float)((double)this.rotationYaw + var10 / (double)this.field_9394_d);
+				this.rotationPitch = (float)((double)this.rotationPitch + (this.field_9389_i - (double)this.rotationPitch) / (double)this.field_9394_d);
+				--this.field_9394_d;
+				this.setPosition(var23, var6, var8);
+				this.setRotation(this.rotationYaw, this.rotationPitch);
+			} else {
+				var23 = this.posX + this.motionX;
+				var6 = this.posY + this.motionY;
+				var8 = this.posZ + this.motionZ;
+				this.setPosition(var23, var6, var8);
+				if(this.onGround) {
+					this.motionX *= 0.5D;
+					this.motionY *= 0.5D;
+					this.motionZ *= 0.5D;
+				}
 
-				//this.motionX *= (double)0.99F;
-				//this.motionY *= (double)0.95F;
-				//this.motionZ *= (double)0.99F;
-			//}
+				this.motionX *= (double)0.99F;
+				this.motionY *= (double)0.95F;
+				this.motionZ *= (double)0.99F;
+			}
 
-		//} else {
+		} else {
 			var23 = var2 * 2.0D - 1.0D;
 			this.motionY += (double)0.04F * var23;
 			if(this.riddenByEntity != null) {
@@ -226,7 +226,7 @@ public class EntityBoat extends Entity {
 			}
 
 			if(this.field_9297_aI && var8 > 0.15D) {
-				//if(!this.worldObj.multiplayerWorld) {
+				if(!this.worldObj.multiplayerWorld) {
 					this.setEntityDead();
 
 					int var24;
@@ -237,7 +237,7 @@ public class EntityBoat extends Entity {
 					for(var24 = 0; var24 < 2; ++var24) {
 						this.dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0F);
 					}
-				//}
+				}
 			} else {
 				this.motionX *= (double)0.99F;
 				this.motionY *= (double)0.95F;
@@ -284,7 +284,7 @@ public class EntityBoat extends Entity {
 				this.riddenByEntity = null;
 			}
 
-		//}
+		}
 	}
 
 	public void func_366_i_() {
@@ -309,9 +309,9 @@ public class EntityBoat extends Entity {
 		if(this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != var1) {
 			return true;
 		} else {
-			//if(!this.worldObj.multiplayerWorld) {
+			if(!this.worldObj.multiplayerWorld) {
 				var1.mountEntity(this);
-			//}
+			}
 
 			return true;
 		}

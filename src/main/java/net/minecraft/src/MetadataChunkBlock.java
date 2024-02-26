@@ -33,7 +33,12 @@ public class MetadataChunkBlock {
 								int var9 = var1.getSavedLightValue(this.field_1299_a, var6, var8, var7);
 								boolean var10 = false;
 								int var11 = var1.getBlockId(var6, var8, var7);
-								int var12 = Block.lightOpacity[var11];
+								int var12;
+								if(!(var11 < 0 || var11 > 256)) {
+									var12 = Block.lightOpacity[var11];
+								} else {
+									var12 = 0;
+								}
 								if(var12 == 0) {
 									var12 = 1;
 								}
