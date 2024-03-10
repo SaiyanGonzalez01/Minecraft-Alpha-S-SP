@@ -144,8 +144,4 @@ public class GuiScreen extends Gui {
 
 	public void deleteWorld(boolean var1, int var2) {
 	}
-
-	public static String getClipboardString() {
-		return GL11.getClipboard();
-	}
 }

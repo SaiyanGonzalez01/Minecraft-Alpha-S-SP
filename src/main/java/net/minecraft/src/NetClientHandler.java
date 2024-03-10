@@ -7,22 +7,21 @@ import net.minecraft.client.Minecraft;
 
 public class NetClientHandler extends NetHandler {
 	private boolean disconnected = false;
-	public static NetworkManager netManager;
+	private NetworkManager netManager;
 	public String field_1209_a;
 	private Minecraft mc;
 	private WorldClient worldClient;
 	private boolean field_1210_g = false;
 	Random rand = new Random();
 
-	public NetClientHandler(Minecraft var1, String var2, int var3) throws IOException, UnknownHostException {
+	public NetClientHandler(Minecraft var1, String var2) throws IOException, UnknownHostException {
 		this.mc = var1;
-		String ip = var2;
-		this.netManager = new NetworkManager(ip, this);
+		this.netManager = new NetworkManager(var2, this);
 	}
 
 	public void processReadPackets() {
 		if(!this.disconnected) {
-			this.netManager.processReadPackets();
+			this.netManager.readPacket();
 		}
 	}
 

@@ -1,12 +1,11 @@
 package net.minecraft.src;
 
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,67 +15,86 @@ import java.util.List;
 import net.PeytonPlayz585.opengl.GL11;
 
 public class NetworkManager {
-	
-	private NetHandler netHandler;
-	private String serverURI;
-	
+	private Object sendQueueLock = new Object();
+	private boolean isRunning = true;
 	private List dataPackets = Collections.synchronizedList(new ArrayList());
 	private List chunkDataPackets = Collections.synchronizedList(new ArrayList());
+	private NetHandler netHandler;
+	private boolean isServerTerminating = false;
+	private boolean isTerminating = false;
+	private String terminationReason = "";
 	private int timeSinceLastRead = 0;
 	private int sendQueueByteLength = 0;
 	private int chunkDataSendCounter = 0;
-	public static int numWriteThreads;
-	private Thread writeThread;
-	
-	public NetworkManager(String uri, NetHandler netHandler) throws IOException {
-		this.serverURI = uri;
-		this.netHandler = netHandler;
-		if(!GL11.startConnection(uri)) {
-			throw new IOException("websocket to "+uri+" failed");
+
+	public NetworkManager(String var4, NetHandler var3) throws IOException {
+		this.netHandler = var3;
+		String uri = null;
+		System.out.println(uri);
+		if(var4.startsWith("ws://")) {
+			uri = var4.substring(5);
+		}else if(var4.startsWith("wss://")){
+			uri = var4.substring(6);
+		}else if(!var4.contains("://")){
+			uri = var4;
+			var4 = "ws://" + var4;
+		}else {
+			throw new IOException("Invalid URI Protocol!");
 		}
-		GL11.setDebugVar("minecraftServer", uri);
-		this.writeThread = new NetworkWriterThread(this, uri + " write thread");
-		this.writeThread.start();
+		if(!GL11.startConnection(var4)) {
+			//if(!GL11.startConnection(uri)) {
+				throw new IOException("Websocket to " + uri + " failed!");
+			//}
+		}
 	}
-	
-	public void setNetHandler(NetHandler netHandler) {
-		this.netHandler = netHandler;
-	}
-	
+
 	public void addToSendQueue(Packet var1) {
-		if(this.isSocketOpen()) {
-			this.sendQueueByteLength += var1.getPacketSize() + 1;
-			if(var1.isChunkDataPacket) {
-				this.chunkDataPackets.add(var1);
-			} else {
-				this.dataPackets.add(var1);
+		if(!this.isServerTerminating) {
+			Object var2 = this.sendQueueLock;
+			synchronized(var2) {
+				this.sendQueueByteLength += var1.getPacketSize() + 1;
+				if(var1.isChunkDataPacket) {
+					this.chunkDataPackets.add(var1);
+				} else {
+					this.dataPackets.add(var1);
+				}
+				this.sendPacket();
 			}
 		}
 	}
 	
-	private ByteArrayOutputStream sendBuffer = new ByteArrayOutputStream();
-	
+	private ByteArrayOutputStream sendBuffer;
+
 	private void sendPacket() {
 		try {
-			sendBuffer.reset();
-			DataOutputStream yee = new DataOutputStream(sendBuffer);
 			boolean var1 = true;
 			Packet var2;
+			Object var3;
 			if(!this.dataPackets.isEmpty()) {
 				var1 = false;
-				var2 = (Packet)this.dataPackets.remove(0);
-				this.sendQueueByteLength -= var2.getPacketSize() + 1;
+				var3 = this.sendQueueLock;
+				synchronized(var3) {
+					var2 = (Packet)this.dataPackets.remove(0);
+					this.sendQueueByteLength -= var2.getPacketSize() + 1;
+				}
+
+				sendBuffer = new ByteArrayOutputStream();
+				DataOutputStream yee = new DataOutputStream(sendBuffer);
 				Packet.writePacket(var2, yee);
 				GL11.writePacket(sendBuffer.toByteArray());
 			}
 
-			sendBuffer.reset();
-			DataOutputStream yee2 = new DataOutputStream(sendBuffer);
 			if((var1 || this.chunkDataSendCounter-- <= 0) && !this.chunkDataPackets.isEmpty()) {
 				var1 = false;
-				var2 = (Packet)this.chunkDataPackets.remove(0);
-				this.sendQueueByteLength -= var2.getPacketSize() + 1;
-				Packet.writePacket(var2, yee2);
+				var3 = this.sendQueueLock;
+				synchronized(var3) {
+					var2 = (Packet)this.chunkDataPackets.remove(0);
+					this.sendQueueByteLength -= var2.getPacketSize() + 1;
+				}
+
+				sendBuffer = new ByteArrayOutputStream();
+				DataOutputStream yee = new DataOutputStream(sendBuffer);
+				Packet.writePacket(var2, yee);
 				GL11.writePacket(sendBuffer.toByteArray());
 				this.chunkDataSendCounter = 50;
 			}
@@ -86,39 +104,21 @@ public class NetworkManager {
 			}
 		} catch (InterruptedException var8) {
 		} catch (Exception var9) {
-			if(this.isSocketOpen()) {
-				GL11.endConnection();
-				var9.printStackTrace();
+			if(!this.isTerminating) {
+				this.onNetworkError(var9);
 			}
 		}
 
 	}
 	
-//	public void processReadPackets() {
-//		if(this.sendQueueByteLength > 1048576) {
-//			this.networkShutdown("Send buffer overflow");
-//		}
-//
-//		if(this.readPackets.isEmpty()) {
-//			if(this.timeSinceLastRead++ == 1200) {
-//				this.networkShutdown("Timed out");
-//			}
-//		} else {
-//			this.timeSinceLastRead = 0;
-//		}
-//
-//		int var1 = 100;
-//
-//		while(!this.readPackets.isEmpty() && var1-- >= 0) {
-//			Packet var2 = (Packet)this.readPackets.remove(0);
-//			var2.processPacket(this.netHandler);
-//		}
-//	}
-	
 	private ByteBuffer oldChunkBuffer = null;
 	private LinkedList<ByteBuffer> readChunks = new LinkedList();
-	
-	public void processReadPackets() {
+
+	public void readPacket() {
+		if(this.sendQueueByteLength > 1048576) {
+			this.networkShutdown("Send buffer overflow");
+		}
+		
 		readChunks.clear();
 		
 		if(oldChunkBuffer != null) {
@@ -130,6 +130,7 @@ public class NetworkManager {
 			readChunks.add(ByteBuffer.wrap(packet));
 		}
 		if(!readChunks.isEmpty()) {
+			this.timeSinceLastRead = 0;
 			int cap = 0;
 			for(ByteBuffer b : readChunks) {
 				cap += b.limit();
@@ -142,17 +143,25 @@ public class NetworkManager {
 			stream.flip();
 			
 			DataInputStream packetStream = new DataInputStream(new ByteBufferDirectInputStream(stream));
+			//int var1 = 100;
 			while(stream.hasRemaining()) {
 				stream.mark();
 				try {
 					Packet pkt = Packet.readPacket(packetStream);
+					if(pkt == null) {
+						this.networkShutdown("End of Stream");
+					}
 					pkt.processPacket(this.netHandler);
 				} catch (EOFException e) {
 					stream.reset();
 					break;
 				}  catch (IOException e) {
 					continue;
-				} catch (Throwable e2) {
+				} catch(ArrayIndexOutOfBoundsException e) {
+					continue;
+				} catch(NullPointerException e) {
+					continue;
+				} catch(Throwable e2) {
 					e2.printStackTrace();
 				}
 			}
@@ -163,45 +172,47 @@ public class NetworkManager {
 				oldChunkBuffer = null;
 			}
 			
+		} else {
+			if(this.timeSinceLastRead++ == 1200) {
+				this.networkShutdown("Timed out");
+			}
 		}
-	}
-	
-	public void serverShutdown() {
-		if(GL11.connectionOpen()) {
-			GL11.endConnection();
-			GL11.setDebugVar("minecraftServer", "null");
+		
+		if(this.isTerminating && this.readChunks.isEmpty()) {
+			this.netHandler.handleErrorMessage(this.terminationReason);
 		}
-	}
-	
-	public int packetSize() {
-		return 0;
-	}
-	
-	public void networkShutdown(String var1, Object... var2) {
-		serverShutdown();
-	}
-	
-	public void closeConnections() {
-		if(GL11.connectionOpen()) {
-			GL11.endConnection();
-			GL11.setDebugVar("minecraftServer", "null");
-		}
-	}
-	
-	public String getServerURI() {
-		return this.serverURI;
 	}
 
-	public boolean isSocketOpen() {
-		return GL11.connectionOpen();
+	private void onNetworkError(Exception var1) {
+		var1.printStackTrace();
+		this.networkShutdown("Internal exception: " + var1.toString());
 	}
-	
+
+	public void networkShutdown(String var1) {
+		if(this.isRunning) {
+			this.isTerminating = true;
+			this.terminationReason = var1;
+			this.isRunning = false;
+			if(GL11.connectionOpen()) {
+				GL11.endConnection();
+			}
+		}
+	}
+
+	static boolean isRunning(NetworkManager var0) {
+		return var0.isRunning;
+	}
+
+	static boolean isServerTerminating(NetworkManager var0) {
+		return var0.isServerTerminating;
+	}
+
+	static void readNetworkPacket(NetworkManager var0) {
+		var0.readPacket();
+	}
+
 	static void sendNetworkPacket(NetworkManager var0) {
 		var0.sendPacket();
-	}
-
-	public static boolean isRunning(NetworkManager netManager) {
-		return netManager.isSocketOpen();
 	}
 	
 	private static class ByteBufferDirectInputStream extends InputStream {

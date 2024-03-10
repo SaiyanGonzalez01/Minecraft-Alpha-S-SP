@@ -118,7 +118,8 @@ public class Minecraft implements Runnable {
 	public void startGame() {
 
 		RenderManager.instance.field_4236_f = new ItemRenderer(this);
-		this.gameSettings = new GameSettings(this);
+		new GameSettings(this);
+		this.gameSettings.loadOptions();
 		this.texturePackList = new TexturePackList(this);
 		this.renderEngine = new RenderEngine(texturePackList, this.gameSettings);
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine);
@@ -276,6 +277,12 @@ public class Minecraft implements Runnable {
 
 				try {
 					this.runTick();
+				} catch(ArrayIndexOutOfBoundsException e) {
+					if(this.isMultiplayerWorld()) {
+						continue;
+					} else {
+						e.printStackTrace();
+					}
 				} catch (MinecraftException var14) {
 					this.theWorld = null;
 					this.func_6261_a((World)null);
@@ -313,7 +320,15 @@ public class Minecraft implements Runnable {
 					this.field_6327_b.func_6467_a(this.timer.renderPartialTicks);
 				}
 
-				this.field_9243_r.func_4136_b(this.timer.renderPartialTicks);
+				try {
+					this.field_9243_r.func_4136_b(this.timer.renderPartialTicks);
+				} catch(ArrayIndexOutOfBoundsException e) {
+					if(this.isMultiplayerWorld()) {
+						continue;
+					} else {
+						e.printStackTrace();
+					}
+				}
 			}
 
 			if(!GL11.isFocused()) {
@@ -437,7 +452,7 @@ public class Minecraft implements Runnable {
 
 	public void shutdown() {
 		System.out.println("Stopping!");
-		if(this.theWorld != null && !this.theWorld.multiplayerWorld) {
+		if(this.theWorld != null && !this.isMultiplayerWorld()) {
 			this.theWorld.saveLevel();
 			this.theWorld.chunkProvider.saveChunks(false, (IProgressUpdate)null);
 		}
@@ -625,17 +640,6 @@ public class Minecraft implements Runnable {
 			}
 		}
 		
-		//Fix for chunks not rendering in multiplayer after player respawn
-		if(respawnTimer > 0) {
-			respawnTimer--;
-			
-			if(respawnTimer == 0 && this.theWorld != null) {
-				if(this.theWorld.multiplayerWorld) {
-					field_6323_f.func_958_a();
-				}
-			}
-		}
-		
 		this.ingameGUI.func_555_a();
 		this.field_9243_r.func_910_a(1.0F);
 		if(this.thePlayer != null) {
@@ -725,6 +729,10 @@ public class Minecraft implements Runnable {
 											if(Keyboard.getEventKey() == this.gameSettings.keyBindDrop.keyCode) {
 												this.thePlayer.dropPlayerItemWithRandomChoice(this.thePlayer.inventory.decrStackSize(this.thePlayer.inventory.currentItem, 1), false);
 											}
+											
+											if(this.isMultiplayerWorld() && Keyboard.getEventKey() == this.gameSettings.keyBindChat.keyCode) {
+												this.displayGuiScreen(new GuiChat());
+											}
 										}
 
 										for(int var4 = 0; var4 < 9; ++var4) {
@@ -735,10 +743,6 @@ public class Minecraft implements Runnable {
 
 										if(Keyboard.getEventKey() == this.gameSettings.keyBindToggleFog.keyCode) {
 											this.gameSettings.setOptionValue(4, !Keyboard.isKeyDown(42) && !Keyboard.isKeyDown(54) ? 1 : -1);
-										}
-										
-										if(this.isMultiplayerWorld() && Keyboard.getEventKey() == this.gameSettings.keyBindChat.keyCode) {
-											this.displayGuiScreen(new GuiChat());
 										}
 									}
 								}
@@ -1003,12 +1007,10 @@ public class Minecraft implements Runnable {
 		if(this.currentScreen instanceof GuiGameOver) {
 			this.displayGuiScreen((GuiScreen)null);
 		}
-		respawnTimer = 5;
+
 	}
 	
 	public static Minecraft getMinecraft() {
 		return mc;
 	}
-	
-	private int respawnTimer;
 }

@@ -127,7 +127,8 @@ public class PlayerControllerMP extends PlayerController {
 		this.field_1080_g = this.field_9442_f;
 		/*
 		 * Plays background music
-		 * Not needed as I already wrote my own system to play music
+		 * Not needed
+		 * I alr wrote my own system for it
 		 */
 		//this.mc.sndManager.func_4033_c();
 	}

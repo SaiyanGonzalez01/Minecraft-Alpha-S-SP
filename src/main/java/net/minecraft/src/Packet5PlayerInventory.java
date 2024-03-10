@@ -24,19 +24,7 @@ public class Packet5PlayerInventory extends Packet {
 	public void readPacketData(DataInputStream var1) throws IOException {
 		this.type = var1.readInt();
 		short var2 = var1.readShort();
-		ItemStack[] stacks2 = this.stacks;
-		try {
-			this.stacks = new ItemStack[var2];
-		} catch(NegativeArraySizeException e) {
-			this.stacks = stacks2;
-			return;
-		} catch(IndexOutOfBoundsException e) {
-			this.stacks = stacks2;
-			return;
-		} catch(Exception e) {
-			this.stacks = stacks2;
-			return;
-		}
+		this.stacks = new ItemStack[var2];
 
 		for(int var3 = 0; var3 < var2; ++var3) {
 			short var4 = var1.readShort();

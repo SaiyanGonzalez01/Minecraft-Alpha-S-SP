@@ -71,9 +71,7 @@ import org.lwjgl.util.glu.GLU;
 import net.lax1dude.eaglercraft.AssetRepository;
 import net.lax1dude.eaglercraft.EaglerImage;
 import net.lax1dude.eaglercraft.GameWindowListener;
-import net.minecraft.client.Minecraft;
 import net.minecraft.src.MathHelper;
-import net.minecraft.src.NetClientHandler;
 
 public class EaglerAdapterImpl2 {
 

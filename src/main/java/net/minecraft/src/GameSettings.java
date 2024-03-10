@@ -45,7 +45,7 @@ public class GameSettings {
 
 	public GameSettings(Minecraft var1) {
 		this.mc = var1;
-		this.loadOptions();
+		this.mc.gameSettings = this;
 	}
 
 	public GameSettings() {
@@ -190,13 +190,13 @@ public class GameSettings {
 				if(var3[0].equals("skin")) {
 					this.skin = var3[1];
 				}
-
-				if(var3[0].equals("lastServer")) {
-					this.field_12259_z = var3[1];
-				}
 				
 				if(var3[0].equals("username")) {
 					this.username = var3[1];
+				}
+
+				if(var3[0].equals("lastServer")) {
+					this.field_12259_z = var3[1];
 				}
 				
 				for(int var4 = 0; var4 < this.keyBindings.length; ++var4) {

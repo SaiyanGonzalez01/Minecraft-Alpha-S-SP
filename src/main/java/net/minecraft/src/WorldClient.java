@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -63,7 +64,6 @@ public class WorldClient extends World {
 
 	}
 
-	@Override
 	protected IChunkProvider func_4081_a(String var1) {
 		this.C = new ChunkProviderClient(this);
 		return this.C;

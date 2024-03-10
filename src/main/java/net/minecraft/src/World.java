@@ -739,10 +739,8 @@ public class World implements IBlockAccess {
 					}
 				} else if(var1 == EnumSkyBlock.Block) {
 					int var6 = this.getBlockId(var2, var3, var4);
-					if(!(var6 < 0 || var6 > 256)) {
-						if(Block.lightValue[var6] > var5) {
-							var5 = Block.lightValue[var6];
-						}
+					if(Block.lightValue[var6] > var5) {
+						var5 = Block.lightValue[var6];
 					}
 				}
 

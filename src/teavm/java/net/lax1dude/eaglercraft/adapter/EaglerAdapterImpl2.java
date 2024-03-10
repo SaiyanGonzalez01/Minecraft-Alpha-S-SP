@@ -1158,7 +1158,6 @@ public class EaglerAdapterImpl2 {
 	
 	@JSBody(params = { "name", "cvs" }, script = "var a=document.createElement(\"a\");a.href=cvs.toDataURL(\"image/png\");a.download=name;a.click();")
 	private static native void saveScreenshot(String name, HTMLCanvasElement cvs);
-	
 	public static enum RateLimit {
 		NONE, FAILED, BLOCKED, FAILED_POSSIBLY_LOCKED, LOCKED, NOW_LOCKED;
 	}
@@ -1318,7 +1317,6 @@ public class EaglerAdapterImpl2 {
 			return null;
 		}
 	}
-	
 	public static final byte[] loadLocalStorage(String key) {
 		String s = win.getLocalStorage().getItem("_eaglercraft_beta."+key);
 		if(s != null) {

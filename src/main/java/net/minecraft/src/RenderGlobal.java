@@ -781,7 +781,7 @@ public class RenderGlobal implements IWorldAccess {
 				var8 = this.worldObj.getBlockId(var2.blockX, var2.blockY, var2.blockZ);
 				Block var9 = var8 > 0 ? Block.blocksList[var8] : null;
 				GL11.glDisable(GL11.GL_ALPHA_TEST);
-				GL11.glPolygonOffset(3.0F, -3.0F);
+				GL11.glPolygonOffset(-3.0F, -3.0F);
 				GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
 				var6.startDrawingQuads();
 				double var10 = var1.lastTickPosX + (var1.posX - var1.lastTickPosX) * (double)var5;

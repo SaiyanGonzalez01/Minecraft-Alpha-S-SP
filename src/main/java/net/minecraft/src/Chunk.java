@@ -270,18 +270,12 @@ public class Chunk {
 
 			this.data.setNibble(var1, var2, var3, var5);
 			if(!this.worldObj.worldProvider.field_6478_e) {
-				if(!(var6 < 0 || var6 > 256)) {
-					if(Block.lightOpacity[var6] != 0) {
-						if(var2 >= var7) {
-							this.func_1003_g(var1, var2 + 1, var3);
-						}
-					} else if(var2 == var7 - 1) {
-						this.func_1003_g(var1, var2, var3);
+				if(Block.lightOpacity[var6] != 0) {
+					if(var2 >= var7) {
+						this.func_1003_g(var1, var2 + 1, var3);
 					}
-				} else {
-					if(var2 == var7 - 1) {
-						this.func_1003_g(var1, var2, var3);
-					}
+				} else if(var2 == var7 - 1) {
+					this.func_1003_g(var1, var2, var3);
 				}
 
 				this.worldObj.func_616_a(EnumSkyBlock.Sky, var9, var2, var10, var9, var2, var10);
@@ -289,7 +283,7 @@ public class Chunk {
 
 			this.worldObj.func_616_a(EnumSkyBlock.Block, var9, var2, var10, var9, var2, var10);
 			this.func_996_c(var1, var3);
-			if(var4 != 0 && !(var4 < 0 || var4 > 256)) {
+			if(var4 != 0) {
 				Block.blocksList[var4].onBlockAdded(this.worldObj, var9, var2, var10);
 			}
 

@@ -27,7 +27,8 @@ public class GuiMultiplayer extends GuiScreen {
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, "Connect"));
 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, "Cancel"));
 		this.serverAddress = this.mc.gameSettings.field_12259_z.replaceAll("_", ":");
-		((GuiButton)this.controlList.get(0)).enabled = this.serverAddress.length() > 0;
+		this.username = this.mc.gameSettings.username;
+		((GuiButton)this.controlList.get(0)).enabled = this.serverAddress.length() > 0 && this.username.length() > 0 && !this.serverAddress.isBlank() && !this.username.isBlank() && !this.serverAddress.isEmpty() && !this.username.isEmpty();
 	}
 
 	protected void actionPerformed(GuiButton var1) {
@@ -40,7 +41,7 @@ public class GuiMultiplayer extends GuiScreen {
 				this.mc.gameSettings.username = this.username;
 				this.mc.gameSettings.saveOptions();
 				String[] var2 = this.serverAddress.split(":");
-				this.mc.displayGuiScreen(new GuiConnecting(this.mc, var2[0], var2.length > 1 ? this.func_4067_a(var2[1], 25565) : 25565));
+				this.mc.displayGuiScreen(new GuiConnecting(this.mc, serverAddress));
 			}
 
 		}
@@ -76,7 +77,7 @@ public class GuiMultiplayer extends GuiScreen {
 	protected void keyTyped(char var1, int var2) {
 		if(this.serverTextBox) {
 			if(var1 == 22) {
-				String var3 = GuiScreen.getClipboardString();
+				String var3 = null;
 				if(var3 == null) {
 					var3 = "";
 				}
@@ -106,11 +107,9 @@ public class GuiMultiplayer extends GuiScreen {
 			((GuiButton)this.controlList.get(0)).enabled = this.serverAddress.length() > 0 && this.username.length() > 0 && !this.serverAddress.isBlank() && !this.username.isBlank() && !this.serverAddress.isEmpty() && !this.username.isEmpty();
 		} else if(this.usernameTextBox) {
 			if(var1 == 22) {
-				String var3 = GuiScreen.getClipboardString();
+				String var3 = null;
 				if(var3 == null) {
 					var3 = "";
-				} else {
-					var3.replaceAll("[^a-zA-Z0-9]", "");
 				}
 
 				int var4 = 16 - this.username.length();
