@@ -11,7 +11,7 @@ public class RenderList {
 	private float field_1239_d;
 	private float field_1238_e;
 	private float field_1237_f;
-	private IntBuffer field_1236_g = GLAllocation.createDirectIntBuffer(65536);
+	private IntBuffer field_1236_g = GLAllocation.createDirectIntBuffer(4096);
 	private boolean field_1235_h = false;
 	private boolean field_1234_i = false;
 

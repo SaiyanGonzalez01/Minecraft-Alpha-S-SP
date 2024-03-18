@@ -14,53 +14,42 @@ public class ChunkLoader implements IChunkLoader {
 		this.createIfNecessary = var2;
 	}
 	
-	private String chunkFileForXZ(int var1, int var2) {
+	private String chunkFileForXZ_OLD(int var1, int var2) {
 		String var3 = "c." + Integer.toString(var1, 36) + "." + Integer.toString(var2, 36) + ".dat";
 		String var4 = Integer.toString(var1 & 63, 36);
 		String var5 = Integer.toString(var2 & 63, 36);
-		String var6;
-		if(saveDir.endsWith("/")) {
-			var6 = saveDir + var4;
+		String var6 = saveDir + "/" + var4 + "/" + var5 + "/" + var3;
+		
+		if(GL11.readFile(var6) != null) {
+			return var6;
 		} else {
-			var6 = saveDir + "/" + var4;
+			return null;
 		}
-		
-		byte[] data = GL11.readFile(var6);
-		
-		if(data == null) {
-			if(!this.createIfNecessary) {
-				return null;
-			}
+	}
+	
+	public static final String CHUNK_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-			GL11.writeFile(var6, new byte[0]);
+	public String chunkFileForXZ(int x, int z) {
+		boolean oldChunk = false;
+		String oldChunkPath = chunkFileForXZ_OLD(x, z);
+		if(oldChunkPath != null) {
+			oldChunk = true;
 		}
-
-		if(var6.endsWith("/")) {
-			var6 = var6 + var5;
-		} else {
-			var6 = var6 + "/" + var5;
+		int unsignedX = x + 30233088;
+		int unsignedZ = z + 30233088;
+		int radix = CHUNK_CHARS.length();
+		char[] path = new char[10];
+		for(int i = 0; i < 5; ++i) {
+			path[i * 2] = CHUNK_CHARS.charAt(unsignedX % radix);
+			unsignedX /= radix;
+			path[i * 2 + 1] = CHUNK_CHARS.charAt(unsignedZ % radix);
+			unsignedZ /= radix;
 		}
-		
-		data = null;
-		data = GL11.readFile(var6);
-		
-		if(data == null) {
-			if(!this.createIfNecessary) {
-				return null;
-			}
-
-			GL11.writeFile(var6, new byte[0]);
+		String s = this.saveDir + "/" + new String(path);
+		if(oldChunk) {
+			GL11.renameFile(oldChunkPath, s);
 		}
-		
-		if(var6.endsWith("/")) {
-			var6 = var6 + var3;
-		} else {
-			var6 = var6 + "/" + var3;
-		}
-		
-		data = null;
-		data = GL11.readFile(var6);
-		return data == null && !this.createIfNecessary ? null : var6;
+		return s;
 	}
 
 	public Chunk loadChunk(World var1, int var2, int var3) throws IOException {
