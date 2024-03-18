@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 import java.util.List;
 import java.util.Random;
 
+import net.PeytonPlayz585.glemu.GameOverlayFramebuffer;
 import net.PeytonPlayz585.input.Keyboard;
 import net.PeytonPlayz585.input.Mouse;
 import net.PeytonPlayz585.opengl.GL11;
@@ -26,9 +27,12 @@ public class EntityRenderer {
 	float field_4268_g;
 	private float field_1382_n;
 	private float field_1381_o;
+	
+	private GameOverlayFramebuffer overlayFramebuffer;
 
 	public EntityRenderer(Minecraft var1) {
 		this.mc = var1;
+		this.overlayFramebuffer = new GameOverlayFramebuffer();
 		this.field_1395_a = new ItemRenderer(var1);
 	}
 
@@ -293,7 +297,43 @@ public class EntityRenderer {
 			if(this.mc.theWorld != null) {
 				this.func_4134_c(var1);
 				if(!(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(2))) {
-					this.mc.ingameGUI.renderGameOverlay(var1, this.mc.currentScreen != null, var10, var11);
+					GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+					long framebufferAge = this.overlayFramebuffer.getAge();
+					if(framebufferAge == -1l || framebufferAge > (Minecraft.debugFPS < 25 ? 125l : 75l)) {
+						this.overlayFramebuffer.beginRender(mc.displayWidth, mc.displayHeight);
+						GL11.glColorMask(true, true, true, true);
+						GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+						GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+						GL11.enableOverlayFramebufferBlending(true);
+						this.mc.ingameGUI.renderGameOverlay(var1, this.mc.currentScreen != null, var10, var11);
+						GL11.enableOverlayFramebufferBlending(false);
+						this.overlayFramebuffer.endRender();
+						GL11.glClearColor(this.field_4270_e, this.field_4269_f, this.field_4268_g, 0.0F);
+					}
+					this.func_905_b();
+					GL11.glDisable(GL11.GL_LIGHTING);
+					GL11.glEnable(GL11.GL_BLEND);
+					if (Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+						this.mc.ingameGUI.func_4064_a(this.mc.thePlayer.getEntityBrightness(var1), var8, var9);
+					}
+					this.mc.ingameGUI.renderCrossHairs(var8, var9);
+					this.overlayFramebuffer.bindTexture();
+					GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+					GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					GL11.glDisable(GL11.GL_ALPHA_TEST);
+					GL11.glDisable(GL11.GL_DEPTH_TEST);
+					GL11.glDepthMask(false);
+					Tessellator tessellator = Tessellator.instance;
+					tessellator.startDrawingQuads();
+					tessellator.addVertexWithUV(0.0D, (double) var9, -90.0D, 0.0D, 0.0D);
+					tessellator.addVertexWithUV((double) var8, (double) var9, -90.0D, 1.0D, 0.0D);
+					tessellator.addVertexWithUV((double) var8, 0.0D, -90.0D, 1.0D, 1.0D);
+					tessellator.addVertexWithUV(0.0D, 0.0D, -90.0D, 0.0D, 1.0D);
+					tessellator.draw();
+					GL11.glDepthMask(true);
+					GL11.glEnable(GL11.GL_ALPHA_TEST);
+					GL11.glEnable(GL11.GL_DEPTH_TEST);
+					GL11.glDisable(GL11.GL_BLEND);
 				}
 			} else {
 				GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);

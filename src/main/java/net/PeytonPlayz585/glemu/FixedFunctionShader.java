@@ -2,11 +2,15 @@ package net.PeytonPlayz585.glemu;
 
 import static net.PeytonPlayz585.opengl.GL11.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.PeytonPlayz585.glemu.vector.*;
 
 public class FixedFunctionShader {
 
 	private static final FixedFunctionShader[] instances = new FixedFunctionShader[128];
+	private static final List<FixedFunctionShader> instanceList = new ArrayList();
 
 	public static void refreshCoreGL() {
 		for (int i = 0; i < instances.length; ++i) {
@@ -15,6 +19,7 @@ public class FixedFunctionShader {
 				instances[i] = null;
 			}
 		}
+		instanceList.clear();
 		shaderSource = null;
 	}
 
@@ -59,6 +64,7 @@ public class FixedFunctionShader {
 			}
 			s = new FixedFunctionShader(i, CC_a_color, CC_a_normal, CC_a_texture0, CC_lighting, CC_fog, CC_alphatest, CC_unit0);
 			instances[i] = s;
+			instanceList.add(s);
 		}
 		return s;
 	}
@@ -102,8 +108,7 @@ public class FixedFunctionShader {
 
 	private final int attributeIndexesToEnable;
 
-	public final BufferArrayGL genericArray;
-	public final BufferGL genericBuffer;
+	public final StreamBuffer streamBuffer;
 	public boolean bufferIsInitialized = false;
 
 	private FixedFunctionShader(int j, boolean CC_a_color, boolean CC_a_normal, boolean CC_a_texture0,
@@ -226,11 +231,11 @@ public class FixedFunctionShader {
 		_wglUniform1i(_wglGetUniformLocation(globject, "tex0"), 0);
 		u_texCoordV0 = _wglGetUniformLocation(globject, "texCoordV0");
 
-		genericArray = _wglCreateVertexArray();
-		genericBuffer = _wglCreateBuffer();
-		_wglBindVertexArray(genericArray);
-		_wglBindBuffer(_wGL_ARRAY_BUFFER, genericBuffer);
-		setupArrayForProgram();
+		streamBuffer = new StreamBuffer(0x8000, 3, 8, (vertexArray, vertexBuffer) -> {
+			_wglBindVertexArray0(vertexArray);
+			_wglBindBuffer(_wGL_ARRAY_BUFFER, vertexBuffer);
+			setupArrayForProgram();
+		});
 
 	}
 
@@ -257,6 +262,13 @@ public class FixedFunctionShader {
 
 	public void unuseProgram() {
 
+	}
+	
+	public static void optimize() {
+		FixedFunctionShader pp;
+		for(int i = 0, l = instanceList.size(); i < l; ++i) {
+			instanceList.get(i).streamBuffer.optimize();
+		}
 	}
 
 	private float[] modelBuffer = new float[16];

@@ -210,6 +210,7 @@ public class EaglerAdapterImpl2 {
 	public static final int _wGL_ELEMENT_ARRAY_BUFFER = GL15.GL_ELEMENT_ARRAY_BUFFER;
 	public static final int _wGL_STATIC_DRAW = GL15.GL_STATIC_DRAW;
 	public static final int _wGL_DYNAMIC_DRAW = GL15.GL_DYNAMIC_DRAW;
+	public static final int _wGL_STREAM_DRAW = GL15.GL_STREAM_DRAW;
 	public static final int _wGL_INVALID_ENUM = GL11.GL_INVALID_ENUM;
 	public static final int _wGL_INVALID_VALUE = GL11.GL_INVALID_VALUE;
 	public static final int _wGL_INVALID_OPERATION = GL11.GL_INVALID_OPERATION;
@@ -529,6 +530,10 @@ public class EaglerAdapterImpl2 {
 	public static final void _wglBufferData0(int p1, IntBuffer p2, int p3) {
 		GL15.glBufferData(p1, p2, p3);
 	}
+	
+	public static final void _wglBufferData00(int p1, long len, int p3) {
+		GL15.glBufferData(p1, len, p3);
+	}
 
 	public static final void _wglBufferSubData0(int p1, int p2, IntBuffer p3) {
 		GL15.glBufferSubData(p1, p2, p3);
@@ -674,6 +679,10 @@ public class EaglerAdapterImpl2 {
 		GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, p1, GL11.GL_TEXTURE_2D, p2.obj, 0);
 	}
 
+	public static final void _wglFramebufferTexture2D(int p1, TextureGL p2, int lvl) {
+		GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, p1, GL11.GL_TEXTURE_2D, p2.obj, lvl);
+	}
+	
 	public static final RenderbufferGL _wglCreateRenderBuffer() {
 		return new RenderbufferGL(GL30.glGenRenderbuffers());
 	}
@@ -746,7 +755,8 @@ public class EaglerAdapterImpl2 {
 		try {
 			BufferedImage img = ImageIO.read(new ByteArrayInputStream(data));
 			int[] pxls = img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0, img.getWidth());
-			return new EaglerImage(pxls, img.getWidth(), img.getHeight(), true);
+			IntBuffer buffer = IntBuffer.wrap(pxls);
+			return new EaglerImage(buffer, img.getWidth(), img.getHeight(), true);
 		} catch (IOException e) {
 			System.err.println("Could not load PNG file:");
 			e.printStackTrace();

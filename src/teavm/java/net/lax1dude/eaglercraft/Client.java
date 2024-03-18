@@ -52,7 +52,6 @@ public class Client {
     
     private static void run1() {
     	GL11.canvas.focus();
-    	GL11.canvasBack.focus();
     	instance.run();
     }
 

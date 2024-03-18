@@ -15,8 +15,8 @@ public class TextureWatchFX extends TextureFX {
 		EaglerImage bufferedimage = GL11.loadPNG(GL11.loadResourceBytes("/gui/items.png"));
 		int i = (field_1126_b % 16) * 16;
 		int j = (field_1126_b / 16) * 16;
-		field_4224_h = bufferedimage.getSubImage(i, j, 16, 16).data;
-		field_4223_i = GL11.loadPNG(GL11.loadResourceBytes("/misc/dial.png")).data;
+		field_4224_h = bufferedimage.getSubImage(i, j, 16, 16).data();
+		field_4223_i = GL11.loadPNG(GL11.loadResourceBytes("/misc/dial.png")).data();
 	}
 
 	public void func_783_a() {

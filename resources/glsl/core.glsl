@@ -1,9 +1,7 @@
 
-// eaglercraft opengl 1.3 emulation
-// copyright (c) 2020 calder young
-// creative commons BY-NC 4.0
+// copyright (c) 2020-2023 lax1dude
 
-#line 7
+#line 4
 
 precision highp int;
 precision highp sampler2D;
@@ -99,6 +97,8 @@ in vec2 v_texture0;
 
 out vec4 fragColor;
 
+#define TEX_MAT3x2(mat4In) mat3x2(mat4In[0].xy,mat4In[1].xy,mat4In[3].xy)
+
 void main(){
 #ifdef CC_a_color
 	vec4 color = colorUniform * v_color;
@@ -108,9 +108,9 @@ void main(){
 	
 #ifdef CC_unit0
 #ifdef CC_a_texture0
-	color *= texture(tex0, (matrix_t * vec4(v_texture0, 0.0, 1.0)).xy).rgba;
+	color *= texture(tex0, (TEX_MAT3x2(matrix_t) * vec3(v_texture0, 1.0)).xy).rgba;
 #else
-	color *= texture(tex0, (matrix_t * vec4(texCoordV0, 0.0, 1.0)).xy).rgba;
+	color *= texture(tex0, (TEX_MAT3x2(matrix_t) * vec3(texCoordV0, 1.0)).xy).rgba;
 #endif
 #endif
 
@@ -133,7 +133,7 @@ void main(){
 	
 #ifdef CC_fog
 	float dist = sqrt(dot(v_position, v_position));
-	float i = (fogMode == 1) ? clamp((dist - fogStart) / (fogEnd - fogStart), 0.0, 1.0) : clamp(1.0 - pow(2.718, -(fogDensity * dist)), 0.0, 1.0);
+	float i = (fogMode == 1) ? clamp((dist - fogStart) / (fogEnd - fogStart), 0.0, 1.0) : clamp(1.0 - exp(-(fogDensity * dist)), 0.0, 1.0);
 	color.rgb = mix(color.rgb, fogColor.xyz, i * fogColor.a);
 #endif
 	
@@ -141,4 +141,3 @@ void main(){
 }
 
 #endif
-

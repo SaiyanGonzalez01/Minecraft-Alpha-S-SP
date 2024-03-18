@@ -233,8 +233,8 @@ public class Tessellator {
 	 * integer).
 	 */
 	public void setColorOpaque_I(int par1) {
-		int var2 = par1 >> 16 & 255;
-		int var3 = par1 >> 8 & 255;
+		int var2 = par1 >>> 16 & 255;
+		int var3 = par1 >>> 8 & 255;
 		int var4 = par1 & 255;
 		this.setColorOpaque(var2, var3, var4);
 	}
@@ -244,8 +244,8 @@ public class Tessellator {
 	 * values.
 	 */
 	public void setColorRGBA_I(int par1, int par2) {
-		int var3 = par1 >> 16 & 255;
-		int var4 = par1 >> 8 & 255;
+		int var3 = par1 >>> 16 & 255;
+		int var4 = par1 >>> 8 & 255;
 		int var5 = par1 & 255;
 		this.setColorRGBA(var3, var4, var5, par2);
 	}
@@ -262,10 +262,10 @@ public class Tessellator {
 	 */
 	public void setNormal(float par1, float par2, float par3) {
 		this.hasNormals = true;
-		float len = (float) Math.sqrt(par1 * par1 + par2 * par2 + par3 * par3);
-		int var4 = (int)((par1 / len) * 127.0F) + 127;
-		int var5 = (int)((par2 / len) * 127.0F) + 127;
-		int var6 = (int)((par3 / len) * 127.0F) + 127;
+		//float len = (float) Math.sqrt(par1 * par1 + par2 * par2 + par3 * par3);
+		int var4 = (int)((par1) * 127.0F) + 127;
+		int var5 = (int)((par2) * 127.0F) + 127;
+		int var6 = (int)((par3) * 127.0F) + 127;
 		this.normal = var4 & 255 | (var5 & 255) << 8 | (var6 & 255) << 16;
 	}
 

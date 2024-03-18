@@ -15,6 +15,8 @@ import net.minecraft.src.GLAllocation;
 import net.minecraft.src.Vec3D;
 import net.PeytonPlayz585.glemu.vector.*;
 
+import static net.PeytonPlayz585.glemu.StreamBuffer.StreamBufferInstance;
+
 public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
 
 	public static final int GL_ZERO = RealOpenGLEnums.GL_ZERO;
@@ -547,7 +549,17 @@ public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
 
 	public static final void glBlendFunc(int p1, int p2) {
 		fogPremultiply = (p1 == GL_ONE && p2 == GL_ONE_MINUS_SRC_ALPHA);
-		_wglBlendFunc(p1, p2);
+		if(overlayFBOBlending) {
+			_wglBlendFuncSeparate(p1, p2, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		}else {
+			_wglBlendFunc(p1, p2);
+		}
+	}
+	
+	private static boolean overlayFBOBlending = false;
+
+	public static final void enableOverlayFramebufferBlending(boolean en) {
+		overlayFBOBlending = en;
 	}
 	
 	public static final void glBlendFuncSeparate(int p1, int p2, int p3, int p4) {
@@ -566,6 +578,10 @@ public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
 	public static final void glBindTexture(int p1, int p2) {
 		TextureGL t = texObjects.get(p2);
 		_wglBindTexture(_wGL_TEXTURE_2D, t);
+	}
+	
+	public static final void glBindTexture(int p1, TextureGL p2) {
+		_wglBindTexture(_wGL_TEXTURE_2D, p2);
 	}
 
 	public static final void glCopyTexSubImage2D(int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8) {
@@ -668,6 +684,18 @@ public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
 				_wglBindBuffer(_wGL_ARRAY_BUFFER, compilingDisplayList.glbuffer);
 				_wglBufferData(_wGL_ARRAY_BUFFER, upload, _wGL_STATIC_DRAW);
 				bytesUploaded += l;
+			}
+		}
+	}
+	
+	public static final void flushDisplayList(int p1) {
+		DisplayList d = displayListsInitialized.get(p1);
+		if (d != null) {
+			if (d.glbuffer != null) {
+				_wglDeleteBuffer(d.glbuffer);
+				_wglDeleteVertexArray(d.glarray);
+				d.glbuffer = null;
+				d.glarray = null;
 			}
 		}
 	}
@@ -836,13 +864,15 @@ public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
 				System.err.println("only GL_QUADS supported in a display list");
 			}
 		} else {
-			bytesUploaded += _wArrayByteLength(buffer);
+			int bl = _wArrayByteLength(buffer);
+			bytesUploaded += bl;
 			vertexDrawn += p3;
 
 			bindTheShader();
 
-			_wglBindVertexArray0(shader.genericArray);
-			_wglBindBuffer(_wGL_ARRAY_BUFFER, shader.genericBuffer);
+			StreamBufferInstance sb = shader.streamBuffer.getBuffer(bl);
+			_wglBindVertexArray0(sb.vertexArray);
+			_wglBindBuffer(_wGL_ARRAY_BUFFER, sb.vertexBuffer);
 			if (!shader.bufferIsInitialized) {
 				shader.bufferIsInitialized = true;
 				_wglBufferData(_wGL_ARRAY_BUFFER, blankUploadArray, _wGL_DYNAMIC_DRAW);
@@ -1177,6 +1207,10 @@ public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
 		default:
 			return "Unknown Error";
 		}
+	}
+	
+	public static final void optimize() {
+		FixedFunctionShader.optimize();
 	}
 
 	private static long lastBandwidthReset = 0l;

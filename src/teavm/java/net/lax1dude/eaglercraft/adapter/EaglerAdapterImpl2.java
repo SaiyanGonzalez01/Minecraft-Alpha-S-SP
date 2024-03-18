@@ -26,6 +26,7 @@ import org.teavm.jso.browser.TimerHandler;
 import org.teavm.jso.browser.Window;
 import org.teavm.jso.canvas.CanvasRenderingContext2D;
 import org.teavm.jso.canvas.ImageData;
+import org.teavm.jso.dom.css.CSSStyleDeclaration;
 import org.teavm.jso.dom.events.Event;
 import org.teavm.jso.dom.events.EventListener;
 import org.teavm.jso.dom.events.KeyboardEvent;
@@ -38,6 +39,7 @@ import org.teavm.jso.dom.html.HTMLElement;
 import org.teavm.jso.dom.html.HTMLImageElement;
 import org.teavm.jso.dom.html.HTMLInputElement;
 import org.teavm.jso.typedarrays.ArrayBuffer;
+import org.teavm.jso.typedarrays.DataView;
 import org.teavm.jso.typedarrays.Float32Array;
 import org.teavm.jso.typedarrays.Int32Array;
 import org.teavm.jso.typedarrays.Int8Array;
@@ -165,9 +167,10 @@ public class EaglerAdapterImpl2 {
 	public static HTMLDocument doc = null;
 	public static HTMLElement parent = null;
 	public static HTMLCanvasElement canvas = null;
-	public static CanvasRenderingContext2D canvasContext = null;
-	public static HTMLCanvasElement canvasBack = null;
 	public static WebGL2RenderingContext webgl = null;
+	public static FramebufferGL backBuffer = null;
+	public static RenderbufferGL backBufferColor = null;
+	public static RenderbufferGL backBufferDepth = null;
 	public static Window win = null;
 	private static byte[] loadedPackage = null;
 	private static EventListener contextmenu = null;
@@ -206,21 +209,24 @@ public class EaglerAdapterImpl2 {
 		win = Window.current();
 		doc = win.getDocument();
 		canvas = (HTMLCanvasElement)doc.createElement("canvas");
-		width = rootElement.getClientWidth();
-		height = rootElement.getClientHeight();
+		double r = win.getDevicePixelRatio();
+		width = (int)(rootElement.getClientWidth() * r);
+		height = (int)(rootElement.getClientHeight() * r);
 		canvas.setWidth(width);
 		canvas.setHeight(height);
-		canvasContext = (CanvasRenderingContext2D) canvas.getContext("2d");
 		canvas.setAttribute("id", "deevis589723589");
 		rootElement.appendChild(canvas);
-		canvasBack = (HTMLCanvasElement)doc.createElement("canvas");
-		canvasBack.setWidth(width);
-		canvasBack.setHeight(height);
-		webgl = (WebGL2RenderingContext) canvasBack.getContext("webgl2", youEagler());
+		CSSStyleDeclaration canvasStyle = canvas.getStyle();
+		canvasStyle.setProperty("width", "100%");
+		canvasStyle.setProperty("height", "100%");
+		canvasStyle.setProperty("image-rendering", "pixelated");
+		webgl = (WebGL2RenderingContext) canvas.getContext("webgl2", youEagler());
 		if(webgl == null) {
 			throw new RuntimeException("WebGL 2.0 is not supported in your browser ("+getUA()+")");
 		}
 		setContextVar(webgl);
+		setupBackBuffer();
+		resizeBackBuffer(width, height);
 		
 		webgl.getExtension("EXT_texture_filter_anisotropic");
 		
@@ -251,8 +257,9 @@ public class EaglerAdapterImpl2 {
 		});
 		canvas.addEventListener("mousemove", mousemove = new EventListener<MouseEvent>() {
 			public void handleEvent(MouseEvent evt) {
-				mouseX = getOffsetX(evt);
-				mouseY = canvas.getClientHeight() - getOffsetY(evt);
+				double r = win.getDevicePixelRatio();
+				mouseX = (int)(getOffsetX(evt) * r);
+				mouseY = (int)((canvas.getClientHeight() - getOffsetY(evt)) * r);
 				mouseDX += evt.getMovementX();
 				mouseDY += -evt.getMovementY();
 				evt.preventDefault();
@@ -356,7 +363,7 @@ public class EaglerAdapterImpl2 {
 	private static boolean enableRepeatEvents = false;
 	private static boolean isWindowFocused = true;
 	
-	@JSBody(params = { }, script = "return {antialias: false, depth: true, powerPreference: \"high-performance\", desynchronized: false, preserveDrawingBuffer: false, premultipliedAlpha: false, alpha: false};")
+	@JSBody(params = { }, script = "return {antialias: false, depth: true, powerPreference: \"high-performance\", desynchronized: true, preserveDrawingBuffer: false, premultipliedAlpha: false, alpha: false};")
 	public static native JSObject youEagler();
 	
 	public static final int _wGL_TEXTURE_2D = TEXTURE_2D;
@@ -416,6 +423,7 @@ public class EaglerAdapterImpl2 {
 	public static final int _wGL_ELEMENT_ARRAY_BUFFER = ELEMENT_ARRAY_BUFFER;
 	public static final int _wGL_STATIC_DRAW = STATIC_DRAW;
 	public static final int _wGL_DYNAMIC_DRAW = DYNAMIC_DRAW;
+	public static final int _wGL_STREAM_DRAW = STREAM_DRAW;
 	public static final int _wGL_INVALID_ENUM = INVALID_ENUM;
 	public static final int _wGL_INVALID_VALUE= INVALID_VALUE;
 	public static final int _wGL_INVALID_OPERATION = INVALID_OPERATION;
@@ -681,6 +689,9 @@ public class EaglerAdapterImpl2 {
 		Uint8Array data = Uint8Array.create(uploadBuffer.getBuffer(), 0, len*4);
 		webgl.bufferData(p1, data, p3);
 	}
+	public static final void _wglBufferData00(int p1, long len, int p3) {
+		webgl.bufferData(p1, (int)len, p3);
+	}
 	public static final void _wglBufferSubData0(int p1, int p2, IntBuffer p3) {
 		int len = p3.remaining();
 		Int32Array deevis = Int32Array.create(uploadBuffer.getBuffer());
@@ -773,7 +784,7 @@ public class EaglerAdapterImpl2 {
 		webgl.vertexAttribPointer(p1, p2, p3, p4, p5, p6);
 	}
 	public static final void _wglBindFramebuffer(int p1, FramebufferGL p2) {
-		webgl.bindFramebuffer(p1, p2 == null ? null : p2.obj);
+		webgl.bindFramebuffer(p1, p2 == null ? backBuffer.obj : p2.obj);
 	}
 	public static final FramebufferGL _wglCreateFramebuffer() {
 		return new FramebufferGL(webgl.createFramebuffer());
@@ -783,6 +794,9 @@ public class EaglerAdapterImpl2 {
 	}
 	public static final void _wglFramebufferTexture2D(int p1, TextureGL p2) {
 		webgl.framebufferTexture2D(FRAMEBUFFER, p1, TEXTURE_2D, p2 == null ? null : p2.obj, 0);
+	}
+	public static final void _wglFramebufferTexture2D(int p1, TextureGL p2, int p3) {
+		webgl.framebufferTexture2D(FRAMEBUFFER, p1, TEXTURE_2D, p2 == null ? null : p2.obj, p3);
 	}
 	public static final QueryGL _wglCreateQuery() { 
 		return new QueryGL(webgl.createQuery()); 
@@ -866,6 +880,9 @@ public class EaglerAdapterImpl2 {
 		Uint8Array.create(arr).set(data);
 		return loadPNG0(arr);
 	}
+	
+	@JSBody(params = { "cccc", "ennn" }, script = "cccc.imageSmoothingEnabled = ennn;")
+	private static native void setImageSmoothingMode(CanvasRenderingContext2D cc, boolean en);
 
 	@Async
 	private static native EaglerImage loadPNG0(ArrayBuffer data);
@@ -885,6 +902,7 @@ public class EaglerAdapterImpl2 {
 				}
 				if(imageLoadContext == null) {
 					imageLoadContext = (CanvasRenderingContext2D) imageLoadCanvas.getContext("2d");
+					setImageSmoothingMode(imageLoadContext, false);
 				}
 				imageLoadContext.clearRect(0, 0, toLoad.getWidth(), toLoad.getHeight());
 				imageLoadContext.drawImage(toLoad, 0, 0, toLoad.getWidth(), toLoad.getHeight());
@@ -896,11 +914,14 @@ public class EaglerAdapterImpl2 {
 					ret.complete(null);
 					return;
 				}
+				DataView dv = DataView.create(pxls.getBuffer());
 				int[] pixels = new int[totalPixels];
-				for(int i = 0; i < pixels.length; ++i) {
-					pixels[i] = (pxls.get(i * 4) << 16) | (pxls.get(i * 4 + 1) << 8) | pxls.get(i * 4 + 2) | (pxls.get(i * 4 + 3) << 24);
+				for(int i = 0, j; i < pixels.length; ++i) {
+					j = dv.getUint32(i << 2, false);
+					pixels[i] = ((j >> 8) & 0xFFFFFF) | ((j & 0xFF) << 24);
 				}
-				ret.complete(new EaglerImage(pixels, pxlsDat.getWidth(), pxlsDat.getHeight(), true));
+				IntBuffer buffer = IntBuffer.wrap(pixels);
+				ret.complete(new EaglerImage(buffer, pxlsDat.getWidth(), pxlsDat.getHeight(), true));
 			}
 		});
 		toLoad.addEventListener("error", new EventListener<Event>() {
@@ -1001,10 +1022,10 @@ public class EaglerAdapterImpl2 {
 		return mouseY;
 	}
 	public static final int mouseGetEventX() {
-		return currentEvent == null ? -1 : currentEvent.getClientX();
+		return currentEvent == null ? -1 : (int)(currentEvent.getClientX() * win.getDevicePixelRatio());
 	}
 	public static final int mouseGetEventY() {
-		return currentEvent == null ? -1 : canvas.getClientHeight() - currentEvent.getClientY();
+		return currentEvent == null ? -1 : (int)((canvas.getClientHeight() - currentEvent.getClientY()) * win.getDevicePixelRatio());
 	}
 	public static final boolean keysNext() {
 		if(unpressCTRL) { //un-press ctrl after copy/paste permission
@@ -1072,26 +1093,49 @@ public class EaglerAdapterImpl2 {
 		return isKeyDown(mod) && p1 >= 59 && p1 <= 67 & isKeyDown(2 + (p1 - 59));
 	}
 	
-	@JSBody(params = { "obj" }, script = "if(obj.commit) obj.commit();")
-	private static native int commitContext(JSObject obj);
-	
 	public static final void updateDisplay() {
-		commitContext(webgl);
-		canvasContext.drawImage(canvasBack, 0d, 0d, canvas.getWidth(), canvas.getHeight());
-		
-		int ww = canvas.getClientWidth();
-		int hh = canvas.getClientHeight();
-		if(ww != width || hh != height) {
-			width = ww;
-			height = hh;
-			canvasBack.setWidth(ww);
-			canvasBack.setHeight(hh);
+		double r = win.getDevicePixelRatio();
+		int w = (int)(canvas.getClientWidth() * r);
+		int h = (int)(canvas.getClientHeight() * r);
+		if(canvas.getWidth() != w) {
+			canvas.setWidth(w);
+		}
+		if(canvas.getHeight() != h) {
+			canvas.setHeight(h);
 		}
 		
+		webgl.bindFramebuffer(FRAMEBUFFER, null);
+		webgl.bindFramebuffer(READ_FRAMEBUFFER, backBuffer.obj);
+		webgl.bindFramebuffer(DRAW_FRAMEBUFFER, null);
+		webgl.blitFramebuffer(0, 0, backBufferWidth, backBufferHeight, 0, 0, w, h, COLOR_BUFFER_BIT, NEAREST);
+		webgl.bindFramebuffer(FRAMEBUFFER, backBuffer.obj);
+		resizeBackBuffer(w, h);
 		try {
 			Thread.sleep(1l);
 		} catch (InterruptedException e) {
 			;
+		}
+	}
+	public static final void setupBackBuffer() {
+		backBuffer = _wglCreateFramebuffer();
+		_wglBindFramebuffer(_wGL_FRAMEBUFFER, null);
+		backBufferColor = _wglCreateRenderBuffer();
+		_wglBindRenderbuffer(backBufferColor);
+		_wglFramebufferRenderbuffer(_wGL_COLOR_ATTACHMENT0, backBufferColor);
+		backBufferDepth = _wglCreateRenderBuffer();
+		_wglBindRenderbuffer(backBufferDepth);
+		_wglFramebufferRenderbuffer(_wGL_DEPTH_ATTACHMENT, backBufferDepth);
+	}
+	private static int backBufferWidth = -1;
+	private static int backBufferHeight = -1;
+	public static final void resizeBackBuffer(int w, int h) {
+		if(w != backBufferWidth || h != backBufferHeight) {
+			_wglBindRenderbuffer(backBufferColor);
+			_wglRenderbufferStorage(_wGL_RGBA8, w, h);
+			_wglBindRenderbuffer(backBufferDepth);
+			_wglRenderbufferStorage(_wGL_DEPTH_COMPONENT32F, w, h);
+			backBufferWidth = w;
+			backBufferHeight = h;
 		}
 	}
 	public static final void setVSyncEnabled(boolean p1) {
@@ -1127,22 +1171,10 @@ public class EaglerAdapterImpl2 {
 		return win.getScreen().getAvailHeight();
 	}
 	public static final int getCanvasWidth() {
-		int w = parent.getClientWidth();
-		if(w != width) {
-			canvas.setWidth(w);
-			canvasBack.setWidth(w);
-			width = w;
-		}
-		return w;
+		return (int)(parent.getClientWidth() * win.getDevicePixelRatio());
 	}
 	public static final int getCanvasHeight() {
-		int h = parent.getClientHeight();
-		if(h != height) {
-			canvas.setHeight(h);
-			canvasBack.setHeight(h);
-			height = h;
-		}
-		return h;
+		return (int)(parent.getClientHeight() * win.getDevicePixelRatio());
 	}
 	public static final void setDisplaySize(int x, int y) {
 		

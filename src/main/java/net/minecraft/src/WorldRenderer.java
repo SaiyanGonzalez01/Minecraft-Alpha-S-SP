@@ -158,6 +158,13 @@ public class WorldRenderer {
 			this.field_1737_F.removeAll(var21);
 			this.field_1747_A = Chunk.field_1540_a;
 			this.field_1739_E = true;
+			
+			if(field_1748_p[0]) {
+				GL11.flushDisplayList(field_1744_C);
+			}
+			if(field_1748_p[1]) {
+				GL11.flushDisplayList(field_1744_C + 1);
+			}
 		}
 	}
 
@@ -171,6 +178,8 @@ public class WorldRenderer {
 	public void func_1195_b() {
 		for(int var1 = 0; var1 < 2; ++var1) {
 			this.field_1748_p[var1] = true;
+			GL11.flushDisplayList(field_1744_C);
+			GL11.flushDisplayList(field_1744_C + 1);
 		}
 
 		this.field_1749_o = false;

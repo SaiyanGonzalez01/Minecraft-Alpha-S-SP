@@ -157,7 +157,7 @@ public class TextureCompassFX extends TextureFX {
 	public TextureCompassFX(Minecraft var1) {
 		super(Item.compass.getIconIndex(null));
 		field_1128_f = 1;
-		this.compassSpriteSheet = GL11.loadPNG(GL11.loadResourceBytes("/gui/items.png")).data;
+		this.compassSpriteSheet = GL11.loadPNG(GL11.loadResourceBytes("/gui/items.png")).data();
 		this.compassSpriteSheetLength = compassSpriteSheet.length / 256;
 	}
 	

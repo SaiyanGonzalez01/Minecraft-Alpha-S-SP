@@ -106,6 +106,8 @@ public class Minecraft implements Runnable {
 	long field_6287_N = System.currentTimeMillis();
 	private int field_6300_ab = 0;
 	private static Minecraft mc;
+	
+	public static int debugFPS;
 
 	public Minecraft() {
 		new ThreadSleepForever(this, "Timer hack thread");
@@ -190,6 +192,7 @@ public class Minecraft implements Runnable {
 		GL11.glAlphaFunc(516, 0.1F);
 		GL11.glFlush();
 		GL11.updateDisplay();
+		GL11.optimize();
 	}
 
 	public void func_6274_a(int var1, int var2, int var3, int var4, int var5, int var6) {
@@ -345,11 +348,14 @@ public class Minecraft implements Runnable {
 			}
 
 			this.checkGLError("Post render");
+			GL11.optimize();
 			++var3;
 
-			for(this.field_6316_m = true && this.currentScreen != null && this.currentScreen.doesGuiPauseGame(); System.currentTimeMillis() >= var1 + 1000L; var3 = 0) {
+			for(this.field_6316_m = true && this.currentScreen != null && this.currentScreen.doesGuiPauseGame(); System.currentTimeMillis() >= var1 + 1000L;) {
 				this.field_6292_I = var3 + " fps, " + WorldRenderer.field_1762_b + " chunk updates";
 				WorldRenderer.field_1762_b = 0;
+				debugFPS = var3;
+				var3 = 0;
 				var1 += 1000L;
 			}
 		}
