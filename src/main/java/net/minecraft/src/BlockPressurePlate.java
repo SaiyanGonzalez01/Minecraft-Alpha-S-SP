@@ -51,19 +51,19 @@ public class BlockPressurePlate extends Block {
 	}
 
 	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			if(var1.getBlockMetadata(var2, var3, var4) != 0) {
 				this.setStateIfMobInteractsWithPlate(var1, var2, var3, var4);
 			}
-		}
+		//}
 	}
 
 	public void onEntityCollidedWithBlock(World var1, int var2, int var3, int var4, Entity var5) {
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			if(var1.getBlockMetadata(var2, var3, var4) != 1) {
 				this.setStateIfMobInteractsWithPlate(var1, var2, var3, var4);
 			}
-		}
+		//}
 	}
 
 	private void setStateIfMobInteractsWithPlate(World var1, int var2, int var3, int var4) {

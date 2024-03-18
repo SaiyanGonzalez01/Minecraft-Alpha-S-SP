@@ -178,7 +178,7 @@ public class EntityItem extends Entity {
 	}
 
 	public void onCollideWithPlayer(EntityPlayer var1) {
-		if(!this.worldObj.multiplayerWorld) {
+		//if(!this.worldObj.multiplayerWorld) {
 			int var2 = this.item.stackSize;
 			if(this.field_805_c == 0 && var1.inventory.addItemStackToInventory(this.item)) {
 				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -186,6 +186,6 @@ public class EntityItem extends Entity {
 				this.setEntityDead();
 			}
 
-		}
+		//}
 	}
 }

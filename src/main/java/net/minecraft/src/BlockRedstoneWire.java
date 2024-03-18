@@ -149,7 +149,7 @@ public class BlockRedstoneWire extends Block {
 
 	public void onBlockAdded(World var1, int var2, int var3, int var4) {
 		super.onBlockAdded(var1, var2, var3, var4);
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			this.updateAndPropagateCurrentStrength(var1, var2, var3, var4);
 			var1.notifyBlocksOfNeighborChange(var2, var3 + 1, var4, this.blockID);
 			var1.notifyBlocksOfNeighborChange(var2, var3 - 1, var4, this.blockID);
@@ -181,12 +181,12 @@ public class BlockRedstoneWire extends Block {
 				this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 - 1, var4 + 1);
 			}
 
-		}
+		//}
 	}
 
 	public void onBlockRemoval(World var1, int var2, int var3, int var4) {
 		super.onBlockRemoval(var1, var2, var3, var4);
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			var1.notifyBlocksOfNeighborChange(var2, var3 + 1, var4, this.blockID);
 			var1.notifyBlocksOfNeighborChange(var2, var3 - 1, var4, this.blockID);
 			this.updateAndPropagateCurrentStrength(var1, var2, var3, var4);
@@ -218,7 +218,7 @@ public class BlockRedstoneWire extends Block {
 				this.notifyWireNeighborsOfNeighborChange(var1, var2, var3 - 1, var4 + 1);
 			}
 
-		}
+		//}
 	}
 
 	private int getMaxCurrentStrength(World var1, int var2, int var3, int var4, int var5) {
@@ -231,7 +231,7 @@ public class BlockRedstoneWire extends Block {
 	}
 
 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
 			boolean var7 = this.canPlaceBlockAt(var1, var2, var3, var4);
 			if(!var7) {
@@ -242,7 +242,7 @@ public class BlockRedstoneWire extends Block {
 			}
 
 			super.onNeighborBlockChange(var1, var2, var3, var4, var5);
-		}
+		//}
 	}
 
 	public int idDropped(int var1, Random var2) {

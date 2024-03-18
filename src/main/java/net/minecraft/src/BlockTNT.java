@@ -30,10 +30,10 @@ public class BlockTNT extends Block {
 	}
 
 	public void onBlockDestroyedByPlayer(World var1, int var2, int var3, int var4, int var5) {
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			EntityTNTPrimed var6 = new EntityTNTPrimed(var1, (double)((float)var2 + 0.5F), (double)((float)var3 + 0.5F), (double)((float)var4 + 0.5F));
 			var1.entityJoinedWorld(var6);
 			var1.playSoundAtEntity(var6, "random.fuse", 1.0F, 1.0F);
-		}
+		//}
 	}
 }

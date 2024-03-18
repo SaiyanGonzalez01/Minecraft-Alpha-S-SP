@@ -33,12 +33,12 @@ public class BlockJukeBox extends Block {
 	}
 
 	public void dropBlockAsItemWithChance(World var1, int var2, int var3, int var4, int var5, float var6) {
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			if(var5 > 0) {
 				this.ejectRecord(var1, var2, var3, var4, var5);
 			}
 
 			super.dropBlockAsItemWithChance(var1, var2, var3, var4, var5, var6);
-		}
+		//}
 	}
 }

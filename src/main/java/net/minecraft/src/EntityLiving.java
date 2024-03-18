@@ -108,7 +108,7 @@ public class EntityLiving extends Entity {
 			this.canAttackEntity((Entity)null, 1);
 		}
 
-		if(this.isImmuneToFire || this.worldObj.multiplayerWorld) {
+		if(this.isImmuneToFire) {
 			this.fire = 0;
 		}
 
@@ -299,9 +299,9 @@ public class EntityLiving extends Entity {
 	}
 
 	public boolean canAttackEntity(Entity var1, int var2) {
-		if(this.worldObj.multiplayerWorld) {
-			return false;
-		} else {
+		//if(this.worldObj.multiplayerWorld) {
+			//return false;
+		//} else {
 			this.field_9344_ag = 0;
 			if(this.health <= 0) {
 				return false;
@@ -355,7 +355,7 @@ public class EntityLiving extends Entity {
 
 				return true;
 			}
-		}
+		//}
 	}
 
 	public void func_9280_g() {
@@ -404,7 +404,7 @@ public class EntityLiving extends Entity {
 		}
 
 		this.field_9327_S = true;
-		if(!this.worldObj.multiplayerWorld) {
+		//if(!this.worldObj.multiplayerWorld) {
 			int var2 = this.getDropItemId();
 			if(var2 > 0) {
 				int var3 = this.rand.nextInt(3);
@@ -413,7 +413,7 @@ public class EntityLiving extends Entity {
 					this.dropItem(var2, 1);
 				}
 			}
-		}
+		//}
 
 		this.worldObj.func_9425_a(this, (byte)3);
 	}

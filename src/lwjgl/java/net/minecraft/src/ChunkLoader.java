@@ -6,19 +6,12 @@ import java.util.*;
 public class ChunkLoader implements IChunkLoader {
 
 	public ChunkLoader(String file, boolean flag) {
-		if(file != null) {
-			File file1 = new File("filesystem");
-			saveDir = new File(file1, file);
-		} else {
-			saveDir = null;
-		}
+		File file1 = new File("filesystem");
+		saveDir = new File(file1, file);
 		createIfNecessary = flag;
 	}
 
 	private File chunkFileForXZ(int i, int j) {
-		if(saveDir == null) {
-			return null;
-		}
 		String s = (new StringBuilder()).append("c.").append(Integer.toString(i, 36)).append(".").append(Integer.toString(j, 36)).append(".dat").toString();
 		String s1 = Integer.toString(i & 0x3f, 36);
 		String s2 = Integer.toString(j & 0x3f, 36);
@@ -47,9 +40,6 @@ public class ChunkLoader implements IChunkLoader {
 	}
 
 	public Chunk loadChunk(World world, int i, int j) {
-		if(saveDir == null) {
-			return null;
-		}
 		File file = chunkFileForXZ(i, j);
 		if (file != null && file.exists()) {
 			try {
@@ -84,9 +74,6 @@ public class ChunkLoader implements IChunkLoader {
 	}
 
 	public void saveChunk(World world, Chunk chunk) {
-		if(saveDir == null) {
-			return;
-		}
 		world.func_663_l();
 		File file = chunkFileForXZ(chunk.xPosition, chunk.zPosition);
 		if (file.exists()) {

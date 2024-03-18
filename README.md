@@ -20,9 +20,11 @@ The textures are compiled into `resources.mc` using [Laxdude](https://github.com
 As of right now there is no system to compile an offline download, so you will have to manually copy and paste the javascript from `web/js/app.js` into the HTML file, for the `resources.mc` just encode the file using [Base64](https://www.base64encode.org/) and paste it into the assets div.
 
 # Muliplayer
-Multiplayer has been removed because I am too lazy to rewrite it, unless you're planning on porting it yourself, do NOT ask for multiplayer, it will NOT be added anytime soon! 
+Multiplayer has been successfully rewritten and thoroughly tested. It seems to be pretty stable but it had to be removed due to a glitch in Singleplayer's chunk loading, the issue lies within Alpha's multiplayer code somewhere and I am unable to pinpoint the exact cause of the issue so until I am able to figure it out, multiplayer will not be avalible.
 
-If you do want to try to port it then I would recommend using a diff of Alpha v1.2.6 and this project to port the original code back over, all packet classes and networking code has been completely removed.
+If you are really impatient and cannot wait then go through the commit history and find commit 62af5c9 titled "oops" and download the offline download from there, **THIS VERSION IS BUGGED AND CHUNK LOADING IN SINGLEPLAYER IS EXTREMELY BUGGY, SOME CHUNKS MAY NOT EVEN SAVE AT ALL!**
+
+If you do decide to use this version (not recommended) just download the Alpha v1.2.6 server software from web archive and use websockify to proxy it to websockets.
 
 # Texture Packs
 This is pretty much self explanitory, just make sure the textures have the same structure as in `resources/`, and then add it to a ZIP file, if a texture pack does not work then most likely it is not for this version of Minecraft. You're probably gonna have to make your own texture pack, texture packs for Alpha are very rare these days.

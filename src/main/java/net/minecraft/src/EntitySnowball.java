@@ -120,7 +120,7 @@ public class EntitySnowball extends Entity {
 			var2 = Vec3D.createVector(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
 		}
 
-		if(!this.worldObj.multiplayerWorld) {
+		//if(!this.worldObj.multiplayerWorld) {
 			Entity var4 = null;
 			List var5 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expands(1.0D, 1.0D, 1.0D));
 			double var6 = 0.0D;
@@ -144,7 +144,7 @@ public class EntitySnowball extends Entity {
 			if(var4 != null) {
 				var3 = new MovingObjectPosition(var4);
 			}
-		}
+		//}
 
 		if(var3 != null) {
 			if(var3.entityHit != null && var3.entityHit.canAttackEntity(this.field_811_g, 0)) {

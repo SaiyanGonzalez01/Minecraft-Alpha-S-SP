@@ -52,15 +52,15 @@ public class BlockMinecartTrack extends Block {
 	}
 
 	public void onBlockAdded(World var1, int var2, int var3, int var4) {
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			var1.setBlockMetadataWithNotify(var2, var3, var4, 15);
 			this.func_4031_h(var1, var2, var3, var4);
-		}
+		//}
 
 	}
 
 	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
 			boolean var7 = false;
 			if(!var1.isBlockOpaqueCube(var2, var3 - 1, var4)) {
@@ -90,12 +90,12 @@ public class BlockMinecartTrack extends Block {
 				this.func_4031_h(var1, var2, var3, var4);
 			}
 
-		}
+		//}
 	}
 
 	private void func_4031_h(World var1, int var2, int var3, int var4) {
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			(new MinecartTrackLogic(this, var1, var2, var3, var4)).func_792_a(var1.isBlockIndirectlyGettingPowered(var2, var3, var4));
-		}
+		//}
 	}
 }

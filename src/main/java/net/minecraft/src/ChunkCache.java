@@ -117,11 +117,8 @@ public class ChunkCache implements IBlockAccess {
 	}
 
 	public boolean isBlockOpaqueCube(int var1, int var2, int var3) {
-		if(!(this.getBlockId(var1, var2, var3) < 0)) {
-			Block var4 = Block.blocksList[this.getBlockId(var1, var2, var3)];
-			return var4 == null ? false : var4.isOpaqueCube();
-		}
-		return false;
+		Block var4 = Block.blocksList[this.getBlockId(var1, var2, var3)];
+		return var4 == null ? false : var4.isOpaqueCube();
 	}
 
 	public WorldChunkManager func_4075_a() {

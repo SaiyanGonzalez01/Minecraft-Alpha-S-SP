@@ -109,7 +109,7 @@ public class TileEntityFurnace extends TileEntity implements IInventory {
 			--this.furnaceBurnTime;
 		}
 
-		if(!this.worldObj.multiplayerWorld) {
+		//if(!this.worldObj.multiplayerWorld) {
 			if(this.furnaceBurnTime == 0 && this.canSmelt()) {
 				this.currentItemBurnTime = this.furnaceBurnTime = this.getItemBurnTime(this.furnaceItemStacks[1]);
 				if(this.furnaceBurnTime > 0) {
@@ -138,7 +138,7 @@ public class TileEntityFurnace extends TileEntity implements IInventory {
 				var2 = true;
 				BlockFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 			}
-		}
+		//}
 
 		if(var2) {
 			this.onInventoryChanged();

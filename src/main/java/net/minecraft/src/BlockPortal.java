@@ -131,9 +131,9 @@ public class BlockPortal extends BlockBreakable {
 	}
 
 	public void onEntityCollidedWithBlock(World var1, int var2, int var3, int var4, Entity var5) {
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			var5.func_4039_q();
-		}
+		//}
 	}
 
 	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {

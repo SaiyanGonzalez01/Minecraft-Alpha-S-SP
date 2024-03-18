@@ -232,14 +232,14 @@ public class EntityArrow extends Entity {
 	}
 
 	public void onCollideWithPlayer(EntityPlayer var1) {
-		if(!this.worldObj.multiplayerWorld) {
+		//if(!this.worldObj.multiplayerWorld) {
 			if(this.inGround && this.field_682_g == var1 && this.arrowShake <= 0 && var1.inventory.addItemStackToInventory(new ItemStack(Item.arrow.shiftedIndex, 1))) {
 				this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				var1.func_443_a_(this, 1);
 				this.setEntityDead();
 			}
 
-		}
+		//}
 	}
 
 	public float func_392_h_() {

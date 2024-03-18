@@ -135,7 +135,7 @@ public class EntityFish extends Entity {
 			this.setPosition(var21, var22, var23);
 			this.setRotation(this.rotationYaw, this.rotationPitch);
 		} else {
-			if(!this.worldObj.multiplayerWorld) {
+			//if(!this.worldObj.multiplayerWorld) {
 				ItemStack var1 = this.field_4097_b.getCurrentEquippedItem();
 				if(this.field_4097_b.isDead || !this.field_4097_b.isEntityAlive() || var1 == null || var1.getItem() != Item.fishingRod || this.getDistanceSqToEntity(this.field_4097_b) > 1024.0D) {
 					this.setEntityDead();
@@ -153,7 +153,7 @@ public class EntityFish extends Entity {
 
 					this.field_4096_c = null;
 				}
-			}
+			//}
 
 			if(this.field_4098_a > 0) {
 				--this.field_4098_a;

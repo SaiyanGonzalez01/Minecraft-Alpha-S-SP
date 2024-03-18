@@ -65,7 +65,7 @@ public class EntityMinecart extends Entity implements IInventory {
 	}
 
 	public boolean canAttackEntity(Entity var1, int var2) {
-		if(!this.worldObj.multiplayerWorld && !this.isDead) {
+		if(!this.isDead) {
 			this.c = -this.c;
 			this.b = 10;
 			this.func_9281_M();
@@ -136,30 +136,30 @@ public class EntityMinecart extends Entity implements IInventory {
 		}
 
 		double var7;
-		if(this.worldObj.multiplayerWorld && this.field_9415_k > 0) {
-			if(this.field_9415_k > 0) {
-				double var41 = this.posX + (this.field_9414_l - this.posX) / (double)this.field_9415_k;
-				double var42 = this.posY + (this.field_9413_m - this.posY) / (double)this.field_9415_k;
-				double var5 = this.posZ + (this.field_9412_n - this.posZ) / (double)this.field_9415_k;
+		//if(this.worldObj.multiplayerWorld && this.field_9415_k > 0) {
+			//if(this.field_9415_k > 0) {
+				//double var41 = this.posX + (this.field_9414_l - this.posX) / (double)this.field_9415_k;
+				//double var42 = this.posY + (this.field_9413_m - this.posY) / (double)this.field_9415_k;
+				//double var5 = this.posZ + (this.field_9412_n - this.posZ) / (double)this.field_9415_k;
 
-				for(var7 = this.field_9411_o - (double)this.rotationYaw; var7 < -180.0D; var7 += 360.0D) {
-				}
+				//for(var7 = this.field_9411_o - (double)this.rotationYaw; var7 < -180.0D; var7 += 360.0D) {
+				//}
 
-				while(var7 >= 180.0D) {
-					var7 -= 360.0D;
-				}
+				//while(var7 >= 180.0D) {
+					//var7 -= 360.0D;
+				//}
 
-				this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.field_9415_k);
-				this.rotationPitch = (float)((double)this.rotationPitch + (this.field_9410_p - (double)this.rotationPitch) / (double)this.field_9415_k);
-				--this.field_9415_k;
-				this.setPosition(var41, var42, var5);
-				this.setRotation(this.rotationYaw, this.rotationPitch);
-			} else {
-				this.setPosition(this.posX, this.posY, this.posZ);
-				this.setRotation(this.rotationYaw, this.rotationPitch);
-			}
+				//this.rotationYaw = (float)((double)this.rotationYaw + var7 / (double)this.field_9415_k);
+				//this.rotationPitch = (float)((double)this.rotationPitch + (this.field_9410_p - (double)this.rotationPitch) / (double)this.field_9415_k);
+				//--this.field_9415_k;
+				//this.setPosition(var41, var42, var5);
+				//this.setRotation(this.rotationYaw, this.rotationPitch);
+			//} else {
+				//this.setPosition(this.posX, this.posY, this.posZ);
+				//this.setRotation(this.rotationYaw, this.rotationPitch);
+			//}
 
-		} else {
+		//} else {
 			this.prevPosX = this.posX;
 			this.prevPosY = this.posY;
 			this.prevPosZ = this.posZ;
@@ -408,7 +408,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				this.worldObj.spawnParticle("largesmoke", this.posX, this.posY + 0.8D, this.posZ, 0.0D, 0.0D, 0.0D);
 			}
 
-		}
+		//}
 	}
 
 	public Vec3D func_515_a(double var1, double var3, double var5, double var7) {
@@ -551,7 +551,7 @@ public class EntityMinecart extends Entity implements IInventory {
 	}
 
 	public void applyEntityCollision(Entity var1) {
-		if(!this.worldObj.multiplayerWorld) {
+		//if(!this.worldObj.multiplayerWorld) {
 			if(var1 != this.riddenByEntity) {
 				if(var1 instanceof EntityLiving && !(var1 instanceof EntityPlayer) && this.d == 0 && this.motionX * this.motionX + this.motionZ * this.motionZ > 0.01D && this.riddenByEntity == null && var1.ridingEntity == null) {
 					var1.mountEntity(this);
@@ -609,7 +609,7 @@ public class EntityMinecart extends Entity implements IInventory {
 				}
 
 			}
-		}
+		//}
 	}
 
 	public int getSizeInventory() {
@@ -665,9 +665,9 @@ public class EntityMinecart extends Entity implements IInventory {
 				return true;
 			}
 
-			if(!this.worldObj.multiplayerWorld) {
+			//if(!this.worldObj.multiplayerWorld) {
 				var1.mountEntity(this);
-			}
+			//}
 		} else if(this.d == 1) {
 			var1.displayGUIChest(this);
 		} else if(this.d == 2) {

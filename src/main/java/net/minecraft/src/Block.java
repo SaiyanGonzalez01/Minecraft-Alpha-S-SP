@@ -290,7 +290,7 @@ public class Block {
 	}
 
 	public void dropBlockAsItemWithChance(World var1, int var2, int var3, int var4, int var5, float var6) {
-		if(!var1.multiplayerWorld) {
+		//if(!var1.multiplayerWorld) {
 			int var7 = this.quantityDropped(var1.rand);
 
 			for(int var8 = 0; var8 < var7; ++var8) {
@@ -308,7 +308,7 @@ public class Block {
 				}
 			}
 
-		}
+		//}
 	}
 
 	public float func_227_a(Entity var1) {

@@ -18,11 +18,10 @@ public class GameSettings {
 			File file1 = new File("filesystem");
 			File file = new File(file1, "options.txt");
 			if(!file.exists()) {
-				file.createNewFile();
 				return;
 			}
 			
-			byte[] fileData = new byte[(int) file.length()];
+			byte[] fileData = new byte[0];
 			try (FileInputStream fis = new FileInputStream(file)) {
 		        fis.read(fileData);
 		    } catch(IOException e) {
@@ -93,10 +92,6 @@ public class GameSettings {
 				if(var3[0].equals("lastServer")) {
 					Minecraft.getMinecraft().gameSettings.field_12259_z = var3[1];
 				}
-				
-				if(var3[0].equals("username")) {
-					Minecraft.getMinecraft().gameSettings.username = var3[1];
-				}
 
 				for(int var4 = 0; var4 < Minecraft.getMinecraft().gameSettings.keyBindings.length; ++var4) {
 					if(var3[0].equals("key_" + Minecraft.getMinecraft().gameSettings.keyBindings[var4].keyDescription)) {
@@ -129,12 +124,6 @@ public class GameSettings {
 		var1.println("difficulty:" + Minecraft.getMinecraft().gameSettings.difficulty);
 		var1.println("fancyGraphics:" + Minecraft.getMinecraft().gameSettings.fancyGraphics);
 		var1.println("skin:" + Minecraft.getMinecraft().gameSettings.skin);
-		if(Minecraft.getMinecraft().gameSettings.field_12259_z.length() != 0) {
-			var1.println("lastServer:" + Minecraft.getMinecraft().gameSettings.field_12259_z);
-		}
-		if(Minecraft.getMinecraft().gameSettings.username.length() != 0) {
-			var1.println("username:" + Minecraft.getMinecraft().gameSettings.username);
-		}
 
 		for(int var2 = 0; var2 < Minecraft.getMinecraft().gameSettings.keyBindings.length; ++var2) {
 			var1.println("key_" + Minecraft.getMinecraft().gameSettings.keyBindings[var2].keyDescription + ":" + Minecraft.getMinecraft().gameSettings.keyBindings[var2].keyCode);

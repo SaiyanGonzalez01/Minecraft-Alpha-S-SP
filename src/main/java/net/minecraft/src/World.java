@@ -60,7 +60,6 @@ public class World implements IBlockAccess {
 	private Set field_9427_K;
 	private int field_9426_L;
 	private List field_1012_M;
-	public boolean multiplayerWorld;
 
 	public static NBTTagCompound func_629_a(String var1) {
 		if(!GL11.isWebGL) {
@@ -141,7 +140,6 @@ public class World implements IBlockAccess {
 		this.field_9427_K = new HashSet();
 		this.field_9426_L = this.rand.nextInt(12000);
 		this.field_1012_M = new ArrayList();
-		this.multiplayerWorld = false;
 		this.field_9431_w = var1;
 		this.randomSeed = var3;
 		this.worldProvider = var2;
@@ -177,7 +175,6 @@ public class World implements IBlockAccess {
 		this.field_9427_K = new HashSet();
 		this.field_9426_L = this.rand.nextInt(12000);
 		this.field_1012_M = new ArrayList();
-		this.multiplayerWorld = false;
 		this.field_1054_E = var1.field_1054_E;
 		this.field_9433_s = var1.field_9433_s;
 		this.field_9432_t = var1.field_9432_t;
@@ -225,7 +222,6 @@ public class World implements IBlockAccess {
 		this.field_9427_K = new HashSet();
 		this.field_9426_L = this.rand.nextInt(12000);
 		this.field_1012_M = new ArrayList();
-		this.multiplayerWorld = false;
 		this.field_9433_s = var1;
 		this.field_9431_w = var2;
 		if(!GL11.isWebGL) {
@@ -630,7 +626,7 @@ public class World implements IBlockAccess {
 	}
 
 	private void notifyBlockOfNeighborChange(int var1, int var2, int var3, int var4) {
-		if(!this.field_1043_h && !this.multiplayerWorld) {
+		if(!this.field_1043_h) {
 			Block var5 = Block.blocksList[this.getBlockId(var1, var2, var3)];
 			if(var5 != null) {
 				var5.onNeighborBlockChange(this, var1, var2, var3, var4);
