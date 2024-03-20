@@ -19,7 +19,7 @@ The textures are compiled into `resources.mc` using [Laxdude](https://github.com
 ### Offline Download
 As of right now there is no system to compile an offline download, so you will have to manually copy and paste the javascript from `web/js/app.js` into the HTML file, for the `resources.mc` just encode the file using [Base64](https://www.base64encode.org/) and paste it into the assets div.
 
-# Muliplayer
+# Multiplayer
 Multiplayer has been successfully rewritten and thoroughly tested. It seems to be pretty stable but it had to be removed due to a glitch in Singleplayer's chunk loading, the issue lies within Alpha's multiplayer code somewhere and I am unable to pinpoint the exact cause of the issue so until I am able to figure it out, multiplayer will not be avalible.
 
 If you are really impatient and cannot wait then go through the commit history and find commit 62af5c9 titled "oops" and download the offline download from there, **THIS VERSION IS BUGGED AND CHUNK LOADING IN SINGLEPLAYER IS EXTREMELY BROKEN, SOME (IF NOT MOST) CHUNKS MAY NOT EVEN SAVE AT ALL!**
