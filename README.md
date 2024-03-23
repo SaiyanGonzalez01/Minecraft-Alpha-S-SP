@@ -29,6 +29,11 @@ If you do decide to use this version (not recommended) just download the Alpha v
 # Texture Packs
 This is pretty much self explanitory, just make sure that the texture pack has the same file structure as in `resources/`, and then add the files to a ZIP archive, if a texture pack does not work then most likely it is not for this version of Minecraft. You're probably gonna have to make your own texture pack because texture packs for Alpha are very rare these days.
 
+# Hosting a client
+If you make your own client or just want to host one yourself just upload the contents of the `web/` folder to a web server, I use [Simple Web Server](https://simplewebserver.org/) but feel free to use any web server. You can also use NGROK if you want, just set the file location to the web folder.
+
+Note: For multiplayer to work over https (wss), you will need a valid SSL certificate.
+
 # How to decompile older Minecraft versions
 To decompile older Minecraft versions you can use RetroMCP!
 
