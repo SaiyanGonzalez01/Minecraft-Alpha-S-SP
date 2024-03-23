@@ -15,7 +15,7 @@ This is based off of real Minecraft Alpha v1.2.6, the decompiled source code has
 After modifying files in `src/main/java` you can compile your changes to the javascript client by running `gradlew generatejavascript`, for linux run `./gradlew generatejavascript`. This will then transpile the Java code into javascript files in `web/js/`.
 
 ### Textures
-The textures are compiled into `resources.mc` using [Laxdude](https://github.com/lax1dude)'s EPK Compiler. The resources are located in `resources/`, after modifying the resources you can compile them using `CompileEPK`, and for Linux use `./CompileEPK.sh`.
+The textures are compiled into `resources.mc` using [laxdude](https://github.com/lax1dude)'s EPK Compiler. The resources are located in `resources/`, after modifying the resources you can compile them using `CompileEPK`, and for Linux use `./CompileEPK.sh`.
 
 ### Offline Download
 As of right now there is no system to compile an offline download, so you will have to manually copy and paste the javascript from `web/js/app.js` into the HTML file, for the `resources.mc` just encode the file using [Base64](https://www.base64encode.org/) and paste it into the assets div.
@@ -42,7 +42,7 @@ RetroMCP is a rewrite of MCP that adds support for many different older versions
 
 # Code used within this project
 
-- Modified version of Lax1dude's OpenGL Emulator
+- Modified version of lax1dude's OpenGL Emulator
 - Eaglercraft 1.5.2 service pack
 - Eaglercraft beta 1.3 service pack
 - Decompiled Minecraft Alpha v1.2.6 source code
