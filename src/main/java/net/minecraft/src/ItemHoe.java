@@ -15,9 +15,9 @@ public class ItemHoe extends Item {
 		} else {
 			Block var10 = Block.tilledField;
 			var3.playSoundEffect((double)((float)var4 + 0.5F), (double)((float)var5 + 0.5F), (double)((float)var6 + 0.5F), var10.stepSound.func_1145_d(), (var10.stepSound.func_1147_b() + 1.0F) / 2.0F, var10.stepSound.func_1144_c() * 0.8F);
-			//if(var3.multiplayerWorld) {
-				//return true;
-			//} else {
+			if(var3.multiplayerWorld) {
+				return true;
+			} else {
 				var3.setBlockWithNotify(var4, var5, var6, var10.blockID);
 				var1.damageItem(1);
 				if(var3.rand.nextInt(8) == 0 && var8 == Block.grass.blockID) {
@@ -35,7 +35,7 @@ public class ItemHoe extends Item {
 				}
 
 				return true;
-			//}
+			}
 		}
 	}
 

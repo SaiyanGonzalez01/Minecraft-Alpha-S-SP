@@ -14,6 +14,7 @@ import net.minecraft.src.EntityRenderer;
 import net.minecraft.src.FontRenderer;
 import net.minecraft.src.GLAllocation;
 import net.minecraft.src.GameSettings;
+import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiConflictWarning;
 import net.minecraft.src.GuiGameOver;
 import net.minecraft.src.GuiIngame;
@@ -289,17 +290,13 @@ public class Minecraft implements Runnable {
 			this.sndManager.func_338_a(this.thePlayer, this.timer.renderPartialTicks);
 			this.checkGLError("Pre render");
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			if(this.theWorld != null) {
+			if(this.theWorld != null  && !this.theWorld.multiplayerWorld) {
 				while(this.theWorld.func_6465_g()) {
 				}
 			}
-
-			if(this.gameSettings.limitFramerate) {
-				try {
-					Thread.sleep(5L);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+			
+			if(this.theWorld != null && this.theWorld.multiplayerWorld) {
+				this.theWorld.func_6465_g();
 			}
 					
 			if(!(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(8))) {
@@ -351,7 +348,7 @@ public class Minecraft implements Runnable {
 			GL11.optimize();
 			++var3;
 
-			for(this.field_6316_m = true && this.currentScreen != null && this.currentScreen.doesGuiPauseGame(); System.currentTimeMillis() >= var1 + 1000L;) {
+			for(this.field_6316_m = !this.isMultiplayerWorld() && this.currentScreen != null && this.currentScreen.doesGuiPauseGame(); System.currentTimeMillis() >= var1 + 1000L;) {
 				this.field_6292_I = var3 + " fps, " + WorldRenderer.field_1762_b + " chunk updates";
 				WorldRenderer.field_1762_b = 0;
 				debugFPS = var3;
@@ -715,6 +712,10 @@ public class Minecraft implements Runnable {
 											if(Keyboard.getEventKey() == this.gameSettings.keyBindDrop.keyCode) {
 												this.thePlayer.dropPlayerItemWithRandomChoice(this.thePlayer.inventory.decrStackSize(this.thePlayer.inventory.currentItem, 1), false);
 											}
+											
+											if(this.isMultiplayerWorld() && Keyboard.getEventKey() == this.gameSettings.keyBindChat.keyCode) {
+												this.displayGuiScreen(new GuiChat());
+											}
 										}
 
 										for(int var4 = 0; var4 < 9; ++var4) {
@@ -774,6 +775,9 @@ public class Minecraft implements Runnable {
 			}
 
 			this.theWorld.difficultySetting = this.gameSettings.difficulty;
+			if(this.theWorld.multiplayerWorld) {
+				this.theWorld.difficultySetting = 3;
+			}
 
 			if(!this.field_6316_m) {
 				this.field_9243_r.func_911_a();
@@ -787,7 +791,7 @@ public class Minecraft implements Runnable {
 				this.theWorld.func_633_c();
 			}
 
-			if(!this.field_6316_m) {
+			if(!this.field_6316_m || this.isMultiplayerWorld()) {
 				this.theWorld.tick();
 			}
 
@@ -801,6 +805,10 @@ public class Minecraft implements Runnable {
 		}
 
 		this.field_6287_N = System.currentTimeMillis();
+	}
+	
+	public boolean isMultiplayerWorld() {
+		return this.theWorld != null && this.theWorld.multiplayerWorld;
 	}
 
 	public void func_6247_b(String var1) {
@@ -869,15 +877,20 @@ public class Minecraft implements Runnable {
 		System.out.println("Player is " + this.thePlayer);
 		if(var1 != null) {
 			this.field_6327_b.func_717_a(var1);
-			//if(!this.isMultiplayerWorld()) {
+			if(!this.isMultiplayerWorld()) {
 				if(var3 == null) {
 					this.thePlayer = (EntityPlayerSP)var1.func_4085_a(EntityPlayerSP.class);
 				}
-			//}
+			} else if(this.thePlayer != null) {
+				this.thePlayer.preparePlayerToSpawn();
+				if(var1 != null) {
+					var1.entityJoinedWorld(this.thePlayer);
+				}
+			}
 
-			//if(!var1.multiplayerWorld) {
+			if(!var1.multiplayerWorld) {
 				this.func_6255_d(var2);
-			//}
+			}
 
 			System.out.println("Player is now " + this.thePlayer);
 			if(this.thePlayer == null) {

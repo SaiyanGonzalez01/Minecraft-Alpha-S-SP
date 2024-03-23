@@ -15,6 +15,9 @@ public class ChunkLoader implements IChunkLoader {
 	}
 	
 	private String chunkFileForXZ_OLD(int var1, int var2) {
+		if(saveDir == null) {
+			return null;
+		}
 		String var3 = "c." + Integer.toString(var1, 36) + "." + Integer.toString(var2, 36) + ".dat";
 		String var4 = Integer.toString(var1 & 63, 36);
 		String var5 = Integer.toString(var2 & 63, 36);
@@ -30,6 +33,9 @@ public class ChunkLoader implements IChunkLoader {
 	public static final String CHUNK_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	public String chunkFileForXZ(int x, int z) {
+		if(saveDir == null) {
+			return null;
+		}
 		boolean oldChunk = false;
 		String oldChunkPath = chunkFileForXZ_OLD(x, z);
 		if(oldChunkPath != null) {
@@ -52,37 +58,32 @@ public class ChunkLoader implements IChunkLoader {
 		return s;
 	}
 
-	public Chunk loadChunk(World var1, int var2, int var3) throws IOException {
-		String var4 = this.chunkFileForXZ(var2, var3);
-		if(GL11.readFile(var4) != null) {
+	public Chunk loadChunk(World var1, int x, int z) throws IOException {
+		if(saveDir == null) {
+			return null;
+		}
+		String var4 = this.chunkFileForXZ(x, z);
+		byte[] data = GL11.readFile(var4);
+		if(data != null) {
 			try {
-				byte[] data = GL11.readFile(var4);
-				ByteArrayInputStream var5 = new ByteArrayInputStream(data);
 				NBTTagCompound var6;
 				if(GL11.isCompressed(data)) {
-					var6 = CompressedStreamTools.func_1138_a(var5);
+					var6 = CompressedStreamTools.func_1138_a(new ByteArrayInputStream(data));
 				} else {
-					var6 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(var5));
+					var6 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(new ByteArrayInputStream(data)));
 				}
-				if(!var6.hasKey("Level")) {
-					System.out.println("Chunk file at " + var2 + "," + var3 + " is missing level data, skipping");
+				var6 = var6.getCompoundTag("Level");
+
+				int xx = var6.getInteger("xPos");
+				int zz = var6.getInteger("zPos");
+				if(x != xx || z != zz) {
+					System.out.println("Chunk file at " + x + "," + z + " is in the wrong location; relocating. (Expected " + x + ", " + z + ", got " + xx + ", " + zz + ")");
+					String name = chunkFileForXZ(xx, zz);
+					GL11.renameFile(var4, name);
 					return null;
 				}
 
-				if(!var6.getCompoundTag("Level").hasKey("Blocks")) {
-					System.out.println("Chunk file at " + var2 + "," + var3 + " is missing block data, skipping");
-					return null;
-				}
-
-				Chunk var7 = loadChunkIntoWorldFromCompound(var1, var6.getCompoundTag("Level"));
-				if(!var7.isAtLocation(var2, var3)) {
-					System.out.println("Chunk file at " + var2 + "," + var3 + " is in the wrong location; relocating. (Expected " + var2 + ", " + var3 + ", got " + var7.xPosition + ", " + var7.zPosition + ")");
-					var6.setInteger("xPos", var2);
-					var6.setInteger("zPos", var3);
-					var7 = loadChunkIntoWorldFromCompound(var1, var6.getCompoundTag("Level"));
-				}
-
-				return var7;
+				return loadChunkIntoWorldFromCompound(var1, var6);
 			} catch (Exception var8) {
 				var8.printStackTrace();
 			}
@@ -92,6 +93,9 @@ public class ChunkLoader implements IChunkLoader {
 	}
 
 	public void saveChunk(World var1, Chunk var2) throws IOException {
+		if(saveDir == null) {
+			return;
+		}
 		var1.func_663_l();
 		String var3 = this.chunkFileForXZ(var2.xPosition, var2.zPosition);
 		if(GL11.readFile(var3) != null) {

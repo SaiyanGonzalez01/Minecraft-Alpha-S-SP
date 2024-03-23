@@ -143,7 +143,7 @@ public class GuiIngame extends Gui {
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		String var23;
-		if(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(4)) {
+		if((Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(4)) || this.mc.gameSettings.showFPS) {
 			var8.drawStringWithShadow("Minecraft Alpha v1.2.6 (" + this.mc.field_6292_I + ")", 2, 2, 16777215);
 			var8.drawStringWithShadow(this.mc.func_6241_m(), 2, 12, 16777215);
 			var8.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);

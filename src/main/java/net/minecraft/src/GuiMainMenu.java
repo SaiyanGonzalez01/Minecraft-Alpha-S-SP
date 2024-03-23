@@ -73,11 +73,12 @@ public class GuiMainMenu extends GuiScreen {
 		}
 
 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 48, "Singleplayer"));
-		//GuiButton button;
-		//this.controlList.add(button = new GuiButton(2, this.width / 2 - 100, this.height / 4 + 72, "Multiplayer"));
-		//button.enabled = false;
-		this.controlList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 + 72, "Mods and Texture Packs"));
+		this.controlList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 + 72, "Multiplayer"));
+		this.controlList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 + 96, "Mods and Texture Packs"));
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, "Options..."));
+		if(this.mc.field_6320_i == null) {
+			((GuiButton)this.controlList.get(1)).enabled = false;
+		}
 	}
 
 	protected void actionPerformed(GuiButton var1) {
@@ -90,7 +91,7 @@ public class GuiMainMenu extends GuiScreen {
 		}
 
 		if(var1.id == 2) {
-			//this.mc.displayGuiScreen(new GuiMultiplayer(this));
+			this.mc.displayGuiScreen(new GuiMultiplayer(this));
 		}
 
 		if(var1.id == 3) {

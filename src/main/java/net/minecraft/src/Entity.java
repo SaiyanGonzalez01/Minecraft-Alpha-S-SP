@@ -190,7 +190,9 @@ public abstract class Entity {
 			this.field_9307_bi = false;
 		}
 
-		if(this.fire > 0) {
+		if(this.worldObj.multiplayerWorld) {
+			this.fire = 0;
+		} else if(this.fire > 0) {
 			if(this.isImmuneToFire) {
 				this.fire -= 4;
 				if(this.fire < 0) {

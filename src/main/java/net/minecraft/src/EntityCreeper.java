@@ -38,16 +38,16 @@ public class EntityCreeper extends EntityMobs {
 
 	public void onUpdate() {
 		this.lastActiveTime = this.timeSinceIgnited;
-//		if(this.worldObj.multiplayerWorld) {
-//			this.timeSinceIgnited += this.creeperState;
-//			if(this.timeSinceIgnited < 0) {
-//				this.timeSinceIgnited = 0;
-//			}
-//
-//			if(this.timeSinceIgnited >= this.fuseTime) {
-//				this.timeSinceIgnited = this.fuseTime;
-//			}
-//		}
+		if(this.worldObj.multiplayerWorld) {
+			this.timeSinceIgnited += this.creeperState;
+			if(this.timeSinceIgnited < 0) {
+				this.timeSinceIgnited = 0;
+			}
+
+			if(this.timeSinceIgnited >= this.fuseTime) {
+				this.timeSinceIgnited = this.fuseTime;
+			}
+		}
 
 		super.onUpdate();
 	}
@@ -63,9 +63,9 @@ public class EntityCreeper extends EntityMobs {
 		}
 
 		this.lastActiveTime = this.timeSinceIgnited;
-		//if(this.worldObj.multiplayerWorld) {
-			//super.func_418_b_();
-		//} else {
+		if(this.worldObj.multiplayerWorld) {
+			super.func_418_b_();
+		} else {
 			if(this.timeSinceIgnited > 0 && this.creeperState < 0) {
 				--this.timeSinceIgnited;
 			}
@@ -78,7 +78,7 @@ public class EntityCreeper extends EntityMobs {
 			if(this.creeperState != 1) {
 				this.creeperState = -1;
 			}
-		//}
+		}
 
 	}
 
