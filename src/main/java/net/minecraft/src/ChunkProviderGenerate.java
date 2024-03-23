@@ -300,6 +300,9 @@ public class ChunkProviderGenerate implements IChunkProvider {
 	}
 
 	public void populate(IChunkProvider var1, int var2, int var3) {
+		if(this.worldObj.multiplayerWorld) {
+			return;
+		}
 		BlockSand.fallInstantly = true;
 		int var4 = var2 * 16;
 		int var5 = var3 * 16;

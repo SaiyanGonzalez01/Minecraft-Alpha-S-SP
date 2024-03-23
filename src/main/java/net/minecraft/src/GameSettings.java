@@ -45,6 +45,7 @@ public class GameSettings {
 
 	public GameSettings(Minecraft var1) {
 		this.mc = var1;
+		Minecraft.getMinecraft().gameSettings = this;
 		this.loadOptions();
 	}
 

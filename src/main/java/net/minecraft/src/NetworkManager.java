@@ -141,8 +141,8 @@ public class NetworkManager {
 			stream.flip();
 
 			DataInputStream packetStream = new DataInputStream(new ByteBufferDirectInputStream(stream));
-			//int var1 = 100;
-			while(stream.hasRemaining()) {
+			int var1 = 100;
+			while(stream.hasRemaining() && var1-- >= 0) {
 				stream.mark();
 				try {
 					Packet pkt = Packet.readPacket(packetStream);
@@ -205,9 +205,9 @@ public class NetworkManager {
 		return var0.isServerTerminating;
 	}
 
-	static void readNetworkPacket(NetworkManager var0) {
-		var0.readPacket();
-	}
+//	static void readNetworkPacket(NetworkManager var0) {
+//		var0.readPacket();
+//	}
 
 	static void sendNetworkPacket(NetworkManager var0) {
 		var0.sendPacket();

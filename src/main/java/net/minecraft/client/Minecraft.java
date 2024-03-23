@@ -435,7 +435,7 @@ public class Minecraft implements Runnable {
 
 	public void shutdown() {
 		System.out.println("Stopping!");
-		if(this.theWorld != null) {
+		if(this.theWorld != null && !this.theWorld.multiplayerWorld) {
 			this.theWorld.saveLevel();
 			this.theWorld.chunkProvider.saveChunks(false, (IProgressUpdate)null);
 		}

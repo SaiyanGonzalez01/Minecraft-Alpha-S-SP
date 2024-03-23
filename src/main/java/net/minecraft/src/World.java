@@ -442,6 +442,10 @@ public class World implements IBlockAccess {
 	}
 
 	public boolean func_650_a(int var1) {
+		if(this.multiplayerWorld) {
+			return true;
+		}
+		
 		if(!this.chunkProvider.func_536_b()) {
 			return true;
 		} else {
@@ -2003,6 +2007,11 @@ public class World implements IBlockAccess {
 	}
 
 	public void func_663_l() {
+		
+		if(this.multiplayerWorld) {
+			return;
+		}
+		
 		if(!GL11.isWebGL) {
 			net.PeytonPlayz585.minecraft.World.checkSessionLock(this);
 		}

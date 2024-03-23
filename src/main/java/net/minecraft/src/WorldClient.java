@@ -86,10 +86,12 @@ public class WorldClient extends World {
 	}
 
 	public void func_713_a(int var1, int var2, boolean var3) {
-		if(var3) {
-			this.C.func_538_d(var1, var2);
-		} else {
-			this.C.func_539_c(var1, var2);
+		if(this.C != null) {
+			if(var3) {
+				this.C.func_538_d(var1, var2);
+			} else {
+				this.C.func_539_c(var1, var2);
+			}
 		}
 
 		if(!var3) {
