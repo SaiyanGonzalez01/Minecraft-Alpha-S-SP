@@ -26,6 +26,7 @@ public class NetworkManager {
 	private DataInputStream socketInputStream;
 	private DataOutputStream socketOutputStream;
 	private boolean isRunning = true;
+	private List readPackets = Collections.synchronizedList(new ArrayList());
 	private List dataPackets = Collections.synchronizedList(new ArrayList());
 	private List chunkDataPackets = Collections.synchronizedList(new ArrayList());
 	private NetHandler netHandler;
@@ -151,7 +152,38 @@ public class NetworkManager {
 					} catch(IOException e) {
 						e.printStackTrace();
 					}
-					readChunks.add(ByteBuffer.wrap(packet));
+					
+					int cap = 0;
+					ByteBuffer b = ByteBuffer.wrap(packet);
+					cap += b.limit();
+					ByteBuffer stream = ByteBuffer.allocate(cap);
+					
+					stream.put(b);
+					stream.flip();
+					DataInputStream packetStream = new DataInputStream(new ByteBufferDirectInputStream(stream));
+					while(stream.hasRemaining()) {
+						stream.mark();
+						try {
+							Packet pkt = Packet.readPacket(packetStream);
+							if(pkt == null) {
+								this.networkShutdown("End of Stream");
+							}
+							readPackets.add(pkt);
+						} catch (EOFException e) {
+							stream.reset();
+							break;
+						}  catch (IOException e) {
+							continue;
+						} catch(ArrayIndexOutOfBoundsException e) {
+							continue;
+						} catch(NullPointerException e) {
+							continue;
+						} catch(Exception e) {
+							continue;
+						} catch(Throwable t) {
+							continue;
+						}
+					}
 				}
 			} else {
 				this.networkShutdown("End of stream");
@@ -201,58 +233,31 @@ public class NetworkManager {
 		if(this.sendQueueByteLength > 1048576) {
 			this.networkShutdown("Send buffer overflow");
 		}
-		
-		if(!readChunks.isEmpty()) {
-			this.timeSinceLastRead = 0;
-			int cap = 0;
-			for(ByteBuffer b : readChunks) {
-				cap += b.limit();
-			}
 
-			ByteBuffer stream = ByteBuffer.allocate(cap);
-			Iterator<ByteBuffer> iterator = readChunks.iterator();
-			while(iterator.hasNext()) {
-				ByteBuffer b = iterator.next();
-				stream.put(b);
-				iterator.remove();
-			}
-			stream.flip();
-
-			DataInputStream packetStream = new DataInputStream(new ByteBufferDirectInputStream(stream));
-			int var1 = 100;
-			while(stream.hasRemaining() && var1-- > 0) {
-				stream.mark();
-				//Literally ignore all errors lol
-				try {
-					Packet pkt = Packet.readPacket(packetStream);
-					if(pkt == null) {
-						this.networkShutdown("End of Stream");
-					}
-					pkt.processPacket(this.netHandler);
-				} catch (EOFException e) {
-					stream.reset();
-					break;
-				}  catch (IOException e) {
-					continue;
-				} catch(ArrayIndexOutOfBoundsException e) {
-					continue;
-				} catch(NullPointerException e) {
-					continue;
-				} catch(Exception e) {
-					continue;
-				} catch(Throwable t) {
-					continue;
-				}
-			}
-		} else {
+		if(this.readPackets.isEmpty()) {
 			if(this.timeSinceLastRead++ == 1200) {
 				this.networkShutdown("Timed out");
 			}
+		} else {
+			this.timeSinceLastRead = 0;
 		}
 
-		if(this.isTerminating && this.readChunks.isEmpty()) {
+		int var1 = 100;
+		while(!this.readPackets.isEmpty() && var1-- >= 0) {
+			try {
+				Packet var2 = (Packet)this.readPackets.remove(0);
+				var2.processPacket(this.netHandler);
+			} catch(Exception e) {
+				continue;
+			} catch(Throwable t) {
+				continue;
+			}
+		}
+
+		if(this.isTerminating && this.readPackets.isEmpty()) {
 			this.netHandler.handleErrorMessage(this.terminationReason);
 		}
+
 	}
 
 	public SocketAddress getRemoteAddress() {

@@ -25,7 +25,10 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 	}
 
 	public void func_42_a() {
-		this.netManager.processReadPackets();
+		if(!field_18_c) {
+			this.netManager.processReadPackets();
+		}
+		
 		if(this.field_15_f++ % 20 == 0) {
 			this.netManager.addToSendQueue(new Packet0KeepAlive());
 		}
