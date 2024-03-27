@@ -27,13 +27,9 @@ public class Client {
 	public static Minecraft instance = null;
     public static void main(String[] args) {
     	registerErrorHandler();
-    	String[] e = getOpts();
     	try {
-	    	try {
-	    		EaglerAdapterImpl2.initializeContext(rootElement = Window.current().getDocument().getElementById(e[0]), e[1]);
-	    	}catch(AbortedLaunchException ex) {
-	    		return;
-	    	}
+	    	JSONObject e = new JSONObject(getOpts());
+	    	EaglerAdapterImpl2.initializeContext(rootElement = Window.current().getDocument().getElementById(e.getString("gameContainer")), e.getString("assetsLocation"), e);
     	}catch(Throwable ex2) {
     		StringWriter s = new StringWriter();
     		ex2.printStackTrace(new PrintWriter(s));
@@ -55,8 +51,8 @@ public class Client {
     	instance.run();
     }
 
-	@JSBody(params = { }, script = "return window.classicConfig;")
-	public static native String[] getOpts();
+	@JSBody(params = { }, script = "return JSON.stringify(window.config);")
+	public static native String getOpts();
 
 	@JSBody(params = { }, script = "window.minecraftError = null; window.onerror = function(message, file, line, column, errorObj) { if(errorObj) { window.minecraftError = errorObj; window.minecraftErrorL = \"\"+line+\":\"+column; javaMethods.get(\"net.lax1dude.eaglercraft.Client.handleNativeError()V\").invoke(); } else { alert(\"a native browser exception was thrown but your browser does not support fith argument in onerror\"); } };")
 	public static native void registerErrorHandler();

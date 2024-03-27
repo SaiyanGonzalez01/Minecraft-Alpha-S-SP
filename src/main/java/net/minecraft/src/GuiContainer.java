@@ -14,8 +14,6 @@ public abstract class GuiContainer extends GuiScreen {
 	protected List inventorySlots = new ArrayList();
 
 	public void drawScreen(int var1, int var2, float var3) {
-		Minecraft.getMinecraft().pauseFlag = false;
-		Minecraft.getMinecraft().prevPauseTicks = 0;
 		this.drawDefaultBackground();
 		int var4 = (this.width - this.xSize) / 2;
 		int var5 = (this.height - this.ySize) / 2;

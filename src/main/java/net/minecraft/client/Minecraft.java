@@ -16,6 +16,7 @@ import net.minecraft.src.GLAllocation;
 import net.minecraft.src.GameSettings;
 import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiConflictWarning;
+import net.minecraft.src.GuiConnecting;
 import net.minecraft.src.GuiGameOver;
 import net.minecraft.src.GuiIngame;
 import net.minecraft.src.GuiIngameMenu;
@@ -154,7 +155,11 @@ public class Minecraft implements Runnable {
 
 		this.checkGLError("Post startup");
 		this.ingameGUI = new GuiIngame(this);
-		this.displayGuiScreen(new GuiMainMenu());
+		if(GL11.forcedUser != null & GL11.forcedServer != null & GL11.joinServerOnLaunch) {
+			this.displayGuiScreen(new GuiConnecting(this, GL11.forcedServer));
+		} else {
+			this.displayGuiScreen(new GuiMainMenu());
+		}
 	}
 
 	private void loadScreen() {
@@ -190,7 +195,7 @@ public class Minecraft implements Runnable {
 		GL11.glDisable(2896 /* GL_LIGHTING */);
 		GL11.glDisable(2912 /* GL_FOG */);
 		GL11.glEnable(3008 /* GL_ALPHA_TEST */);
-		GL11.glAlphaFunc(516, 0.1F);
+		GL11.glAlphaFunc(516, 1.0F);
 		GL11.glFlush();
 		GL11.updateDisplay();
 		GL11.optimize();
@@ -444,7 +449,6 @@ public class Minecraft implements Runnable {
 	}
 
 	public void func_6259_e() {
-		awaitMousePointer = true;
 		if(GL11.isFocused()) {
 			if(!this.field_6289_L) {
 				this.field_6289_L = true;
@@ -456,7 +460,6 @@ public class Minecraft implements Runnable {
 	}
 
 	public void func_6273_f() {
-		awaitMousePointer = false;
 		if(this.field_6289_L) {
 			if(this.thePlayer != null) {
 				this.thePlayer.func_458_k();
@@ -589,40 +592,8 @@ public class Minecraft implements Runnable {
 		}
 
 	}
-	
-	public boolean pauseFlag = false;
-	public boolean justLeftWorld = true;
-	public boolean awaitMousePointer = false;
-	public int prevPauseTicks = 0;
 
 	public void runTick() {
-		if(GL11.isWebGL) {
-			if((this.theWorld == null || justLeftWorld) && (GL11.isPointerLocked() || GL11.isPointerLocked2())) {
-				mouseHelper.func_773_b();
-			}
-		
-			if(this.currentScreen == null && this.theWorld != null && pauseFlag && (!GL11.isPointerLocked() || !GL11.isPointerLocked2()) && awaitMousePointer) {
-				mouseHelper.func_774_a();
-			}
-		
-			if(GL11.isPointerLocked2() && this.currentScreen == null) {
-				if(!pauseFlag) {
-					if(prevPauseTicks == 0) {
-						prevPauseTicks = this.ticksRan;
-					}
-				
-					if(this.ticksRan >= prevPauseTicks + 1 && prevPauseTicks != 0) {
-						pauseFlag = true;
-						prevPauseTicks = 0;
-					}
-				}
-			}
-		
-			if(currentScreen == null && !Mouse.isPointerLocked2() && pauseFlag) {
-				func_6252_g();
-			}
-		}
-		
 		this.ingameGUI.func_555_a();
 		this.field_9243_r.func_910_a(1.0F);
 		if(this.thePlayer != null) {

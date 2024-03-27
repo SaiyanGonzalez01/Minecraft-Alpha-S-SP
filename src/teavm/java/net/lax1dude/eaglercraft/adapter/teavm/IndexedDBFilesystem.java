@@ -23,6 +23,7 @@ import org.teavm.jso.indexeddb.IDBVersionChangeEvent;
 import org.teavm.jso.typedarrays.ArrayBuffer;
 import org.teavm.jso.typedarrays.Uint8Array;
 
+import net.PeytonPlayz585.opengl.GL11;
 import net.lax1dude.eaglercraft.adapter.EaglerAdapterImpl2;
 import net.lax1dude.eaglercraft.adapter.EaglerAdapterImpl2.FileEntry;
 
@@ -36,7 +37,13 @@ public class IndexedDBFilesystem {
 	private static IDBDatabase db = null;
 
 	public static final OpenState initialize() {
-		DatabaseOpen dbo = AsyncHandlers.openDB("_net_lax1dude_eaglercraft_beta_IndexedDBFilesystem_1_3");
+		DatabaseOpen dbo;
+		if(GL11.dataBaseName != null) {
+			System.out.println("Setting custom database name to " + GL11.dataBaseName);
+			dbo = AsyncHandlers.openDB(GL11.dataBaseName);
+		} else {
+			dbo = AsyncHandlers.openDB("_net_lax1dude_eaglercraft_beta_IndexedDBFilesystem_1_3");
+		}
 		if(dbo == null) {
 			err = "Unknown Error";
 			return OpenState.ERROR;

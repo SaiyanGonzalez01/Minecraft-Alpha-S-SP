@@ -72,6 +72,7 @@ import net.lax1dude.eaglercraft.AssetRepository;
 import net.lax1dude.eaglercraft.Base64;
 import net.lax1dude.eaglercraft.Client;
 import net.lax1dude.eaglercraft.EaglerImage;
+import net.lax1dude.eaglercraft.JSONObject;
 import net.lax1dude.eaglercraft.adapter.teavm.IndexedDBFilesystem;
 import net.lax1dude.eaglercraft.adapter.teavm.IndexedDBFilesystem.OpenState;
 //import net.lax1dude.eaglercraft.adapter.teavm.IndexedDBFilesystem;
@@ -202,7 +203,7 @@ public class EaglerAdapterImpl2 {
 	@JSBody(params = { "e" }, script = "return e.which;")
 	private static native int getWhich(KeyboardEvent e);
 	
-	public static final void initializeContext(HTMLElement rootElement, String assetPackageURI) {
+	public static final void initializeContext(HTMLElement rootElement, String assetPackageURI, JSONObject config) {
 		parent = rootElement;
 		String s = parent.getAttribute("style");
 		parent.setAttribute("style", (s == null ? "" : s)+"overflow-x:hidden;overflow-y:hidden;");
@@ -312,6 +313,10 @@ public class EaglerAdapterImpl2 {
 		});
 		onBeforeCloseRegister();
 		
+		if(!config.isNull("dataBaseName")) {
+			dataBaseName = config.getString("dataBaseName");
+		}
+		
 		OpenState st = IndexedDBFilesystem.initialize();
 		if(st != OpenState.OPENED) {
 			if(st == OpenState.LOCKED) {
@@ -334,7 +339,23 @@ public class EaglerAdapterImpl2 {
 		
 		mouseEvents.clear();
 		keyEvents.clear();
+		
+		if(!config.isNull("playerUsername")) {
+			forcedUser = config.getString("playerUsername");
+		}
+		if(!config.isNull("serverIP")) {
+			forcedServer = config.getString("serverIP");
+		}
+		
+		if(!config.isNull("joinServerOnLaunch")) {
+			joinServerOnLaunch = config.getBoolean("joinServerOnLaunch");
+		}
 	}
+	
+	public static String forcedUser = null;
+	public static String forcedServer = null;
+	public static String dataBaseName = null;
+	public static boolean joinServerOnLaunch = false;
 	
 	public static final void destroyContext() {
 		

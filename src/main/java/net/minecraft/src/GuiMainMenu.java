@@ -59,7 +59,6 @@ public class GuiMainMenu extends GuiScreen {
 	}
 
 	public void initGui() {
-		Minecraft.getMinecraft().justLeftWorld = false;
 		Calendar var1 = Calendar.getInstance();
 		var1.setTime(new Date());
 		if(var1.get(2) + 1 == 11 && var1.get(5) == 9) {

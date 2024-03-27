@@ -15,8 +15,6 @@ public class GuiEditSign extends GuiScreen {
 	}
 
 	public void initGui() {
-		Minecraft.getMinecraft().pauseFlag = false;
-		Minecraft.getMinecraft().prevPauseTicks = 0;
 		this.controlList.clear();
 		Keyboard.enableRepeatEvents(true);
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120, "Done"));
@@ -27,8 +25,6 @@ public class GuiEditSign extends GuiScreen {
 	}
 
 	public void updateScreen() {
-		Minecraft.getMinecraft().pauseFlag = false;
-		Minecraft.getMinecraft().prevPauseTicks = 0;
 		++this.updateCounter;
 	}
 

@@ -7,8 +7,6 @@ public class GuiIngameMenu extends GuiScreen {
 	private int updateCounter = 0;
 
 	public void initGui() {
-		Minecraft.getMinecraft().prevPauseTicks = 0;
-		Minecraft.getMinecraft().pauseFlag = false;
 		this.updateCounter2 = 0;
 		this.controlList.clear();
 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 48, "Save and quit to title"));
@@ -26,7 +24,6 @@ public class GuiIngameMenu extends GuiScreen {
 		}
 
 		if(var1.id == 1) {
-			Minecraft.getMinecraft().justLeftWorld = true;
 			if(this.mc.isMultiplayerWorld()) {
 				this.mc.theWorld.sendQuittingDisconnectingPacket();
 			}

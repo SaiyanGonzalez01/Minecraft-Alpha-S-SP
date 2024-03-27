@@ -16,8 +16,6 @@ public class GuiChat extends GuiScreen {
 	}
 
 	public void updateScreen() {
-		Minecraft.getMinecraft().pauseFlag = false;
-		Minecraft.getMinecraft().prevPauseTicks = 0;
 		++this.updateCounter;
 	}
 
