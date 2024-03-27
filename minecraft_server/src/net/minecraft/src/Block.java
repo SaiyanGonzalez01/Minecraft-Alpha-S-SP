@@ -36,7 +36,10 @@ public class Block {
 	public static final Block oreGold = (new BlockOre(14, 32)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep);
 	public static final Block oreIron = (new BlockOre(15, 33)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep);
 	public static final Block oreCoal = (new BlockOre(16, 34)).setHardness(3.0F).setResistance(5.0F).setStepSound(soundStoneFootstep);
-	public static final Block wood = (new BlockLog(17)).setHardness(2.0F).setStepSound(soundWoodFootstep);
+	
+	//Had to lower the hardness of wood due to a bug
+	public static final Block wood = (new BlockLog(17)).setHardness(1.5F).setStepSound(soundWoodFootstep);
+	
 	public static final BlockLeaves leaves = (BlockLeaves)(new BlockLeaves(18, 52)).setHardness(0.2F).setLightOpacity(1).setStepSound(soundGrassFootstep);
 	public static final Block sponge = (new BlockSponge(19)).setHardness(0.6F).setStepSound(soundGrassFootstep);
 	public static final Block glass = (new BlockGlass(20, 49, Material.field_4216_o, false)).setHardness(0.3F).setStepSound(soundGlassFootstep);

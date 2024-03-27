@@ -1,12 +1,19 @@
 package net.minecraft.src;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class NetworkManager {
@@ -19,7 +26,6 @@ public class NetworkManager {
 	private DataInputStream socketInputStream;
 	private DataOutputStream socketOutputStream;
 	private boolean isRunning = true;
-	private List readPackets = Collections.synchronizedList(new ArrayList());
 	private List dataPackets = Collections.synchronizedList(new ArrayList());
 	private List chunkDataPackets = Collections.synchronizedList(new ArrayList());
 	private NetHandler netHandler;
@@ -64,6 +70,8 @@ public class NetworkManager {
 		}
 	}
 
+	private ByteArrayOutputStream sendBuffer;
+	
 	private void sendPacket() {
 		try {
 			boolean var1 = true;
@@ -72,24 +80,50 @@ public class NetworkManager {
 			if(!this.dataPackets.isEmpty()) {
 				var1 = false;
 				var3 = this.sendQueueLock;
+				int oldSendQueue = this.sendQueueByteLength;
 				synchronized(var3) {
 					var2 = (Packet)this.dataPackets.remove(0);
 					this.sendQueueByteLength -= var2.getPacketSize() + 1;
 				}
 
-				Packet.writePacket(var2, this.socketOutputStream);
+				try {
+					sendBuffer = new ByteArrayOutputStream();
+					DataOutputStream yee = new DataOutputStream(sendBuffer);
+					Packet.writePacket(var2, yee);
+					yee.flush();
+					socketOutputStream.write(sendBuffer.toByteArray());
+					sendBuffer.flush();
+					socketOutputStream.flush();
+				} catch(Exception e) {
+					this.sendQueueByteLength = oldSendQueue;
+					System.err.println("Error occured while sending data packets! " + e.getStackTrace().toString());
+				}
 			}
 
 			if((var1 || this.chunkDataSendCounter-- <= 0) && !this.chunkDataPackets.isEmpty()) {
 				var1 = false;
 				var3 = this.sendQueueLock;
+				int oldSendQueue = this.sendQueueByteLength;
 				synchronized(var3) {
 					var2 = (Packet)this.chunkDataPackets.remove(0);
 					this.sendQueueByteLength -= var2.getPacketSize() + 1;
 				}
 
-				Packet.writePacket(var2, this.socketOutputStream);
-				this.chunkDataSendCounter = 50;
+				int oldChunkData = this.chunkDataSendCounter;
+				try {
+					sendBuffer = new ByteArrayOutputStream();
+					DataOutputStream yee = new DataOutputStream(sendBuffer);
+					Packet.writePacket(var2, yee);
+					yee.flush();
+					socketOutputStream.write(sendBuffer.toByteArray());
+					sendBuffer.flush();
+					socketOutputStream.flush();
+					this.chunkDataSendCounter = 50;
+				} catch(Exception e) {
+					this.sendQueueByteLength = oldSendQueue;
+					this.chunkDataSendCounter = oldChunkData;
+					System.err.println("Error occured while sending chunk data! " + e.getStackTrace().toString());
+				}
 			}
 
 			if(var1) {
@@ -101,14 +135,24 @@ public class NetworkManager {
 				this.onNetworkError(var9);
 			}
 		}
-
 	}
+	
+	private LinkedList<ByteBuffer> readChunks = new LinkedList();
 
 	private void readPacket() {
 		try {
-			Packet var1 = Packet.readPacket(this.socketInputStream);
-			if(var1 != null) {
-				this.readPackets.add(var1);
+			byte[] packet;
+			ByteArrayInputStream bis = getByteArrayInputStream(socketInputStream);
+			if(bis != null) {
+				while (bis.available() > 0) {
+					packet = new byte[bis.available()];
+					try {
+						bis.read(packet);
+					} catch(IOException e) {
+						e.printStackTrace();
+					}
+					readChunks.add(ByteBuffer.wrap(packet));
+				}
 			} else {
 				this.networkShutdown("End of stream");
 			}
@@ -157,26 +201,58 @@ public class NetworkManager {
 		if(this.sendQueueByteLength > 1048576) {
 			this.networkShutdown("Send buffer overflow");
 		}
+		
+		if(!readChunks.isEmpty()) {
+			this.timeSinceLastRead = 0;
+			int cap = 0;
+			for(ByteBuffer b : readChunks) {
+				cap += b.limit();
+			}
 
-		if(this.readPackets.isEmpty()) {
+			ByteBuffer stream = ByteBuffer.allocate(cap);
+			Iterator<ByteBuffer> iterator = readChunks.iterator();
+			while(iterator.hasNext()) {
+				ByteBuffer b = iterator.next();
+				stream.put(b);
+				iterator.remove();
+			}
+			stream.flip();
+
+			DataInputStream packetStream = new DataInputStream(new ByteBufferDirectInputStream(stream));
+			int var1 = 100;
+			while(stream.hasRemaining() && var1-- > 0) {
+				stream.mark();
+				//Literally ignore all errors lol
+				try {
+					Packet pkt = Packet.readPacket(packetStream);
+					if(pkt == null) {
+						this.networkShutdown("End of Stream");
+					}
+					pkt.processPacket(this.netHandler);
+				} catch (EOFException e) {
+					stream.reset();
+					break;
+				}  catch (IOException e) {
+					continue;
+				} catch(ArrayIndexOutOfBoundsException e) {
+					continue;
+				} catch(NullPointerException e) {
+					continue;
+				} catch(Exception e) {
+					continue;
+				} catch(Throwable t) {
+					continue;
+				}
+			}
+		} else {
 			if(this.timeSinceLastRead++ == 1200) {
 				this.networkShutdown("Timed out");
 			}
-		} else {
-			this.timeSinceLastRead = 0;
 		}
 
-		int var1 = 100;
-
-		while(!this.readPackets.isEmpty() && var1-- >= 0) {
-			Packet var2 = (Packet)this.readPackets.remove(0);
-			var2.processPacket(this.netHandler);
-		}
-
-		if(this.isTerminating && this.readPackets.isEmpty()) {
+		if(this.isTerminating && this.readChunks.isEmpty()) {
 			this.netHandler.handleErrorMessage(this.terminationReason);
 		}
-
 	}
 
 	public SocketAddress getRemoteAddress() {
@@ -215,5 +291,35 @@ public class NetworkManager {
 
 	static Thread getWriteThread(NetworkManager var0) {
 		return var0.writeThread;
+	}
+	
+	public static ByteArrayInputStream getByteArrayInputStream(DataInputStream dataInputStream) {
+        try {
+        	byte[] buffer = new byte[dataInputStream.available()];
+            int bytesRead;
+            bytesRead = dataInputStream.read(buffer, 0, buffer.length);
+            byte[] data = bytesRead == buffer.length ? buffer : new byte[bytesRead];
+            System.arraycopy(buffer, 0, data, 0, data.length);
+            return new ByteArrayInputStream(data);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+	
+	private static class ByteBufferDirectInputStream extends InputStream {
+		private ByteBuffer buf;
+		private ByteBufferDirectInputStream(ByteBuffer b) {
+			this.buf = b;
+		}
+
+		@Override
+		public int read() throws IOException {
+			return buf.remaining() > 0 ? ((int)buf.get() & 0xFF) : -1;
+		}
+
+		@Override
+		public int available() {
+			return buf.remaining();
+		}
 	}
 }

@@ -129,7 +129,7 @@ public class TileEntityFurnace extends TileEntity implements IInventory {
 	}
 
 	private int func_192_b(int var1) {
-		return var1 == Block.oreIron.blockID ? Item.ingotIron.swiftedIndex : (var1 == Block.oreGold.blockID ? Item.ingotGold.swiftedIndex : (var1 == Block.oreDiamond.blockID ? Item.diamond.swiftedIndex : (var1 == Block.sand.blockID ? Block.glass.blockID : (var1 == Item.porkRaw.swiftedIndex ? Item.porkCooked.swiftedIndex : (var1 == Item.fishRaw.swiftedIndex ? Item.fishCooked.swiftedIndex : (var1 == Block.cobblestone.blockID ? Block.stone.blockID : (var1 == Item.clay.swiftedIndex ? Item.brick.swiftedIndex : -1)))))));
+		return var1 == Block.oreIron.blockID ? Item.ingotIron.swiftedIndex : (var1 == Block.oreGold.blockID ? Item.ingotGold.swiftedIndex : (var1 == Block.oreDiamond.blockID ? Item.diamond.swiftedIndex : (var1 == Block.sand.blockID ? Block.glass.blockID : (var1 == Item.porkRaw.swiftedIndex ? Item.porkCooked.swiftedIndex : (var1 == Item.fishRaw.swiftedIndex ? Item.fishCooked.swiftedIndex : (var1 == Block.cobblestone.blockID ? Block.stone.blockID : (var1 == Item.clay.swiftedIndex ? Item.brick.swiftedIndex : (var1 == Block.wood.blockID ? Item.coal.swiftedIndex : -1))))))));
 	}
 
 	private int func_194_a(ItemStack var1) {
