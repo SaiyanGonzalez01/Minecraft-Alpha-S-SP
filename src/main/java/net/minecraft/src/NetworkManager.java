@@ -47,18 +47,23 @@ public class NetworkManager {
 	}
 
 	public void addToSendQueue(Packet var1) {
-		if(!this.isServerTerminating) {
-			Object var2 = this.sendQueueLock;
-			synchronized(var2) {
-				this.sendQueueByteLength += var1.getPacketSize() + 1;
-				if(var1.isChunkDataPacket) {
-					this.chunkDataPackets.add(var1);
-				} else {
-					this.dataPackets.add(var1);
+		Thread thread = new Thread(new Runnable () {
+			public void run() {
+				if(!NetworkManager.this.isServerTerminating) {
+					Object var2 = NetworkManager.this.sendQueueLock;
+					synchronized(var2) {
+						NetworkManager.this.sendQueueByteLength += var1.getPacketSize() + 1;
+						if(var1.isChunkDataPacket) {
+							NetworkManager.this.chunkDataPackets.add(var1);
+						} else {
+							NetworkManager.this.dataPackets.add(var1);
+						}
+						NetworkManager.this.sendPacket();
+					}
 				}
-				this.sendPacket();
 			}
-		}
+		});
+		thread.start();
 	}
 
 	private ByteArrayOutputStream sendBuffer;
@@ -79,7 +84,9 @@ public class NetworkManager {
 				sendBuffer = new ByteArrayOutputStream();
 				DataOutputStream yee = new DataOutputStream(sendBuffer);
 				Packet.writePacket(var2, yee);
+				yee.flush();
 				GL11.writePacket(sendBuffer.toByteArray());
+				sendBuffer.flush();
 			}
 
 			if((var1 || this.chunkDataSendCounter-- <= 0) && !this.chunkDataPackets.isEmpty()) {
@@ -93,7 +100,9 @@ public class NetworkManager {
 				sendBuffer = new ByteArrayOutputStream();
 				DataOutputStream yee = new DataOutputStream(sendBuffer);
 				Packet.writePacket(var2, yee);
+				yee.flush();
 				GL11.writePacket(sendBuffer.toByteArray());
+				sendBuffer.flush();
 				this.chunkDataSendCounter = 50;
 			}
 
@@ -142,7 +151,7 @@ public class NetworkManager {
 
 			DataInputStream packetStream = new DataInputStream(new ByteBufferDirectInputStream(stream));
 			int var1 = 100;
-			while(stream.hasRemaining() && var1-- >= 0) {
+			while(stream.hasRemaining() && var1-- > 0) {
 				stream.mark();
 				try {
 					Packet pkt = Packet.readPacket(packetStream);
@@ -159,8 +168,10 @@ public class NetworkManager {
 					continue;
 				} catch(NullPointerException e) {
 					continue;
-				} catch(Throwable e2) {
-					e2.printStackTrace();
+				} catch(Exception e) {
+					continue;
+				} catch(Throwable t) {
+					continue;
 				}
 			}
 

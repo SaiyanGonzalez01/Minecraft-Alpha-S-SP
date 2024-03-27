@@ -91,7 +91,15 @@ public class GuiMainMenu extends GuiScreen {
 		}
 
 		if(var1.id == 2) {
-			this.mc.displayGuiScreen(new GuiMultiplayer(this));
+			try {
+				this.mc.displayGuiScreen(new GuiMultiplayer(this));
+			} catch(Exception e) {
+				//Shit
+				this.mc.gameSettings.field_12259_z = "";
+				this.mc.gameSettings.username = "";
+				this.mc.gameSettings.saveOptions();
+				this.mc.displayGuiScreen(new GuiMultiplayer(this));
+			}
 		}
 
 		if(var1.id == 3) {

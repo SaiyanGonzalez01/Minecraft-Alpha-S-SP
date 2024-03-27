@@ -107,8 +107,8 @@ public class SoundManager {
 			
 			try {
 				GL11.setListenerPos((float)x, (float)y, (float)z, (float)player.motionX, (float)player.motionY, (float)player.motionZ, (float)pitch, (float)yaw);
-			} catch(Throwable t) {
-				System.err.println("Unable to set listener pos!");
+			} catch(Exception e) {
+				
 			}
 		}
 	}
