@@ -47,23 +47,18 @@ public class NetworkManager {
 	}
 
 	public void addToSendQueue(Packet var1) {
-		Thread thread = new Thread(new Runnable () {
-			public void run() {
-				if(!NetworkManager.this.isServerTerminating) {
-					Object var2 = NetworkManager.this.sendQueueLock;
-					synchronized(var2) {
-						NetworkManager.this.sendQueueByteLength += var1.getPacketSize() + 1;
-						if(var1.isChunkDataPacket) {
-							NetworkManager.this.chunkDataPackets.add(var1);
-						} else {
-							NetworkManager.this.dataPackets.add(var1);
-						}
-						NetworkManager.this.sendPacket();
-					}
+		if(!this.isServerTerminating) {
+			Object var2 = this.sendQueueLock;
+			synchronized(var2) {
+				this.sendQueueByteLength += var1.getPacketSize() + 1;
+				if(var1.isChunkDataPacket) {
+					this.chunkDataPackets.add(var1);
+				} else {
+					this.dataPackets.add(var1);
 				}
+				this.sendPacket();
 			}
-		});
-		thread.start();
+		}
 	}
 
 	private ByteArrayOutputStream sendBuffer;

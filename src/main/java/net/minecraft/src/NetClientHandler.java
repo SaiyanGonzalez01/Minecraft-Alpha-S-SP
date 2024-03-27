@@ -21,12 +21,7 @@ public class NetClientHandler extends NetHandler {
 
 	public void processReadPackets() {
 		if(!this.disconnected) {
-			Thread thread = new Thread(new Runnable() {
-				public void run() {
-					NetClientHandler.this.netManager.readPacket();
-				}
-			});
-			thread.start();
+			NetClientHandler.this.netManager.readPacket();
 		}
 	}
 

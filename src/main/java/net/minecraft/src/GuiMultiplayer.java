@@ -143,8 +143,8 @@ public class GuiMultiplayer extends GuiScreen {
 	public void drawScreen(int var1, int var2, float var3) {
 		this.drawDefaultBackground();
 		this.drawCenteredString(this.fontRenderer, "Play Multiplayer", this.width / 2, this.height / 4 - 60 + 20, 16777215);
-		//this.drawString(this.fontRenderer, "Minecraft Multiplayer is currently not finished, but there", this.width / 2 - 140, this.height / 4 - 60 + 60 + 0, 10526880);
-		//this.drawString(this.fontRenderer, "is some buggy early testing going on.", this.width / 2 - 140, this.height / 4 - 60 + 60 + 9, 10526880);
+		this.drawString(this.fontRenderer, "Alpha Multiplayer is currently not finished, but there", this.width / 2 - 140, this.height / 4 - 80 + 60 + 0, 10526880);
+		this.drawString(this.fontRenderer, "is some buggy early testing going on.", this.width / 2 - 140, this.height / 4 - 80 + 60 + 9, 10526880);
 		this.drawString(this.fontRenderer, "Server IP:", this.width / 2 - 100, this.height / 4 - 50 + 60 + 36, 10526880);
 		this.drawString(this.fontRenderer, "Username:", this.width / 2 - 100, this.height / 4 - 90 + 60 + 36, 10526880);
 		int var4 = this.width / 2 - 100;
