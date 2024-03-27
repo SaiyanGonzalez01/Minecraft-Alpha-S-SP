@@ -156,6 +156,8 @@ public class Minecraft implements Runnable {
 		this.checkGLError("Post startup");
 		this.ingameGUI = new GuiIngame(this);
 		if(GL11.forcedUser != null & GL11.forcedServer != null & GL11.joinServerOnLaunch) {
+			this.field_6320_i.inventory = GL11.forcedUser;
+			this.gameSettings.username = GL11.forcedUser;
 			this.displayGuiScreen(new GuiConnecting(this, GL11.forcedServer));
 		} else {
 			this.displayGuiScreen(new GuiMainMenu());
