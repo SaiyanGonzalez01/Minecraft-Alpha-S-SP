@@ -114,7 +114,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
 		this.worldMngr.func_4072_a(new WorldManager(this));
 		this.worldMngr.monstersEnabled = this.propertyManagerObj.getBooleanProperty("spawn-monsters", true) ? 1 : 0;
 		this.configManager.setPlayerManager(this.worldMngr);
-		byte var2 = 10;
+		byte var2 = 20;
 
 		for(int var3 = -var2; var3 <= var2; ++var3) {
 			this.func_6019_a("Preparing spawn area", (var3 + var2) * 100 / (var2 + var2 + 1));

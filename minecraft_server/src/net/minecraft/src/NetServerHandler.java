@@ -231,6 +231,9 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 			if(var16 < 256.0D) {
 				this.playerEntity.field_421_a.sendPacket(new Packet53BlockChange(var4, var5, var6, this.mcServer.worldMngr));
 			}
+			if(!(var19 > 16 || var2)) {
+				this.playerEntity.field_421_a.sendPacket(new Packet3Chat("You cannot place/break blocks in this area!"));
+			}
 		}
 
 		this.mcServer.worldMngr.field_819_z = false;
@@ -252,10 +255,8 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 				var8 = var7;
 			}
 
-			if(var8 > 16 || var2) {
-				ItemStack var9 = var1.id >= 0 ? new ItemStack(var1.id) : null;
-				this.playerEntity.field_425_ad.func_327_a(this.playerEntity, this.mcServer.worldMngr, var9, var10, var4, var5, var6);
-			}
+			ItemStack var9 = var1.id >= 0 ? new ItemStack(var1.id) : null;
+			this.playerEntity.field_425_ad.func_327_a(this.playerEntity, this.mcServer.worldMngr, var9, var10, var4, var5, var6);
 
 			this.playerEntity.field_421_a.sendPacket(new Packet53BlockChange(var10, var4, var5, this.mcServer.worldMngr));
 			if(var6 == 0) {
@@ -283,6 +284,23 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 			}
 
 			this.playerEntity.field_421_a.sendPacket(new Packet53BlockChange(var10, var4, var5, this.mcServer.worldMngr));
+			
+			if(!(var8 > 16 | var2)) {
+				if(field_10_k != null) {
+					this.playerEntity.field_421_a.sendPacket(new Packet3Chat("You cannot place/break blocks in this area!"));
+					this.playerEntity.field_425_ad.func_323_b(var10, var4, var5);
+					this.playerEntity.field_421_a.sendPacket(new Packet53BlockChange(var10, var4, var5, this.mcServer.worldMngr));
+					ItemStack[] stack = this.playerEntity.inventory.mainInventory.clone();
+					ItemStack stack1 = new ItemStack(var1.id);
+					if(stack[this.playerEntity.inventory.currentItem] != null) {
+						stack1.stackSize = stack[this.playerEntity.inventory.currentItem].stackSize + 1;	
+					} else {
+						stack1.stackSize = 1;
+					}
+					stack[this.playerEntity.inventory.currentItem] = stack1;
+					this.playerEntity.field_421_a.sendPacket(new Packet5PlayerInventory(-1, stack));
+				}
+			}
 		}
 
 		this.mcServer.worldMngr.field_819_z = false;
