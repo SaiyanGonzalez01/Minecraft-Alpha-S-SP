@@ -59,7 +59,7 @@ public class Chunk {
 	}
 
 	public int getHeightValue(int var1, int var2) {
-		return this.heightMap[var2 << 4 | var1] & 255;
+		return this.heightMap[var2 << 4 | var1] & 0xff;
 	}
 
 	public void func_1014_a() {
