@@ -521,7 +521,7 @@ public class Chunk {
 
 	}
 
-	public boolean func_347_a(boolean var1) {
+	public boolean func_347_a() {
 		return this.field_679_p ? false : (this.field_677_r && this.worldObj.worldTime != this.field_676_s ? true : this.isModified);
 	}
 

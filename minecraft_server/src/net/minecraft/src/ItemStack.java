@@ -116,4 +116,8 @@ public final class ItemStack {
 	public ItemStack copy() {
 		return new ItemStack(this.itemID, this.stackSize, this.itemDamage);
 	}
+	
+	public static ItemStack func_20117_a(ItemStack var0) {
+		return var0 == null ? null : var0.copy();
+	}
 }

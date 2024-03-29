@@ -150,7 +150,7 @@ public class ChunkProviderServer implements IChunkProvider {
 				this.func_375_a(var5);
 			}
 
-			if(var5.func_347_a(var1)) {
+			if(var5.func_347_a()) {
 				this.func_373_b(var5);
 				var5.isModified = false;
 				++var3;

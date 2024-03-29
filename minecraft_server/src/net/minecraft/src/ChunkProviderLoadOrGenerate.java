@@ -144,7 +144,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 		int var5;
 		if(var2 != null) {
 			for(var5 = 0; var5 < this.chunks.length; ++var5) {
-				if(this.chunks[var5] != null && this.chunks[var5].func_347_a(var1)) {
+				if(this.chunks[var5] != null && this.chunks[var5].func_347_a()) {
 					++var4;
 				}
 			}
@@ -158,7 +158,7 @@ public class ChunkProviderLoadOrGenerate implements IChunkProvider {
 					this.func_371_a(this.chunks[var6]);
 				}
 
-				if(this.chunks[var6].func_347_a(var1)) {
+				if(this.chunks[var6].func_347_a()) {
 					this.func_370_b(this.chunks[var6]);
 					this.chunks[var6].isModified = false;
 					++var3;

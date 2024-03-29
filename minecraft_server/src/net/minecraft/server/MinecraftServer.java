@@ -40,8 +40,8 @@ public class MinecraftServer implements ICommandListener, Runnable {
 	public static HashMap field_6037_b = new HashMap();
 	public NetworkListenThread field_6036_c;
 	public PropertyManager propertyManagerObj;
-	public WorldServer worldMngr;
-	public ServerConfigurationManager configManager;
+	public static WorldServer worldMngr;
+	public static ServerConfigurationManager configManager;
 	private boolean field_6025_n = true;
 	public boolean field_6032_g = false;
 	int field_9014_h = 0;
@@ -53,6 +53,9 @@ public class MinecraftServer implements ICommandListener, Runnable {
 	public boolean onlineMode;
 	public boolean noAnimals;
 	public boolean field_9011_n;
+	public static int port = 0;
+	public static String levelName = null;
+	public static String serverIP = null;
 
 	public MinecraftServer() {
 		new ThreadSleepForever(this);
@@ -78,9 +81,11 @@ public class MinecraftServer implements ICommandListener, Runnable {
 		InetAddress var3 = null;
 		if(var2.length() > 0) {
 			var3 = InetAddress.getByName(var2);
+			serverIP = var3.toString();
 		}
 
 		int var4 = this.propertyManagerObj.getIntProperty("server-port", 25565);
+		port = var4;
 		logger.info("Starting Minecraft server on " + (var2.length() == 0 ? "*" : var2) + ":" + var4);
 
 		try {
@@ -102,6 +107,7 @@ public class MinecraftServer implements ICommandListener, Runnable {
 		this.configManager = new ServerConfigurationManager(this);
 		this.field_6028_k = new EntityTracker(this);
 		String var5 = this.propertyManagerObj.getStringProperty("level-name", "world");
+		levelName = var5;
 		logger.info("Preparing level \"" + var5 + "\"");
 		this.func_6017_c(var5);
 		logger.info("Done! For help, type \"help\" or \"?\"");
@@ -298,6 +304,19 @@ public class MinecraftServer implements ICommandListener, Runnable {
 				} else if(var2.toLowerCase().startsWith("save-on")) {
 					this.func_6014_a(var4, "Enabling level saving..");
 					this.worldMngr.field_816_A = false;
+				} else if(var2.toLowerCase().startsWith("spawn-protection")) {
+					boolean b = this.configManager.isOp(var4) || var4.equals("CONSOLE");
+					if(!b) {
+						return;
+					}
+					String var11 = var2.substring(var2.indexOf(" ")).trim();
+					if(var11.equals("enable")) {
+						this.worldMngr.spawnProtection = true;
+					} else if(var11.equals("disable")) {
+						this.worldMngr.spawnProtection = false;
+					} else {
+						return;
+					}
 				} else {
 					String var11;
 					if(var2.toLowerCase().startsWith("op ")) {

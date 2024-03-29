@@ -18,7 +18,7 @@ public class ServerConfigurationManager {
 	public List playerEntities = new ArrayList();
 	private MinecraftServer mcServer;
 	private PlayerManager playerManagerObj;
-	private int maxPlayers;
+	public int maxPlayers;
 	private Set field_9252_f = new HashSet();
 	private Set bannedIPs = new HashSet();
 	private Set ops = new HashSet();

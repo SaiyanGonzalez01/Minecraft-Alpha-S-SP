@@ -214,13 +214,13 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 		}
 
 		if(var1.status == 0) {
-			if(var19 > 16 || var2) {
+			if(var19 > 16 || var2 || !this.mcServer.worldMngr.spawnProtection) {
 				this.playerEntity.field_425_ad.func_324_a(var4, var5, var6);
 			}
 		} else if(var1.status == 2) {
 			this.playerEntity.field_425_ad.func_328_a();
 		} else if(var1.status == 1) {
-			if(var19 > 16 || var2) {
+			if(var19 > 16 || var2 || !this.mcServer.worldMngr.spawnProtection) {
 				this.playerEntity.field_425_ad.func_326_a(var4, var5, var6, var18);
 			}
 		} else if(var1.status == 3) {
@@ -231,7 +231,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 			if(var16 < 256.0D) {
 				this.playerEntity.field_421_a.sendPacket(new Packet53BlockChange(var4, var5, var6, this.mcServer.worldMngr));
 			}
-			if(!(var19 > 16 || var2)) {
+			if(!(var19 > 16 || var2) && this.mcServer.worldMngr.spawnProtection) {
 				this.playerEntity.field_421_a.sendPacket(new Packet3Chat("You cannot place/break blocks in this area!"));
 			}
 		}
@@ -241,6 +241,7 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 
 	public void handlePlace(Packet15Place var1) {
 		boolean var2 = this.mcServer.worldMngr.field_819_z = this.mcServer.configManager.isOp(this.playerEntity.username);
+		ItemStack stack = this.playerEntity.inventory.getCurrentItem();
 		if(var1.direction == 255) {
 			ItemStack var3 = var1.id >= 0 ? new ItemStack(var1.id) : null;
 			this.playerEntity.field_425_ad.func_6154_a(this.playerEntity, this.mcServer.worldMngr, var3);
@@ -255,8 +256,15 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 				var8 = var7;
 			}
 
-			ItemStack var9 = var1.id >= 0 ? new ItemStack(var1.id) : null;
-			this.playerEntity.field_425_ad.func_327_a(this.playerEntity, this.mcServer.worldMngr, var9, var10, var4, var5, var6);
+			if(this.mcServer.worldMngr.spawnProtection) {
+				if(var8 > 16 || var2) {
+					ItemStack var9 = var1.id >= 0 ? new ItemStack(var1.id) : null;
+					this.playerEntity.field_425_ad.func_327_a(this.playerEntity, this.mcServer.worldMngr, var9, var10, var4, var5, var6);
+				}
+			} else {
+				ItemStack var9 = var1.id >= 0 ? new ItemStack(var1.id) : null;
+				this.playerEntity.field_425_ad.func_327_a(this.playerEntity, this.mcServer.worldMngr, var9, var10, var4, var5, var6);
+			}
 
 			this.playerEntity.field_421_a.sendPacket(new Packet53BlockChange(var10, var4, var5, this.mcServer.worldMngr));
 			if(var6 == 0) {
@@ -285,21 +293,13 @@ public class NetServerHandler extends NetHandler implements ICommandListener {
 
 			this.playerEntity.field_421_a.sendPacket(new Packet53BlockChange(var10, var4, var5, this.mcServer.worldMngr));
 			
-			if(!(var8 > 16 | var2)) {
-				if(field_10_k != null) {
-					this.playerEntity.field_421_a.sendPacket(new Packet3Chat("You cannot place/break blocks in this area!"));
-					this.playerEntity.field_425_ad.func_323_b(var10, var4, var5);
-					this.playerEntity.field_421_a.sendPacket(new Packet53BlockChange(var10, var4, var5, this.mcServer.worldMngr));
-					ItemStack[] stack = this.playerEntity.inventory.mainInventory.clone();
-					ItemStack stack1 = new ItemStack(var1.id);
-					if(stack[this.playerEntity.inventory.currentItem] != null) {
-						stack1.stackSize = stack[this.playerEntity.inventory.currentItem].stackSize + 1;	
-					} else {
-						stack1.stackSize = 1;
-					}
-					stack[this.playerEntity.inventory.currentItem] = stack1;
-					this.playerEntity.field_421_a.sendPacket(new Packet5PlayerInventory(-1, stack));
+			if(!(var8 > 16 | var2) && this.mcServer.worldMngr.spawnProtection) {
+				this.playerEntity.field_421_a.sendPacket(new Packet3Chat("You cannot place/break blocks in this area!"));
+				if(stack != null && stack.stackSize == 0) {
+					this.playerEntity.inventory.mainInventory[this.playerEntity.inventory.currentItem] = null;
 				}
+				this.playerEntity.inventory.mainInventory[this.playerEntity.inventory.currentItem] = ItemStack.func_20117_a(this.playerEntity.inventory.mainInventory[this.playerEntity.inventory.currentItem]);
+				this.playerEntity.field_421_a.sendPacket(new Packet5PlayerInventory(-1, this.playerEntity.inventory.mainInventory));
 			}
 		}
 

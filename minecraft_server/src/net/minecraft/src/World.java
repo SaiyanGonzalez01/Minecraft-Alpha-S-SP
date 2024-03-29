@@ -54,6 +54,8 @@ public class World implements IBlockAccess {
 	private int field_4263_L = this.rand.nextInt(12000);
 	private List field_778_L = new ArrayList();
 	public boolean multiplayerWorld = false;
+	public int dimension = 0;
+	public boolean spawnProtection = true;
 
 	public WorldChunkManager func_4077_a() {
 		return this.field_4272_q.field_4301_b;
@@ -92,6 +94,11 @@ public class World implements IBlockAccess {
 				this.spawnY = var9.getInteger("SpawnY");
 				this.spawnZ = var9.getInteger("SpawnZ");
 				this.worldTime = var9.getLong("Time");
+				if(var9.hasKey("spawnProtection")) {
+					this.spawnProtection = var9.getBoolean("spawnProtection");
+				} else {
+					spawnProtection = true;
+				}
 				this.sizeOnDisk = var9.getLong("SizeOnDisk");
 				if(var9.hasKey("Player")) {
 					this.nbtCompoundPlayer = var9.getCompoundTag("Player");
@@ -170,6 +177,7 @@ public class World implements IBlockAccess {
 		var1.setLong("Time", this.worldTime);
 		var1.setLong("SizeOnDisk", this.sizeOnDisk);
 		var1.setLong("LastPlayed", System.currentTimeMillis());
+		var1.setBoolean("spawnProtection", this.spawnProtection);
 		EntityPlayer var2 = null;
 		if(this.playerEntities.size() > 0) {
 			var2 = (EntityPlayer)this.playerEntities.get(0);

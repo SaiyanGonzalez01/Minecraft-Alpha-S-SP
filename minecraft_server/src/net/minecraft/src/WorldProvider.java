@@ -11,6 +11,7 @@ public class WorldProvider {
 	public float[] lightBrightnessTable = new float[16];
 	public int field_6165_g = 0;
 	private float[] field_6164_h = new float[4];
+	public static int dimension = 0;
 
 	public final void func_4093_a(World var1) {
 		this.field_4302_a = var1;
@@ -63,6 +64,7 @@ public class WorldProvider {
 	}
 
 	public static WorldProvider func_4091_a(int var0) {
+		dimension = var0;
 		return (WorldProvider)(var0 == 0 ? new WorldProvider() : (var0 == -1 ? new WorldProviderHell() : null));
 	}
 }

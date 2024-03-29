@@ -62,7 +62,7 @@ public class WorldServer extends World {
 			var6 = var5;
 		}
 
-		return var6 > 16 || this.field_6160_D.configManager.isOp(var1.username);
+		return var6 > 16 || this.field_6160_D.configManager.isOp(var1.username) || !this.spawnProtection;
 	}
 
 	protected void func_479_b(Entity var1) {

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,12 +93,22 @@ public class NetworkManager {
 					DataOutputStream yee = new DataOutputStream(sendBuffer);
 					Packet.writePacket(var2, yee);
 					yee.flush();
-					socketOutputStream.write(sendBuffer.toByteArray());
+					try {
+						socketOutputStream.write(sendBuffer.toByteArray());
+					} catch(SocketException e) {
+						if (e.getMessage().contains("connection abort") || e.getMessage().contains("connection reset")) {
+							this.networkShutdown("Connection reset");
+							return;
+						} else {
+							this.onNetworkError(e);
+							e.printStackTrace();
+						}
+					}
 					sendBuffer.flush();
 					socketOutputStream.flush();
 				} catch(Exception e) {
+					e.printStackTrace();
 					this.sendQueueByteLength = oldSendQueue;
-					System.err.println("Error occured while sending data packets! " + e.getStackTrace().toString());
 				}
 			}
 
@@ -116,14 +127,24 @@ public class NetworkManager {
 					DataOutputStream yee = new DataOutputStream(sendBuffer);
 					Packet.writePacket(var2, yee);
 					yee.flush();
-					socketOutputStream.write(sendBuffer.toByteArray());
+					try {
+						socketOutputStream.write(sendBuffer.toByteArray());
+					} catch(SocketException e) {
+						if (e.getMessage().contains("connection abort") || e.getMessage().contains("connection reset")) {
+							this.networkShutdown("Connection reset");
+							return;
+						} else {
+							this.onNetworkError(e);
+							e.printStackTrace();
+						}
+					}
 					sendBuffer.flush();
 					socketOutputStream.flush();
 					this.chunkDataSendCounter = 50;
 				} catch(Exception e) {
+					e.printStackTrace();
 					this.sendQueueByteLength = oldSendQueue;
 					this.chunkDataSendCounter = oldChunkData;
-					System.err.println("Error occured while sending chunk data! " + e.getStackTrace().toString());
 				}
 			}
 
