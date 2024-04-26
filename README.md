@@ -32,6 +32,7 @@ Steps to setup a multiplayer server:
 7. Proxy the Minecraft server to WebSockets by running `node ws-tcp-bridge --websocket <WebSocket_Port> --minecraft localhost:<Minecraft_Port>`
 
 Note: Replace "<WebSocket_Port>" with the port you want clients to use when connecting to the server, replace "<Minecraft_Port>" with the port you are hosting the Minecraft Server on.
+WebSockify will probably work better but I'm not gonna write a guide for you, if you want to use it you're gonna have to figure it out yourself.
 
 # Texture Packs
 This is pretty much self explanitory, just make sure that the texture pack has the same file structure as in `resources/`, and then add the files to a ZIP archive, if a texture pack does not work then most likely it is not for this version of Minecraft. You're probably gonna have to make your own texture pack because texture packs for Alpha are very rare these days.
