@@ -94,7 +94,9 @@ public class NetworkManager {
 					Packet.writePacket(var2, yee);
 					yee.flush();
 					try {
-						socketOutputStream.write(sendBuffer.toByteArray());
+						if(this.isConnectionOpen()) {
+							socketOutputStream.write(sendBuffer.toByteArray());
+						}
 					} catch(SocketException e) {
 						if (e.getMessage().contains("connection abort") || e.getMessage().contains("connection reset")) {
 							this.networkShutdown("Connection reset");
@@ -105,7 +107,9 @@ public class NetworkManager {
 						}
 					}
 					sendBuffer.flush();
-					socketOutputStream.flush();
+					if(this.isConnectionOpen()) {
+						socketOutputStream.flush();
+					}
 				} catch(Exception e) {
 					e.printStackTrace();
 					this.sendQueueByteLength = oldSendQueue;
@@ -128,7 +132,9 @@ public class NetworkManager {
 					Packet.writePacket(var2, yee);
 					yee.flush();
 					try {
-						socketOutputStream.write(sendBuffer.toByteArray());
+						if(this.isConnectionOpen()) {
+							socketOutputStream.write(sendBuffer.toByteArray());
+						}
 					} catch(SocketException e) {
 						if (e.getMessage().contains("connection abort") || e.getMessage().contains("connection reset")) {
 							this.networkShutdown("Connection reset");
@@ -139,7 +145,9 @@ public class NetworkManager {
 						}
 					}
 					sendBuffer.flush();
-					socketOutputStream.flush();
+					if(this.isConnectionOpen()) {
+						socketOutputStream.flush();
+					}
 					this.chunkDataSendCounter = 50;
 				} catch(Exception e) {
 					e.printStackTrace();
@@ -317,7 +325,7 @@ public class NetworkManager {
 	}
 	
 	boolean isConnectionOpen() {
-		return networkSocket.isConnected();
+		return networkSocket != null && networkSocket.isConnected();
 	}
 
 	static Thread getReadThread(NetworkManager var0) {
@@ -336,7 +344,7 @@ public class NetworkManager {
             byte[] data = bytesRead == buffer.length ? buffer : new byte[bytesRead];
             System.arraycopy(buffer, 0, data, 0, data.length);
             return new ByteArrayInputStream(data);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return null;
         }
     }
