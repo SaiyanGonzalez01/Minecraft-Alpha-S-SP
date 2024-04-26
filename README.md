@@ -21,11 +21,19 @@ The textures are compiled into `resources.mc` using [laxdude](https://github.com
 As of right now there is no system to compile an offline download, so you will have to manually copy and paste the javascript from `web/js/app.js` into the HTML file, for the `resources.mc` just encode the file using [Base64](https://www.base64encode.org/) and paste it into the assets div.
 
 # Multiplayer
-Multiplayer has been successfully rewritten and thoroughly tested. It seems to be pretty stable but it had to be removed due to a glitch in Singleplayer's chunk loading, the issue lies within Alpha's multiplayer code somewhere and I am unable to pinpoint the exact cause of the issue so until I am able to figure it out, multiplayer will not be avalible.
+Steps to setup a multiplayer server:
 
-If you are really impatient and cannot wait then go through the commit history and find commit 62af5c9 titled "oops" and download the offline download from there, **THIS VERSION IS BUGGED AND CHUNK LOADING IN SINGLEPLAYER IS EXTREMELY BROKEN, SOME (IF NOT MOST) CHUNKS MAY NOT EVEN SAVE AT ALL!**
+1. Make sure have to have Java 8 (or higher) installed.
+2. Download the [Alpha.jar](https://github.com/PeytonPlayz595/Alpha-v1.2.6/blob/main/minecraft_server/Alpha.jar)
+3. Run the server by using `java -jar Alpha.jar`
+4. Make sure to have the latest version of NodeJS installed
+5. Download or clone my [ws-tcp-bridge repo](https://github.com/PeytonPlayz595/ws-tcp-bridge/) and extract it into a folder
+6. CD into the folder of the extracted repo
+7. Proxy the Minecraft server to WebSockets by running `node ws-tcp-bridge --websocket <WebSocket_Port> --minecraft localhost:<Minecraft_Port>`
 
-If you do decide to use this version (not recommended) just download the Alpha v1.2.6 server software from web archive and use websockify to proxy it to websockets.
+Note: Replace "<WebSocket_Port>" with the port you want clients to use when connecting to the server, replace "<Minecraft_Port>" with the port you are hosting the Minecraft Server on.
+
+WebSockify will probably work better but I'm not gonna write a guide for you, if you want to use it you're gonna have to figure it out yourself.
 
 # Texture Packs
 This is pretty much self explanitory, just make sure that the texture pack has the same file structure as in `resources/`, and then add the files to a ZIP archive, if a texture pack does not work then most likely it is not for this version of Minecraft. You're probably gonna have to make your own texture pack because texture packs for Alpha are very rare these days.
