@@ -26,7 +26,7 @@ Steps to setup a multiplayer server:
 1. Make sure have to have Java 8 (or higher) installed.
 2. Download the [Alpha.jar](https://github.com/PeytonPlayz595/Alpha-v1.2.6/blob/main/minecraft_server/Alpha.jar)
 3. Run the server by using `java -jar Alpha.jar`
-4. Make sure to have the latest version of Python installed
+4. Make sure to have the latest version of NodeJS installed
 5. Download or clone by [ws-tcp-bridge repo](https://github.com/PeytonPlayz595/ws-tcp-bridge/) and extract it into a folder
 6. CD into the folder of the extracted repo
 7. Proxy the Minecraft server to WebSockets by running `node ws-tcp-bridge --websocket <WebSocket_Port> --minecraft localhost:<Minecraft_Port>`
