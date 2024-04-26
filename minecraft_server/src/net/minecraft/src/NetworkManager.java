@@ -180,7 +180,8 @@ public class NetworkManager {
 					ByteBuffer stream = ByteBuffer.allocate(cap);
 					
 					stream.put(b);
-					stream.flip();
+					stream.limit(stream.position());
+					stream.rewind();
 					DataInputStream packetStream = new DataInputStream(new ByteBufferDirectInputStream(stream));
 					while(stream.hasRemaining()) {
 						stream.mark();
@@ -274,6 +275,10 @@ public class NetworkManager {
 				continue;
 			}
 		}
+		
+		if(!isConnectionOpen() && !this.isTerminating) {
+			this.networkShutdown("Lost connection!");
+		}
 
 		if(this.isTerminating && this.readPackets.isEmpty()) {
 			this.netHandler.handleErrorMessage(this.terminationReason);
@@ -309,6 +314,10 @@ public class NetworkManager {
 
 	static void sendNetworkPacket(NetworkManager var0) {
 		var0.sendPacket();
+	}
+	
+	boolean isConnectionOpen() {
+		return networkSocket.isConnected();
 	}
 
 	static Thread getReadThread(NetworkManager var0) {
