@@ -580,6 +580,11 @@ public class EaglerAdapterGL30 extends EaglerAdapterImpl2 {
 		_wglBindTexture(_wGL_TEXTURE_2D, t);
 	}
 	
+	public static final void glBindTexture(int p2) {
+		TextureGL t = texObjects.get(p2);
+		_wglBindTexture(_wGL_TEXTURE_2D, t);
+	}
+	
 	public static final void glBindTexture(int p1, TextureGL p2) {
 		_wglBindTexture(_wGL_TEXTURE_2D, p2);
 	}

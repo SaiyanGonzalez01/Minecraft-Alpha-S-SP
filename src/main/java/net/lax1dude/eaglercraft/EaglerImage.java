@@ -1,55 +1,59 @@
 package net.lax1dude.eaglercraft;
 
-import java.nio.IntBuffer;
-
 public class EaglerImage {
 
-    public final IntBuffer data;
-    public final int w;
-    public final int h;
-    public final boolean alpha;
-    private final int wh;
+	public final int[] data;
+	public final int w;
+	public final int h;
+	public final boolean alpha;
 
-    public EaglerImage(int pw, int ph, boolean palpha) {
-        this.w = pw;
-        this.h = ph;
-        this.alpha = palpha;
-        this.data = IntBuffer.allocate(pw * ph);
-        this.wh = pw * ph;
-    }
-
-    public EaglerImage(IntBuffer pdata, int pw, int ph, boolean palpha) {
-        if (pdata.capacity() != pw * ph) {
-            throw new IllegalArgumentException("buffer capacity does not equal image size");
-        }
-        w = pw;
-        h = ph;
-        alpha = palpha;
-        wh = pw * ph;
-        if (!alpha) {
-            for (int i = 0; i < wh; ++i) {
-                pdata.put(i, pdata.get(i) | 0xFF000000);
-            }
-            pdata.rewind();
-        }
-        data = pdata;
-    }
-
-    public EaglerImage getSubImage(int x, int y, int pw, int ph) {
-        int start = y * w + x;
-        IntBuffer subBuffer = data.slice();
-        subBuffer.position(start);
-        subBuffer.limit(start + pw * ph);
-		int[] temp = new int[pw * ph];
-        subBuffer.get(temp);
-		IntBuffer newBuffer = IntBuffer.wrap(temp);
-        return new EaglerImage(newBuffer, pw, ph, alpha);
-    }
-
+	public EaglerImage(int width, int height, int[] pixels, boolean alpha) {
+		this.w = width;
+		this.h = height;
+		this.data = pixels;
+		this.alpha = alpha;
+	}
+	
+	public EaglerImage(int width, int height, boolean alpha) {
+		this.w = width;
+		this.h = height;
+		this.data = new int[width * height];
+		this.alpha = alpha;
+	}
+	
+	public EaglerImage getSubImage(int x, int y, int pw, int ph) {
+		int[] img = new int[pw * ph];
+		for(int i = 0; i < ph; ++i) {
+			System.arraycopy(data, (i + y) * this.w + x, img, i * pw, pw);
+		}
+		return new EaglerImage(pw, ph, img, alpha);
+	}
+	
 	public int[] data() {
-        int[] array = new int[wh];
-        data.rewind();
-        data.get(array);
-        return array;
-    }
+		return this.data;
+	}
+	
+	public int[] getRGB(int startX, int startY, int w, int h,  int[] rgbArray, int offset, int scansize) {
+		if (startX < 0 || startY < 0 || w <= 0 || h <= 0 ||
+				startX + w > this.w || startY + h > this.h ||
+				rgbArray.length < offset + w * h) {
+				throw new IllegalArgumentException("Suck my dick nigga");
+		}
+
+		for (int y = startY; y < startY + h; y++) {
+			for (int x = startX; x < startX + w; x++) {
+				int imageDataIndex = y * this.w + x;
+				int argb = data[imageDataIndex];
+				int alpha = (argb >> 24) & 0xff;
+				int red = (argb >> 16) & 0xff;
+				int green = (argb >> 8) & 0xff;
+				int blue = argb & 0xff;
+				int rgb = (alpha << 24) | (red << 16) | (green << 8) | blue;
+      
+				rgbArray[offset + (y - startY) * scansize + (x - startX)] = rgb;
+			}
+		}
+
+		return rgbArray;
+	}
 }

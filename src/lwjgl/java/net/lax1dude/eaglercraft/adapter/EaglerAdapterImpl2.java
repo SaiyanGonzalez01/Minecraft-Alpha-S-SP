@@ -757,8 +757,7 @@ public class EaglerAdapterImpl2 {
 		try {
 			BufferedImage img = ImageIO.read(new ByteArrayInputStream(data));
 			int[] pxls = img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0, img.getWidth());
-			IntBuffer buffer = IntBuffer.wrap(pxls);
-			return new EaglerImage(buffer, img.getWidth(), img.getHeight(), true);
+			return new EaglerImage(img.getWidth(), img.getHeight(), pxls, true);
 		} catch (IOException e) {
 			System.err.println("Could not load PNG file:");
 			e.printStackTrace();
@@ -916,6 +915,10 @@ public class EaglerAdapterImpl2 {
 
 		}));
 	}
+	
+	public static String forcedUser = null;
+	public static String forcedServer = null;
+	public static boolean joinServerOnLaunch = false;
 
 	public static final void destroyContext() {
 		Display.destroy();

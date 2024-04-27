@@ -1,17 +1,25 @@
 package net.minecraft.src;
 
 import net.PeytonPlayz585.opengl.GL11;
+import net.lax1dude.eaglercraft.EaglerImage;
 
 public class ColorizerGrass {
-	private static int[] field_6540_a = null;
+	private static final int[] field_6540_a = new int[65536];
 
 	public static int func_4147_a(double var0, double var2) {
-		if(field_6540_a == null) {
-			field_6540_a = GL11.loadPNG(GL11.loadResourceBytes("/misc/grasscolor.png")).data();
-		}
 		var2 *= var0;
 		int var4 = (int)((1.0D - var0) * 255.0D);
 		int var5 = (int)((1.0D - var2) * 255.0D);
 		return field_6540_a[var5 << 8 | var4];
+	}
+	
+	static {
+		try {
+			EaglerImage var0 = GL11.loadPNG(GL11.loadResourceBytes("/misc/grasscolor.png"));
+			var0.getRGB(0, 0, 256, 256, field_6540_a, 0, 256);
+		} catch (Exception var1) {
+			var1.printStackTrace();
+		}
+
 	}
 }

@@ -176,10 +176,14 @@ public class NetworkManager {
 				oldChunkBuffer = null;
 			}
 
-		} else {
-			if(this.timeSinceLastRead++ == 1200) {
-				this.networkShutdown("Timed out");
-			}
+		}
+		
+		if(this.timeSinceLastRead++ == 1200) {
+			this.networkShutdown("Timed out");
+		}
+		
+		if(!isConnectionOpen() && !this.isTerminating) {
+			this.networkShutdown("Lost connection!");
 		}
 
 		if(this.isTerminating && this.readChunks.isEmpty()) {
@@ -206,14 +210,14 @@ public class NetworkManager {
 	static boolean isRunning(NetworkManager var0) {
 		return var0.isRunning;
 	}
+	
+	static boolean isConnectionOpen() {
+		return GL11.connectionOpen();
+	}
 
 	static boolean isServerTerminating(NetworkManager var0) {
 		return var0.isServerTerminating;
 	}
-
-//	static void readNetworkPacket(NetworkManager var0) {
-//		var0.readPacket();
-//	}
 
 	static void sendNetworkPacket(NetworkManager var0) {
 		var0.sendPacket();
