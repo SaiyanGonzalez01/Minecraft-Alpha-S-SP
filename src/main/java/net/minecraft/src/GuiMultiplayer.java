@@ -82,7 +82,7 @@ public class GuiMultiplayer extends GuiScreen {
 					var3 = "";
 				}
 
-				int var4 = 32 - this.serverAddress.length();
+				int var4 = 128 - this.serverAddress.length();
 				if(var4 > var3.length()) {
 					var4 = var3.length();
 				}
