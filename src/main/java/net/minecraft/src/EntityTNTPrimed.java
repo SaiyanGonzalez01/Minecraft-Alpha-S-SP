@@ -34,7 +34,9 @@ public class EntityTNTPrimed extends Entity {
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 		this.motionY -= (double)0.04F;
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		if(!this.worldObj.multiplayerWorld) {
+			this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		}
 		this.motionX *= (double)0.98F;
 		this.motionY *= (double)0.98F;
 		this.motionZ *= (double)0.98F;
@@ -45,8 +47,10 @@ public class EntityTNTPrimed extends Entity {
 		}
 
 		if(this.fuse-- <= 0) {
-			this.setEntityDead();
-			this.explode();
+			if(!this.worldObj.multiplayerWorld) {
+				this.setEntityDead();
+				this.explode();
+			}
 		} else {
 			this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
 		}

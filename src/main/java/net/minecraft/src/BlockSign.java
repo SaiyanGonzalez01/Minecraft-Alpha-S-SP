@@ -103,7 +103,7 @@ public class BlockSign extends BlockContainer {
 			}
 		}
 
-		if(var6) {
+		if(var6 && !var1.multiplayerWorld) {
 			this.dropBlockAsItem(var1, var2, var3, var4, var1.getBlockMetadata(var2, var3, var4));
 			var1.setBlockWithNotify(var2, var3, var4, 0);
 		}

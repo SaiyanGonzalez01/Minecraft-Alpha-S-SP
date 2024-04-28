@@ -101,7 +101,7 @@ public class BlockTorch extends Block {
 				var7 = true;
 			}
 
-			if(var7) {
+			if(var7 && !var1.multiplayerWorld) {
 				this.dropBlockAsItem(var1, var2, var3, var4, var1.getBlockMetadata(var2, var3, var4));
 				var1.setBlockWithNotify(var2, var3, var4, 0);
 			}
@@ -110,7 +110,7 @@ public class BlockTorch extends Block {
 	}
 
 	private boolean func_271_h(World var1, int var2, int var3, int var4) {
-		if(!this.canPlaceBlockAt(var1, var2, var3, var4)) {
+		if(!this.canPlaceBlockAt(var1, var2, var3, var4) && !var1.multiplayerWorld) {
 			this.dropBlockAsItem(var1, var2, var3, var4, var1.getBlockMetadata(var2, var3, var4));
 			var1.setBlockWithNotify(var2, var3, var4, 0);
 			return false;

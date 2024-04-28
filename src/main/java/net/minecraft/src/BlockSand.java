@@ -29,7 +29,9 @@ public class BlockSand extends Block {
 					var8.onUpdate();
 				}
 			} else {
-				var1.entityJoinedWorld(var8);
+				if(!var1.multiplayerWorld) {
+					var1.entityJoinedWorld(var8);
+				}
 			}
 		}
 

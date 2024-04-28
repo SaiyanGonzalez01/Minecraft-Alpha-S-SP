@@ -68,10 +68,15 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
+import de.cuina.fireandfuel.CodecJLayerMP3;
 import net.lax1dude.eaglercraft.AssetRepository;
 import net.lax1dude.eaglercraft.EaglerImage;
 import net.lax1dude.eaglercraft.GameWindowListener;
+import net.lax1dude.eaglercraft.adapter.sound.LibraryLWJGLOpenAL;
 import net.minecraft.src.MathHelper;
+
+import paulscode.sound.SoundSystem;
+import paulscode.sound.SoundSystemConfig;
 
 public class EaglerAdapterImpl2 {
 
@@ -773,6 +778,8 @@ public class EaglerAdapterImpl2 {
 
 	private static Canvas daCanvas = null;
 	private static Frame eagler = null;
+	
+	private static SoundSystem ss = null;
 
 	public static final void initializeContext() {
 		daCanvas = new Canvas();
@@ -914,6 +921,14 @@ public class EaglerAdapterImpl2 {
 			}
 
 		}));
+		
+		try {
+			SoundSystemConfig.addLibrary(LibraryLWJGLOpenAL.class);
+			SoundSystemConfig.setCodec("mp3", CodecJLayerMP3.class);
+			ss = new SoundSystem();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 	
 	public static String forcedUser = null;
@@ -930,6 +945,9 @@ public class EaglerAdapterImpl2 {
 				eagler.dispose();
 			}
 		});
+		if (ss != null) {
+			ss.cleanup();
+		}
 		AL.destroy();
 	}
 
@@ -1394,6 +1412,108 @@ public class EaglerAdapterImpl2 {
 		FileChooserResult res = fileChooserResultObject;
 		fileChooserResultObject = null;
 		return res;
+	}
+	
+	private static float soundX = 0f;
+	private static float soundY = 0f;
+	private static float soundZ = 0f;
+
+	public static final void setListenerPos(float x, float y, float z, float vx, float vy, float vz, float pitch, float yaw) {
+		soundX = x; soundY = y; soundZ = z;
+		float var2 = MathHelper.cos(-yaw * 0.017453292F);
+		float var3 = MathHelper.sin(-yaw * 0.017453292F);
+		float var4 = -MathHelper.cos(pitch * 0.017453292F);
+		float var5 = MathHelper.sin(pitch * 0.017453292F);
+		ss.setListenerPosition(x, y, z);
+		ss.setListenerOrientation(-var3 * var4, -var5, -var2 * var4, 0.0f, 1.0f, 0.0f);
+		ss.setListenerVelocity(vx, vy, vz);
+	}
+
+	public static final void setPlaybackOffsetDelay(float f) {
+		// nah
+	}
+
+	private static int playbackId = 0;
+
+	public static final int beginPlayback(String fileName, float x, float y, float z, float volume, float pitch) {
+		int id = ++playbackId;
+		URL loc = null;
+		if ((loc = getResourceURL(fileName)) != null) {
+			String name = "sound_" + id;
+			float var8 = 16.0F;
+			if (volume > 1.0F) {
+				var8 *= volume;
+			}
+			ss.newSource(false, name, loc, fileName, false, x, y, z, 2, var8);
+			ss.setTemporary(name, true);
+			ss.setPitch(name, pitch);
+			ss.setVolume(name, volume);
+			ss.play(name);
+		} else {
+			return -1;
+		}
+		return id;
+	}
+
+	public static final int beginPlaybackStatic(String fileName, float volume, float pitch) {
+		int id = ++playbackId;
+		URL loc = null;
+		if ((loc = getResourceURL(fileName)) != null) {
+			String name = "sound_" + id;
+			ss.newSource(false, name, loc, fileName, false, soundX, soundY, soundZ, 0, 0f);
+			ss.setTemporary(name, true);
+			ss.setPitch(name, pitch);
+			ss.setVolume(name, volume);
+			ss.play(name);
+		} else {
+			return -1;
+		}
+		return id;
+	}
+
+	private static URL getResourceURL(String path) {
+		try {
+			File f = new File("resources", path);
+			if (f.exists()) {
+				return f.toURI().toURL();
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static final void setPitch(int id, float pitch) {
+		String name = "sound_" + id;
+		if (ss.playing(name)) {
+			ss.setPitch(name, pitch);
+		}
+	}
+
+	public static final void setVolume(int id, float volume) {
+		String name = "sound_" + id;
+		if (ss.playing(name)) {
+			ss.setVolume(name, volume);
+		}
+	}
+
+	public static final void moveSound(int id, float x, float y, float z, float vx, float vy, float vz) {
+		String name = "sound_" + id;
+		if (ss.playing(name)) {
+			ss.setPosition(name, x, y, z);
+			ss.setVelocity(name, vx, vy, vz);
+		}
+	}
+
+	public static final void endSound(int id) {
+		String name = "sound_" + id;
+		if (ss.playing(name)) {
+			ss.stop(name);
+		}
+	}
+
+	public static final boolean isPlaying(int id) {
+		return ss.playing("sound_" + id);
 	}
 
 	public static final long maxMemory() {

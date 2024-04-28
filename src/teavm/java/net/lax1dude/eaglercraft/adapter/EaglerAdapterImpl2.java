@@ -941,8 +941,7 @@ public class EaglerAdapterImpl2 {
 					j = dv.getUint32(i << 2, false);
 					pixels[i] = ((j >> 8) & 0xFFFFFF) | ((j & 0xFF) << 24);
 				}
-				IntBuffer buffer = IntBuffer.wrap(pixels);
-				ret.complete(new EaglerImage(buffer, pxlsDat.getWidth(), pxlsDat.getHeight(), true));
+				ret.complete(new EaglerImage(pxlsDat.getWidth(), pxlsDat.getHeight(), pixels, true));
 			}
 		});
 		toLoad.addEventListener("error", new EventListener<Event>() {
