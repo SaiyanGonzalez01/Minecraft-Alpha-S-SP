@@ -35,13 +35,15 @@ public class GameSettings {
 	public KeyBinding keyBindChat = new KeyBinding("Chat", 20);
 	public KeyBinding keyBindToggleFog = new KeyBinding("Toggle fog", 33);
 	public KeyBinding keyBindSneak = new KeyBinding("Sneak", 42);
-	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog};
+	public KeyBinding keyBindZoom = new KeyBinding("Zoom", 46);
+	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog, this.keyBindZoom};
 	protected Minecraft mc;
 	public int numberOfOptions = 10;
 	public int difficulty = 2;
 	public boolean thirdPersonView = false;
 	public String field_12259_z = "";
 	public String username = "";
+	public boolean ofZoom = false;
 
 	public GameSettings(Minecraft var1) {
 		this.mc = var1;

@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="jars/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="jars/lwjgl.jar"/>
 	<classpathentry kind="lib" path="jars/lwjgl-opengles.jar"/>
+	<classpathentry kind="lib" path="jars/Java-WebSocket-1.5.1-with-dependencies.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

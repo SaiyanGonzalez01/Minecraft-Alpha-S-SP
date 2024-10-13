@@ -68,9 +68,9 @@ public class WorldRenderer {
 			this.field_1753_k = var3 - this.field_1750_n;
 			float var4 = 2.0F;
 			this.field_1736_v = AxisAlignedBB.getBoundingBox((double)((float)var1 - var4), (double)((float)var2 - var4), (double)((float)var3 - var4), (double)((float)(var1 + this.field_1758_f) + var4), (double)((float)(var2 + this.field_1757_g) + var4), (double)((float)(var3 + this.field_1756_h) + var4));
-			GL11.glNewList(this.field_1744_C + 2, GL11.GL_COMPILE);
+			//GL11.glNewList(this.field_1744_C + 2, GL11.GL_COMPILE);
 			//RenderItem.renderAABB(AxisAlignedBB.getBoundingBoxFromPool((double)((float)this.field_1752_l - var4), (double)((float)this.field_1751_m - var4), (double)((float)this.field_1750_n - var4), (double)((float)(this.field_1752_l + this.field_1758_f) + var4), (double)((float)(this.field_1751_m + this.field_1757_g) + var4), (double)((float)(this.field_1750_n + this.field_1756_h) + var4)));
-			GL11.glEndList();
+			//GL11.glEndList();
 			this.MarkDirty();
 		}
 	}
@@ -204,7 +204,8 @@ public class WorldRenderer {
 	}
 
 	public boolean func_1196_e() {
-		return !this.field_1739_E ? false : this.field_1748_p[0] && this.field_1748_p[1];
+		return !this.field_1739_E ? false : (this.field_1748_p[0] && this.field_1748_p[1]
+				&& !this.needsUpdate); // What the fuck!?
 	}
 
 	public void MarkDirty() {

@@ -567,6 +567,12 @@ public abstract class Entity {
 		this.rotationPitch = var8;
 		this.setPosition(this.posX, this.posY, this.posZ);
 	}
+	
+	public boolean isInRangeToRenderDist(double var1) {
+		double var3 = this.boundingBox.getAverageEdgeLength();
+		var3 *= 64.0D * this.field_619_ac;
+		return var1 < var3 * var3;
+	}
 
 	public float getDistanceToEntity(Entity var1) {
 		float var2 = (float)(this.posX - var1.posX);

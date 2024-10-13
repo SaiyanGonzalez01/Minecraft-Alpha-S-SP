@@ -193,9 +193,51 @@ public class EntityLiving extends Entity {
 		this.field_9350_ad = (double)var8;
 		this.field_9324_Y = var9;
 	}
+	
+	private boolean canSkipUpdate() {
+        if (this.hurtTime > 0) {
+            return false;
+        } else if (this.field_9311_be < 20) {
+            return false;
+        } else {
+            World world = this.worldObj;
+
+            if (world == null) {
+                return false;
+            } else if (world.playerEntities.size() != 1) {
+                return false;
+            } else {
+                Entity entity = (Entity)world.playerEntities.get(0);
+                double d0 = Math.max(Math.abs(this.posX - entity.posX) - 16.0D, 0.0D);
+                double d1 = Math.max(Math.abs(this.posZ - entity.posZ) - 16.0D, 0.0D);
+                double d2 = d0 * d0 + d1 * d1;
+                return !this.isInRangeToRenderDist(d2);
+            }
+        }
+    }
+	
+	private void onUpdateMinimal() {
+		++this.field_9344_ag;
+
+		if (this instanceof EntityMobs) {
+			float f = this.getEntityBrightness(1.0F);
+
+			if (f > 0.5F) {
+				this.field_9344_ag += 2;
+			}
+		}
+
+		this.func_418_b_();
+	}
 
 	public void onUpdate() {
-		super.onUpdate();
+		
+		if(this.canSkipUpdate()) {
+			this.onUpdateMinimal();
+		} else {
+			super.onUpdate();
+		}
+		
 		this.onLivingUpdate();
 		double var1 = this.posX - this.prevPosX;
 		double var3 = this.posZ - this.prevPosZ;

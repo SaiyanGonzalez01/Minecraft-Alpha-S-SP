@@ -12,6 +12,10 @@ import net.PeytonPlayz585.util.glu.GLU;
 import net.minecraft.client.Minecraft;
 
 public class EntityRenderer {
+	
+	private MouseFilter mouseFilterXAxis = new MouseFilter();
+	private MouseFilter mouseFilterYAxis = new MouseFilter();
+	
 	private Minecraft mc;
 	private float field_1387_i = 0.0F;
 	public ItemRenderer field_1395_a;
@@ -27,6 +31,8 @@ public class EntityRenderer {
 	float field_4268_g;
 	private float field_1382_n;
 	private float field_1381_o;
+	
+	private static boolean zoomMode = false;
 	
 	private GameOverlayFramebuffer overlayFramebuffer;
 
@@ -110,6 +116,27 @@ public class EntityRenderer {
 		float var3 = 70.0F;
 		if(var2.isInsideOfMaterial(Material.water)) {
 			var3 = 60.0F;
+		}
+		
+		boolean flag = false;
+		if(this.mc.currentScreen == null) {
+			flag = Keyboard.isKeyDown(this.mc.gameSettings.keyBindZoom.keyCode);
+		}
+
+		if(flag) {
+			if(!zoomMode) {
+				zoomMode = true;
+				this.mc.gameSettings.ofZoom = true;
+			}
+
+			if(zoomMode) {
+				var3 /= 4.0F;
+			}
+		} else if(zoomMode) {
+			zoomMode = false;
+			this.mc.gameSettings.ofZoom = false;
+			this.mouseFilterXAxis = new MouseFilter();
+			this.mouseFilterYAxis = new MouseFilter();
 		}
 
 		if(var2.health <= 0) {
@@ -283,6 +310,11 @@ public class EntityRenderer {
 			byte var6 = 1;
 			if(this.mc.gameSettings.invertMouse) {
 				var6 = -1;
+			}
+			
+			if(this.mc.gameSettings.ofZoom) {
+				var4 = this.mouseFilterXAxis.func_22386_a(var4, 0.05F * var3);
+				var5 = this.mouseFilterYAxis.func_22386_a(var5, 0.05F * var3);
 			}
 
 			this.mc.thePlayer.func_346_d(var4, var5 * (float)var6);

@@ -17,7 +17,7 @@ public class WorldProvider {
 	}
 
 	protected void generateLightBrightnessTable() {
-		float var1 = 0.05F;
+		float var1 = 0.2F;
 
 		for(int var2 = 0; var2 <= 15; ++var2) {
 			float var3 = 1.0F - (float)var2 / 15.0F;
@@ -63,8 +63,9 @@ public class WorldProvider {
 	public float[] func_4097_b(float var1, float var2) {
 		float var3 = 0.4F;
 		float var4 = MathHelper.cos(var1 * (float)Math.PI * 2.0F) - 0.0F;
-		if(var4 >= -var3 && var4 <= var3) {
-			float var6 = (var4) / var3 * 0.5F + 0.5F;
+		float var5 = 0F;
+		if(var4 >= var5 - var3 && var4 <= var5 + var3) {
+			float var6 = (var4 - var5) / var3 * 0.5F + 0.5F;
 			float var7 = 1.0F - (1.0F - MathHelper.sin(var6 * (float)Math.PI)) * 0.99F;
 			var7 *= var7;
 			this.field_4217_f[0] = var6 * 0.3F + 0.7F;
