@@ -2,7 +2,7 @@ package net.PeytonPlayz585.glemu;
 
 import java.nio.FloatBuffer;
 
-import net.lax1dude.eaglercraft.GLAllocation;
+import net.minecraft.src.GLAllocation;
 
 /**
  * Utility class that emulates immediate mode vertex data submission.

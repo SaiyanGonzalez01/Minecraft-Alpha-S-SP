@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import net.PeytonPlayz585.awt.image.BufferedImage;
 import net.PeytonPlayz585.opengl.GL11;
-import net.lax1dude.eaglercraft.EaglerImage;
 
 public class RenderEngine {
 
 	public RenderEngine(TexturePackList var1, GameSettings gamesettings) {
 		field_6527_k = var1;
 		textureMap = new HashMap<String, Integer>();
-		textureNameToImageMap = new HashMap<Integer, EaglerImage>();
+		textureNameToImageMap = new HashMap<Integer, BufferedImage>();
 		singleIntBuffer = GLAllocation.createDirectIntBuffer(1);
 		imageDataB1 = GLAllocation.createDirectByteBuffer(0x100000);
 		textureList = new ArrayList<TextureFX>();
@@ -55,7 +55,7 @@ public class RenderEngine {
 		}
 	}
 	
-	public int allocateAndSetupTexture(EaglerImage bufferedimage) {
+	public int allocateAndSetupTexture(BufferedImage bufferedimage) {
 		singleIntBuffer.clear();
 		GLAllocation.generateTextureNames(singleIntBuffer);
 		int i = singleIntBuffer.get(0);
@@ -79,7 +79,7 @@ public class RenderEngine {
 		return i;
 	}
 
-	public void setupTexture(EaglerImage bufferedimage, int i) {
+	public void setupTexture(BufferedImage bufferedimage, int i) {
 		bindTexture(i);
 		if (useMipmaps) {
 			GL11.glTexParameteri(3553, 10241, GL11.GL_NEAREST_MIPMAP_LINEAR);
@@ -90,15 +90,15 @@ public class RenderEngine {
 			GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10240 /* GL_TEXTURE_MAG_FILTER */, 9728 /* GL_NEAREST */);
 		}
 		if (clampTexture) {
-			GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10242 /* GL_TEXTURE_WRAP_S */, 10496 /* GL_CLAMP */);
-			GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10243 /* GL_TEXTURE_WRAP_T */, 10496 /* GL_CLAMP */);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
 		} else {
 			GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10242 /* GL_TEXTURE_WRAP_S */, 10497 /* GL_REPEAT */);
 			GL11.glTexParameteri(3553 /* GL_TEXTURE_2D */, 10243 /* GL_TEXTURE_WRAP_T */, 10497 /* GL_REPEAT */);
 		}
-		int j = bufferedimage.w;
-		int k = bufferedimage.h;
-		int ai[] = bufferedimage.data();
+		int j = bufferedimage.getWidth();
+		int k = bufferedimage.getHeight();
+		int ai[] = bufferedimage.getData();
 		byte abyte0[] = new byte[j * k * 4];
 		for (int l = 0; l < ai.length; l++) {
 			int j1 = ai[l] >> 24 & 0xff;
@@ -140,8 +140,8 @@ public class RenderEngine {
 		texturefx.func_783_a();
 	}
 
-	public EaglerImage readTextureImage(byte[] inputstream) throws IOException {
-		return GL11.loadPNG(inputstream);
+	public BufferedImage readTextureImage(byte[] inputstream) throws IOException {
+		return GL11.EaglerAdapterImpl2.loadPNG(inputstream);
 	}
 
 	public void bindTexture(int i) {
@@ -177,10 +177,10 @@ public class RenderEngine {
 		TexturePackBase var1 = this.field_6527_k.selectedTexturePack;
 		Iterator var2 = this.textureNameToImageMap.keySet().iterator();
 
-		EaglerImage var4;
+		BufferedImage var4;
 		while(var2.hasNext()) {
 			int var3 = ((Integer)var2.next()).intValue();
-			var4 = (EaglerImage)this.textureNameToImageMap.get(Integer.valueOf(var3));
+			var4 = (BufferedImage)this.textureNameToImageMap.get(Integer.valueOf(var3));
 			this.setupTexture(var4, var3);
 		}
 
@@ -216,7 +216,7 @@ public class RenderEngine {
 	public static boolean useMipmaps = false;
 	private static HashMap<String, Integer> textureMap;
 	private TexturePackList field_6527_k;
-	private HashMap<Integer, EaglerImage> textureNameToImageMap;
+	private HashMap<Integer, BufferedImage> textureNameToImageMap;
 	public IntBuffer singleIntBuffer;
 	private ByteBuffer imageDataB1;
 	private java.util.List<TextureFX> textureList;

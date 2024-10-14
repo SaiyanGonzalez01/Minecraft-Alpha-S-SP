@@ -19,6 +19,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
+import net.PeytonPlayz585.fileutils.File;
+import net.PeytonPlayz585.fileutils.FileEntry;
 import net.PeytonPlayz585.opengl.GL11;
 
 public class World implements IBlockAccess {
@@ -67,11 +69,11 @@ public class World implements IBlockAccess {
 			return net.PeytonPlayz585.minecraft.World.func_629_a(var1);
 		}
 		
-        byte[] data = GL11.readFile("saves/" + var1 + "/level.dat");
+        byte[] data = File.readFile("saves/" + var1 + "/level.dat");
         if(!(data == null)) {
             try {
             	NBTTagCompound var5;
-            	if(GL11.isCompressed(data)) {
+            	if(File.isCompressed(data)) {
             		var5 = CompressedStreamTools.func_1138_a(new ByteArrayInputStream(data));
             	} else {
             		var5 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(new ByteArrayInputStream(data)));
@@ -92,18 +94,18 @@ public class World implements IBlockAccess {
     	}
     	
         String path = "saves/" + var1 + "/";
-        Collection<GL11.FileEntry> lst = GL11.listFiles(path, true, true);
-		for(GL11.FileEntry t : lst) {
+        Collection<FileEntry> lst = File.listFiles(path, true, true);
+		for(FileEntry t : lst) {
 			if(!t.isDirectory) {
-				GL11.deleteFile(t.path);
+				File.deleteFile(t.path);
 			}
 		}
-		for(GL11.FileEntry t : lst) {
+		for(FileEntry t : lst) {
 			if(t.isDirectory) {
-				GL11.deleteFile(t.path);
+				File.deleteFile(t.path);
 			}
 		}
-		GL11.deleteFile(path);
+		File.deleteFile(path);
     }
 
 	public WorldChunkManager func_4075_a() {
@@ -248,7 +250,7 @@ public class World implements IBlockAccess {
 			} finally {
 				if(GL11.isWebGL) {
 					var7.flush();
-					GL11.writeFile(this.field_9432_t + "/session.lock", data.toByteArray());
+					File.writeFile(this.field_9432_t + "/session.lock", data.toByteArray());
 				}
 				var7.close();
 			}
@@ -265,7 +267,7 @@ public class World implements IBlockAccess {
 			this.field_1033_r = !net.PeytonPlayz585.minecraft.World.doesLevelExist(this.field_9432_t);
 			exists = net.PeytonPlayz585.minecraft.World.doesLevelExist(this.field_9432_t);
 		} else {
-			data = GL11.readFile(var18);
+			data = File.readFile(var18);
 			this.field_1033_r = data == null;
 			exists = data != null;
 		}
@@ -275,7 +277,7 @@ public class World implements IBlockAccess {
 				if(!GL11.isWebGL) {
 					var8 = net.PeytonPlayz585.minecraft.World.getNBTDataFromLevel(var18);
 				} else {
-					if(GL11.isCompressed(data)) {
+					if(File.isCompressed(data)) {
 						var8 = CompressedStreamTools.func_1138_a(new ByteArrayInputStream(data));
 					} else {
 						var8 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(new ByteArrayInputStream(data)));
@@ -420,20 +422,20 @@ public class World implements IBlockAccess {
 			String var6 = field_9432_t + "/level.dat";
 			ByteArrayOutputStream data = new ByteArrayOutputStream();
 			CompressedStreamTools.writeGzippedCompoundToOutputStream(var3, data);
-			GL11.writeFile(var4, data.toByteArray());
+			File.writeFile(var4, data.toByteArray());
 			
-			if(GL11.readFile(var5) != null) {
-				GL11.deleteFile(var5);
+			if(File.readFile(var5) != null) {
+				File.deleteFile(var5);
 			}
 
-			GL11.renameFile(var6, var5);
-			if(GL11.readFile(var6) != null) {
-				GL11.deleteFile(var6);
+			File.renameFile(var6, var5);
+			if(File.readFile(var6) != null) {
+				File.deleteFile(var6);
 			}
 
-			GL11.renameFile(var4, var6);
-			if(GL11.readFile(var4) != null) {
-				GL11.deleteFile(var4);
+			File.renameFile(var4, var6);
+			if(File.readFile(var4) != null) {
+				File.deleteFile(var4);
 			}
 		} catch (Exception var7) {
 			var7.printStackTrace();
@@ -2018,10 +2020,10 @@ public class World implements IBlockAccess {
 		
 		try {
 			String var1 = this.field_9432_t + "/session.lock";
-			if(GL11.readFile(var1) == null) {
+			if(File.readFile(var1) == null) {
 				return;
 			}
-			DataInputStream var2 = new DataInputStream(new ByteArrayInputStream(GL11.readFile(var1)));
+			DataInputStream var2 = new DataInputStream(new ByteArrayInputStream(File.readFile(var1)));
 
 			try {
 				if(var2.readLong() != this.field_1054_E) {

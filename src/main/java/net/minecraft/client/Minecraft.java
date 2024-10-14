@@ -2,6 +2,7 @@ package net.minecraft.client;
 
 import net.PeytonPlayz585.input.Keyboard;
 import net.PeytonPlayz585.input.Mouse;
+import net.PeytonPlayz585.opengl.Display;
 import net.PeytonPlayz585.opengl.GL11;
 import net.PeytonPlayz585.sound.SoundManager;
 import net.PeytonPlayz585.util.glu.GLU;
@@ -113,8 +114,8 @@ public class Minecraft implements Runnable {
 
 	public Minecraft() {
 		new ThreadSleepForever(this, "Timer hack thread");
-		this.displayWidth = GL11.getCanvasWidth();
-		this.displayHeight = GL11.getCanvasHeight();
+		this.displayWidth = Display.getWidth();
+		this.displayHeight = Display.getHeight();
 		mc = this;
 	}
 
@@ -155,13 +156,7 @@ public class Minecraft implements Runnable {
 
 		this.checkGLError("Post startup");
 		this.ingameGUI = new GuiIngame(this);
-		if(GL11.forcedUser != null & GL11.forcedServer != null & GL11.joinServerOnLaunch) {
-			this.field_6320_i.inventory = GL11.forcedUser;
-			this.gameSettings.username = GL11.forcedUser;
-			this.displayGuiScreen(new GuiConnecting(this, GL11.forcedServer));
-		} else {
-			this.displayGuiScreen(new GuiMainMenu());
-		}
+		this.displayGuiScreen(new GuiMainMenu());
 	}
 
 	private void loadScreen() {
@@ -199,7 +194,7 @@ public class Minecraft implements Runnable {
 		GL11.glEnable(3008 /* GL_ALPHA_TEST */);
 		GL11.glAlphaFunc(516, 1.0F);
 		GL11.glFlush();
-		GL11.updateDisplay();
+		Display.update();
 		GL11.optimize();
 	}
 
@@ -305,9 +300,9 @@ public class Minecraft implements Runnable {
 			if(this.theWorld != null && this.theWorld.multiplayerWorld) {
 				this.theWorld.func_6465_g();
 			}
-					
-			if(!(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(8))) {
-				GL11.updateDisplay();
+			
+			if(!Keyboard.isFunctionKeyDown(this.gameSettings.keyBindFunction.keyCode, 8)) {
+				Display.update();
 			}
 
 			if(!this.field_6307_v) {
@@ -318,28 +313,28 @@ public class Minecraft implements Runnable {
 				this.field_9243_r.func_4136_b(this.timer.renderPartialTicks);
 			}
 
-			if(!GL11.isFocused()) {
+			if(!Display.isFocused()) {
 				try {
 					Thread.sleep(10L);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
-
-			if(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(4)) {
+			
+			if(Keyboard.isFunctionKeyDown(this.gameSettings.keyBindFunction.keyCode, 4)) {
 				this.func_6238_a(var20);
 			} else {
 				this.field_6290_K = System.nanoTime();
 			}
 
 			Thread.yield();
-			if(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(8)) {
-				GL11.updateDisplay();
+			if(Keyboard.isFunctionKeyDown(this.gameSettings.keyBindFunction.keyCode, 8)) {
+				Display.update();
 			}
 
-			if((GL11.getCanvasWidth() != this.displayWidth || GL11.getCanvasHeight() != this.displayHeight)) {
-				this.displayWidth = GL11.getCanvasWidth();
-				this.displayHeight = GL11.getCanvasHeight();
+			if((Display.getWidth() != this.displayWidth || Display.getHeight() != this.displayHeight)) {
+				this.displayWidth = Display.getWidth();
+				this.displayHeight = Display.getHeight();
 				if(this.displayWidth <= 0) {
 					this.displayWidth = 1;
 				}
@@ -447,11 +442,11 @@ public class Minecraft implements Runnable {
 			this.theWorld.chunkProvider.saveChunks(false, (IProgressUpdate)null);
 		}
 		this.running = false;
-        GL11.exit();
+        GL11.EaglerAdapterImpl2.exit();
 	}
 
 	public void func_6259_e() {
-		if(GL11.isFocused()) {
+		if(Display.isFocused()) {
 			if(!this.field_6289_L) {
 				this.field_6289_L = true;
 				this.mouseHelper.func_774_a();
@@ -674,7 +669,7 @@ public class Minecraft implements Runnable {
 												this.func_6252_g();
 											}
 
-											if(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(6)) {
+											if(Keyboard.isFunctionKeyDown(this.gameSettings.keyBindFunction.keyCode, 6)) {
 												this.gameSettings.thirdPersonView = !this.gameSettings.thirdPersonView;
 											}
 
@@ -695,10 +690,6 @@ public class Minecraft implements Runnable {
 											if(Keyboard.getEventKey() == 2 + var4) {
 												this.thePlayer.inventory.currentItem = var4;
 											}
-										}
-
-										if(Keyboard.getEventKey() == this.gameSettings.keyBindToggleFog.keyCode) {
-											this.gameSettings.setOptionValue(4, !Keyboard.isKeyDown(42) && !Keyboard.isKeyDown(54) ? 1 : -1);
 										}
 									}
 								}

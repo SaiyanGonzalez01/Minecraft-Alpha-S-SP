@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
-import net.PeytonPlayz585.opengl.GL11;
-import net.lax1dude.eaglercraft.EaglerImage;
+import net.PeytonPlayz585.awt.image.BufferedImage;
+import net.PeytonPlayz585.awt.image.ImageIO;
 
 public class ColorizerFoliage {
 	private static final int[] field_6529_a = new int[65536];
@@ -12,13 +12,14 @@ public class ColorizerFoliage {
 		int var5 = (int)((1.0D - var2) * 255.0D);
 		return field_6529_a[var5 << 8 | var4];
 	}
-	
+
 	static {
 		try {
-			EaglerImage var0 = GL11.loadPNG(GL11.loadResourceBytes("/misc/foliagecolor.png"));
+			BufferedImage var0 = ImageIO.read(ImageIO.getResource("/misc/foliagecolor.png"));
 			var0.getRGB(0, 0, 256, 256, field_6529_a, 0, 256);
 		} catch (Exception var1) {
 			var1.printStackTrace();
 		}
+
 	}
 }

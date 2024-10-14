@@ -17,8 +17,8 @@ public class LocalStorageManager {
 	public static NBTTagCompound levelSettingsStorage = null;
 	
 	public static void loadStorage() {
-		byte[] g = GL11.loadLocalStorage("g");
-		byte[] p = GL11.loadLocalStorage("p");
+		byte[] g = GL11.EaglerAdapterImpl2.loadLocalStorage("g");
+		byte[] p = GL11.EaglerAdapterImpl2.loadLocalStorage("p");
 		
 		if(g != null) {
 			try {
@@ -51,7 +51,7 @@ public class LocalStorageManager {
 		try {
 			ByteArrayOutputStream s = new ByteArrayOutputStream();
 			NBTBase.writeTag(gameSettingsStorage, new DataOutputStream(s));
-			GL11.saveLocalStorage("g", s.toByteArray());
+			GL11.EaglerAdapterImpl2.saveLocalStorage("g", s.toByteArray());
 		} catch (IOException e) {
 			;
 		}
@@ -61,7 +61,7 @@ public class LocalStorageManager {
 		try {
 			ByteArrayOutputStream s = new ByteArrayOutputStream();
 			NBTBase.writeTag(levelSettingsStorage, new DataOutputStream(s));
-			GL11.saveLocalStorage("p", s.toByteArray());
+			GL11.EaglerAdapterImpl2.saveLocalStorage("p", s.toByteArray());
 		} catch (IOException e) {
 			;
 		}

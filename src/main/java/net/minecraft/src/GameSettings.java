@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import net.PeytonPlayz585.fileutils.File;
 import net.PeytonPlayz585.input.Keyboard;
 import net.PeytonPlayz585.opengl.GL11;
 import net.PeytonPlayz585.storage.LocalStorageManager;
@@ -33,10 +34,10 @@ public class GameSettings {
 	public KeyBinding keyBindInventory = new KeyBinding("Inventory", 23);
 	public KeyBinding keyBindDrop = new KeyBinding("Drop", 16);
 	public KeyBinding keyBindChat = new KeyBinding("Chat", 20);
-	public KeyBinding keyBindToggleFog = new KeyBinding("Toggle fog", 33);
+	public KeyBinding keyBindFunction = new KeyBinding("Function", 33);
 	public KeyBinding keyBindSneak = new KeyBinding("Sneak", 42);
 	public KeyBinding keyBindZoom = new KeyBinding("Zoom", 46);
-	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog, this.keyBindZoom};
+	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindFunction, this.keyBindZoom};
 	protected Minecraft mc;
 	public int numberOfOptions = 10;
 	public int difficulty = 2;
@@ -134,7 +135,7 @@ public class GameSettings {
 		}
 		
 		try {
-			byte[] fileData = GL11.readFile("options.txt");
+			byte[] fileData = File.readFile("options.txt");
 			if(fileData == null) {
 				return;
 			}
@@ -271,10 +272,10 @@ public class GameSettings {
 			
 		var1.flush();
 		byte[] fileData = byteArrayOutputStream.toByteArray();
-		GL11.writeFile("options.txt", fileData);
+		File.writeFile("options.txt", fileData);
 
 		var1.close();
-		LocalStorageManager.saveStorageG();
-		LocalStorageManager.saveStorageP();
+		//LocalStorageManager.saveStorageG();
+		//LocalStorageManager.saveStorageP();
 	}
 }

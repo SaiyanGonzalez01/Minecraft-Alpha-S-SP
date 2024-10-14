@@ -8,8 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.PeytonPlayz585.fileutils.File;
+import net.PeytonPlayz585.fileutils.FileEntry;
 import net.PeytonPlayz585.opengl.GL11;
-import net.lax1dude.eaglercraft.adapter.EaglerAdapterImpl2.FileEntry;
 import net.minecraft.client.Minecraft;
 
 public class TexturePackList {
@@ -46,7 +47,7 @@ public class TexturePackList {
 		this.selectedTexturePack = null;
 		var1.add(this.defaultTexturePack);
 		
-		Collection<FileEntry> var2 = GL11.listFiles("texturepacks/", false, false);
+		Collection<FileEntry> var2 = File.listFiles("texturepacks/", false, false);
 		Collection<FileEntry> var3 = var2;
 		int var4 = var2.size();
 		

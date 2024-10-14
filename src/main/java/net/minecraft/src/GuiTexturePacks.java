@@ -2,9 +2,10 @@ package net.minecraft.src;
 
 import java.util.List;
 
+import net.PeytonPlayz585.fileutils.File;
+import net.PeytonPlayz585.fileutils.FileChooserResult;
 import net.PeytonPlayz585.input.Mouse;
 import net.PeytonPlayz585.opengl.GL11;
-import net.lax1dude.eaglercraft.adapter.FileChooserResult;
 import net.minecraft.client.Minecraft;
 
 public class GuiTexturePacks extends GuiScreen {
@@ -34,7 +35,7 @@ public class GuiTexturePacks extends GuiScreen {
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.enabled) {
 			if(var1.id == 5) {
-				GL11.displayFileChooser("application/zip", "zip");
+				GL11.EaglerAdapterImpl2.displayFileChooser("application/zip", "zip");
 			}
 
 			if(var1.id == 6) {
@@ -190,13 +191,13 @@ public class GuiTexturePacks extends GuiScreen {
 		--this.field_6454_o;
 		
 		FileChooserResult packFile = null;
-		if (GL11.fileChooserHasResult()) {
-			packFile = GL11.getFileChooserResult();
+		if (GL11.EaglerAdapterImpl2.fileChooserHasResult()) {
+			packFile = GL11.EaglerAdapterImpl2.getFileChooserResult();
 		}
 		if(packFile == null) {
 			return;
 		}
-		GL11.writeFile("texturepacks/" + packFile.fileName, packFile.fileData);
+		File.writeFile("texturepacks/" + packFile.fileName, packFile.fileData);
 		Minecraft.getMinecraft().displayGuiScreen(new GuiTexturePacks(field_6461_a));
 	}
 

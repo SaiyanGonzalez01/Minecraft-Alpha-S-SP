@@ -12,5 +12,8 @@
 	<classpathentry kind="lib" path="jars/lwjgl.jar"/>
 	<classpathentry kind="lib" path="jars/lwjgl-opengles.jar"/>
 	<classpathentry kind="lib" path="jars/Java-WebSocket-1.5.1-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="jars/teavm-interop-0.6.1.jar"/>
+	<classpathentry kind="lib" path="jars/teavm-jso-0.6.1.jar"/>
+	<classpathentry kind="lib" path="jars/teavm-jso-apis-0.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

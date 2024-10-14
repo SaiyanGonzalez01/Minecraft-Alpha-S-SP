@@ -12,7 +12,7 @@ public class Client {
 		//JOptionPane.showMessageDialog(null, "Press ok to continue", "Alpha v1.2.6",
 				//JOptionPane.PLAIN_MESSAGE);
 		
-		GL11.initializeContext();
+		GL11.EaglerAdapterImpl2.initializeContext();
 
 		Minecraft mc = new Minecraft();
 		mc.field_6320_i = new Session("Player");

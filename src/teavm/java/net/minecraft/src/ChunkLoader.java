@@ -1,9 +1,12 @@
 package net.minecraft.src;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.Iterator;
 
-import net.PeytonPlayz585.opengl.GL11;
+import net.PeytonPlayz585.fileutils.File;
 
 public class ChunkLoader implements IChunkLoader {
 	private String saveDir;
@@ -23,7 +26,7 @@ public class ChunkLoader implements IChunkLoader {
 		String var5 = Integer.toString(var2 & 63, 36);
 		String var6 = saveDir + "/" + var4 + "/" + var5 + "/" + var3;
 		
-		if(GL11.readFile(var6) != null) {
+		if(File.readFile(var6) != null) {
 			return var6;
 		} else {
 			return null;
@@ -53,7 +56,7 @@ public class ChunkLoader implements IChunkLoader {
 		}
 		String s = this.saveDir + "/" + new String(path);
 		if(oldChunk) {
-			GL11.renameFile(oldChunkPath, s);
+			File.renameFile(oldChunkPath, s);
 		}
 		return s;
 	}
@@ -63,11 +66,11 @@ public class ChunkLoader implements IChunkLoader {
 			return null;
 		}
 		String var4 = this.chunkFileForXZ(x, z);
-		byte[] data = GL11.readFile(var4);
+		byte[] data = File.readFile(var4);
 		if(data != null) {
 			try {
 				NBTTagCompound var6;
-				if(GL11.isCompressed(data)) {
+				if(File.isCompressed(data)) {
 					var6 = CompressedStreamTools.func_1138_a(new ByteArrayInputStream(data));
 				} else {
 					var6 = (NBTTagCompound) NBTBase.readTag(new DataInputStream(new ByteArrayInputStream(data)));
@@ -79,7 +82,7 @@ public class ChunkLoader implements IChunkLoader {
 				if(x != xx || z != zz) {
 					System.out.println("Chunk file at " + x + "," + z + " is in the wrong location; relocating. (Expected " + x + ", " + z + ", got " + xx + ", " + zz + ")");
 					String name = chunkFileForXZ(xx, zz);
-					GL11.renameFile(var4, name);
+					File.renameFile(var4, name);
 					return null;
 				}
 
@@ -98,8 +101,8 @@ public class ChunkLoader implements IChunkLoader {
 		}
 		var1.func_663_l();
 		String var3 = this.chunkFileForXZ(var2.xPosition, var2.zPosition);
-		if(GL11.readFile(var3) != null) {
-			var1.sizeOnDisk -= GL11.getFileSize(var3);
+		if(File.readFile(var3) != null) {
+			var1.sizeOnDisk -= File.getFileSize(var3);
 		}
 
 		try {
@@ -111,15 +114,15 @@ public class ChunkLoader implements IChunkLoader {
 			this.storeChunkInCompound(var2, var1, var7);
 			CompressedStreamTools.writeGzippedCompoundToOutputStream(var6, var5);
 			var5.flush();
-			GL11.writeFile(var4, var5.toByteArray());
+			File.writeFile(var4, var5.toByteArray());
 			var5.close();
 			
-			if(GL11.readFile(var3) != null) {
-				GL11.deleteFile(var3);
+			if(File.readFile(var3) != null) {
+				File.deleteFile(var3);
 			}
 
-			GL11.renameFile(var4, var3);
-			var1.sizeOnDisk += GL11.getFileSize(var3);
+			File.renameFile(var4, var3);
+			var1.sizeOnDisk += File.getFileSize(var3);
 		} catch (Exception var8) {
 			var8.printStackTrace();
 		}

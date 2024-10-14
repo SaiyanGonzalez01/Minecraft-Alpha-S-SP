@@ -22,7 +22,7 @@ public class GuiMainMenu extends GuiScreen {
 	public GuiMainMenu() {
 		try {
 			ArrayList var1 = new ArrayList();
-			byte[] splash = GL11.loadResourceBytes("/title/splashes.txt");
+			byte[] splash = GL11.EaglerAdapterImpl2.loadResourceBytes("/title/splashes.txt");
 			BufferedReader var2 = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(splash)));
 			String var3 = "";
 

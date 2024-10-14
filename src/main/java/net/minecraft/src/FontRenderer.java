@@ -1,22 +1,19 @@
 package net.minecraft.src;
 
-import java.nio.IntBuffer;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
+import net.PeytonPlayz585.awt.image.BufferedImage;
 import net.PeytonPlayz585.opengl.GL11;
-import net.lax1dude.eaglercraft.EaglerImage;
 
 public class FontRenderer {
 
 	public FontRenderer(GameSettings gamesettings, String s, RenderEngine renderengine) {
 		charWidth = new int[256];
 		fontTextureName = 0;
-		EaglerImage bufferedimage = GL11.loadPNG(GL11.loadResourceBytes(s));
-		int i = bufferedimage.w;
-		int j = bufferedimage.h;
-		int ai[] = bufferedimage.data();
+		BufferedImage bufferedimage = GL11.EaglerAdapterImpl2.loadPNG(GL11.EaglerAdapterImpl2.loadResourceBytes(s));
+		int i = bufferedimage.getWidth();
+		int j = bufferedimage.getHeight();
+		int ai[] = bufferedimage.getData();
 		for (int k = 0; k < 256; k++) {
 			int l = k % 16;
 			int k1 = k / 16;
@@ -167,7 +164,6 @@ public class FontRenderer {
 	private int charWidth[];
 	public int fontTextureName;
 	private int fontDisplayLists;
-	private IntBuffer buffer;
 	
 	public static final char formatChar = '\247';
 

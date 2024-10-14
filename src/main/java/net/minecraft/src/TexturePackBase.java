@@ -27,6 +27,6 @@ public abstract class TexturePackBase {
 	}
 
 	public byte[] func_6481_a(String s) {
-		return GL11.loadResourceBytes(s);
+		return GL11.EaglerAdapterImpl2.loadResourceBytes(s);
 	}
 }

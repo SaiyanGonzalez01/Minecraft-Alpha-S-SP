@@ -43,7 +43,7 @@ public class SoundManager {
 		
 		file = "sounds/" + file;
 		if(flag) {
-			int i1 = GL11.beginPlayback(file + k + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
+			int i1 = GL11.EaglerAdapterImpl2.beginPlayback(file + k + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 			if(i1 == -1) {
 				try {
 					throw new FileNotFoundException("Audio file " + file + " not found!");
@@ -54,37 +54,37 @@ public class SoundManager {
 		} else {
 			Random rand = new Random();
 			int i1 = rand.nextInt(4 - 1 + 1) + 1;
-			int i2 = GL11.beginPlayback(file + i1 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
+			int i2 = GL11.EaglerAdapterImpl2.beginPlayback(file + i1 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 			if(i2 == -1) {
 				int i3 = 0;
 				if(i1 == 4) {
-					i3 = GL11.beginPlayback(file + 3 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
+					i3 = GL11.EaglerAdapterImpl2.beginPlayback(file + 3 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 					if(i3 == -1) {
-						i3 = GL11.beginPlayback(file + 2 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
+						i3 = GL11.EaglerAdapterImpl2.beginPlayback(file + 2 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 						if(i3 == -1) {
-							i3 = GL11.beginPlayback(file + 1 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
+							i3 = GL11.EaglerAdapterImpl2.beginPlayback(file + 1 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 						}
 					}
 				}
 				
 				if(i1 == 3) {
-					i3 = GL11.beginPlayback(file + 2 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
+					i3 = GL11.EaglerAdapterImpl2.beginPlayback(file + 2 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 					if(i3 == -1) {
-						i3 = GL11.beginPlayback(file + 1 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
+						i3 = GL11.EaglerAdapterImpl2.beginPlayback(file + 1 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 					}
 				}
 				
 				if(i1 == 2) {
-					i3 = GL11.beginPlayback(file + 1 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
+					i3 = GL11.EaglerAdapterImpl2.beginPlayback(file + 1 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 				}
 				
 				if(i1 == 1) {
-					i3 = GL11.beginPlayback(file + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
+					i3 = GL11.EaglerAdapterImpl2.beginPlayback(file + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 				}
 				
 				if(i3 == -1) {
 					int i4 = 0;
-					i4 = GL11.beginPlayback(file + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
+					i4 = GL11.EaglerAdapterImpl2.beginPlayback(file + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 					if(i4 == -1) {
 						try {
 							throw new FileNotFoundException("Audio file " + file + " not found!");
@@ -99,7 +99,7 @@ public class SoundManager {
 	
 	public void func_338_a(EntityPlayer player, float f) {
 		if(player == null) {
-			GL11.setListenerPos(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
+			GL11.EaglerAdapterImpl2.setListenerPos(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f);
 		} else {
 			double x = player.prevPosX + (player.posX - player.prevPosX) * f;
 			double y = player.prevPosY + (player.posY - player.prevPosY) * f;
@@ -108,7 +108,7 @@ public class SoundManager {
 			double yaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * f;
 			
 			try {
-				GL11.setListenerPos((float)x, (float)y, (float)z, (float)player.motionX, (float)player.motionY, (float)player.motionZ, (float)pitch, (float)yaw);
+				GL11.EaglerAdapterImpl2.setListenerPos((float)x, (float)y, (float)z, (float)player.motionX, (float)player.motionY, (float)player.motionZ, (float)pitch, (float)yaw);
 			} catch(Exception e) {
 				
 			}
@@ -127,7 +127,7 @@ public class SoundManager {
 		}
 		
 		volume *= 0.25F;
-		int i = GL11.beginPlaybackStatic(sound, volume * Minecraft.getMinecraft().gameSettings.soundVolume, pitch);
+		int i = GL11.EaglerAdapterImpl2.beginPlaybackStatic(sound, volume * Minecraft.getMinecraft().gameSettings.soundVolume, pitch);
 		if(i == - 1) {
 			try {
 				throw new FileNotFoundException("Audio file " + file + " not found!");
@@ -155,8 +155,8 @@ public class SoundManager {
 
 	public void musicTick() throws FileNotFoundException {
 		if(Minecraft.getMinecraft().gameSettings.musicVolume == 0.0F || Minecraft.getMinecraft().theWorld == null) {
-			if(GL11.isPlaying(song)) {
-				GL11.endSound(song);
+			if(GL11.EaglerAdapterImpl2.isPlaying(song)) {
+				GL11.EaglerAdapterImpl2.endSound(song);
 			}
 			musicFlag = true;
 			musicTimer = 0;
@@ -165,7 +165,7 @@ public class SoundManager {
 			return;
 		}
 		
-		if(!GL11.isPlaying(song) && musicFlag && !musicTimerSet) {
+		if(!GL11.EaglerAdapterImpl2.isPlaying(song) && musicFlag && !musicTimerSet) {
 			Random rand = new Random();
 			musicTimer = rand.nextInt(6 - 3 + 1) + 3;
 			musicTimer = musicTimer * 60;
@@ -176,7 +176,7 @@ public class SoundManager {
 			return;
 		}
 		
-		if(!GL11.isPlaying(song) && musicFlag && musicTimerSet) {
+		if(!GL11.EaglerAdapterImpl2.isPlaying(song) && musicFlag && musicTimerSet) {
 			if(Minecraft.getMinecraft().ticksRan >= ticks) {
 				musicFlag = false;
 				musicTimer = 0;
@@ -186,7 +186,7 @@ public class SoundManager {
 			}
 		}
 		
-		if(!GL11.isPlaying(song) && !musicFlag) {
+		if(!GL11.EaglerAdapterImpl2.isPlaying(song) && !musicFlag) {
 			Random rand = new Random();
 			int i = rand.nextInt(2);
 			
@@ -197,7 +197,7 @@ public class SoundManager {
 		        	return;
 		        }
 		        prevSong = songToPlay;
-		        song = GL11.beginPlaybackStatic("/music/" + songToPlay + ".mp3", Minecraft.getMinecraft().gameSettings.musicVolume, 1.0F);
+		        song = GL11.EaglerAdapterImpl2.beginPlaybackStatic("/music/" + songToPlay + ".mp3", Minecraft.getMinecraft().gameSettings.musicVolume, 1.0F);
 		        if(song == -1) {
 		        	throw new FileNotFoundException("Audio file " + songToPlay + ".mp3 not found!");
 		        }
@@ -208,7 +208,7 @@ public class SoundManager {
 		        	return;
 		        }
 		        prevSong = songToPlay;
-		        song = GL11.beginPlaybackStatic("/newMusic/" + songToPlay + ".mp3", Minecraft.getMinecraft().gameSettings.musicVolume, 1.0F);
+		        song = GL11.EaglerAdapterImpl2.beginPlaybackStatic("/newMusic/" + songToPlay + ".mp3", Minecraft.getMinecraft().gameSettings.musicVolume, 1.0F);
 		        if(song == -1) {
 		        	throw new FileNotFoundException("Audio file " + songToPlay + ".mp3 not found!");
 		        }

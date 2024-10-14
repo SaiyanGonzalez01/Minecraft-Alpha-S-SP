@@ -2,54 +2,60 @@ package net.PeytonPlayz585.input;
 
 import net.PeytonPlayz585.opengl.GL11;
 
-public class Mouse extends GL11 {
-
+public class Mouse {
+	
 	public static int getX() {
-		return mouseGetX();
+		return GL11.EaglerAdapterImpl2.mouseGetX();
 	}
 	
 	public static int getY() {
-		return mouseGetY();
+		return GL11.EaglerAdapterImpl2.mouseGetY();
 	}
 
-	public static boolean next() {
-		return mouseNext();
-	}
-
-	public static boolean getEventButtonState() {
-		return mouseGetEventButtonState();
-	}
-
-	public static int getEventX() {
-		return mouseGetEventX();
-	}
-
-	
-	public static int getEventY() {
-		return mouseGetEventY();
-	}
-
-	public static int getEventButton() {
-		return mouseGetEventButton();
-	}
-	
-	public static int getDX() {
-		return mouseGetDX();
-	}
-
-	public static int getDY() {
-		return mouseGetDY();
+	public static void create() {
 	}
 
 	public static void setGrabbed(boolean b) {
-		mouseSetGrabbed(b);
+		GL11.EaglerAdapterImpl2.mouseSetGrabbed(b);
 	}
 
-	public static boolean isButtonDown(int i) {
-		return mouseIsButtonDown(i);
+	public static int getDX() {
+		return GL11.EaglerAdapterImpl2.mouseGetDX();
+	}
+	
+	public static int getDY() {
+		return GL11.EaglerAdapterImpl2.mouseGetDY();
+	}
+
+	public static void destroy() {
+	}
+
+	public static boolean next() {
+		return GL11.EaglerAdapterImpl2.mouseNext();
+	}
+
+	public static int getEventButton() {
+		return GL11.EaglerAdapterImpl2.mouseGetEventButton();
+	}
+
+	public static boolean getEventButtonState() {
+		return GL11.EaglerAdapterImpl2.mouseGetEventButtonState();
 	}
 
 	public static int getEventDWheel() {
-		return mouseGetEventDWheel();
+		return GL11.EaglerAdapterImpl2.mouseGetEventDWheel();
 	}
+
+	public static boolean isButtonDown(int i) {
+		return GL11.EaglerAdapterImpl2.mouseIsButtonDown(i);
+	}
+
+	public static int getEventX() {
+		return GL11.EaglerAdapterImpl2.mouseGetEventX();
+	}
+	
+	public static int getEventY() {
+		return GL11.EaglerAdapterImpl2.mouseGetEventY();
+	}
+
 }

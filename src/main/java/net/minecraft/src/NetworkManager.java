@@ -41,7 +41,7 @@ public class NetworkManager {
 		}else {
 			throw new IOException("Invalid URI Protocol!");
 		}
-		if(!GL11.startConnection(var4)) {
+		if(!GL11.EaglerAdapterImpl2.startConnection(var4)) {
 			throw new IOException("Websocket to " + uri + " failed!");
 		}
 	}
@@ -80,7 +80,7 @@ public class NetworkManager {
 				DataOutputStream yee = new DataOutputStream(sendBuffer);
 				Packet.writePacket(var2, yee);
 				yee.flush();
-				GL11.writePacket(sendBuffer.toByteArray());
+				GL11.EaglerAdapterImpl2.writePacket(sendBuffer.toByteArray());
 				sendBuffer.flush();
 			}
 
@@ -96,7 +96,7 @@ public class NetworkManager {
 				DataOutputStream yee = new DataOutputStream(sendBuffer);
 				Packet.writePacket(var2, yee);
 				yee.flush();
-				GL11.writePacket(sendBuffer.toByteArray());
+				GL11.EaglerAdapterImpl2.writePacket(sendBuffer.toByteArray());
 				sendBuffer.flush();
 				this.chunkDataSendCounter = 50;
 			}
@@ -128,7 +128,7 @@ public class NetworkManager {
 		}
 
 		byte[] packet;
-		while((packet = GL11.readPacket()) != null) {
+		while((packet = GL11.EaglerAdapterImpl2.readPacket()) != null) {
 			readChunks.add(ByteBuffer.wrap(packet));
 		}
 		if(!readChunks.isEmpty()) {
@@ -201,8 +201,8 @@ public class NetworkManager {
 			this.isTerminating = true;
 			this.terminationReason = var1;
 			this.isRunning = false;
-			if(GL11.connectionOpen()) {
-				GL11.endConnection();
+			if(GL11.EaglerAdapterImpl2.connectionOpen()) {
+				GL11.EaglerAdapterImpl2.endConnection();
 			}
 		}
 	}
@@ -212,7 +212,7 @@ public class NetworkManager {
 	}
 	
 	static boolean isConnectionOpen() {
-		return GL11.connectionOpen();
+		return GL11.EaglerAdapterImpl2.connectionOpen();
 	}
 
 	static boolean isServerTerminating(NetworkManager var0) {

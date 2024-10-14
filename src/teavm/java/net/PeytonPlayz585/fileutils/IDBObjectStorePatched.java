@@ -1,4 +1,4 @@
-package net.lax1dude.eaglercraft.adapter.teavm;
+package net.PeytonPlayz585.fileutils;
 
 import org.teavm.jso.JSBody;
 import org.teavm.jso.JSObject;

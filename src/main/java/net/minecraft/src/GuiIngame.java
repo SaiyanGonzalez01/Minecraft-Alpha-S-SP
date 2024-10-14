@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.PeytonPlayz585.awt.Color;
 import net.PeytonPlayz585.input.Keyboard;
 import net.PeytonPlayz585.opengl.GL11;
 import net.PeytonPlayz585.opengl.GL12;
@@ -143,14 +144,14 @@ public class GuiIngame extends Gui {
 		RenderHelper.disableStandardItemLighting();
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		String var23;
-		if((Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(4)) || this.mc.gameSettings.showFPS) {
+		if(Keyboard.isFunctionKeyDown(Minecraft.getMinecraft().gameSettings.keyBindFunction.keyCode, 4) || this.mc.gameSettings.showFPS) {
 			var8.drawStringWithShadow("Minecraft Alpha v1.2.6 (" + this.mc.field_6292_I + ")", 2, 2, 16777215);
 			var8.drawStringWithShadow(this.mc.func_6241_m(), 2, 12, 16777215);
 			var8.drawStringWithShadow(this.mc.func_6262_n(), 2, 22, 16777215);
 			var8.drawStringWithShadow(this.mc.func_6245_o(), 2, 32, 16777215);
-			long var24 = GL11.maxMemory();
-			long var29 = GL11.totalMemory();
-			long var30 = GL11.freeMemory();
+			long var24 = GL11.EaglerAdapterImpl2.maxMemory();
+			long var29 = GL11.EaglerAdapterImpl2.totalMemory();
+			long var30 = GL11.EaglerAdapterImpl2.freeMemory();
 			long var21 = var29 - var30;
 			var23 = "Used memory: " + var21 * 100L / var24 + "% (" + var21 / 1024L / 1024L + "MB) of " + var24 / 1024L / 1024L + "MB";
 			this.drawString(var8, var23, var6 - var8.getStringWidth(var23) - 2, 2, 14737632);
@@ -175,7 +176,7 @@ public class GuiIngame extends Gui {
 				GL11.glTranslatef((float)(var6 / 2), (float)(var7 - 48), 0.0F);
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				var17 = hsbToRgb(var25 / 50.0F, 0.7F, 0.6F) & 16777215;
+				var17 = Color.HSBtoRGB(var25 / 50.0F, 0.7F, 0.6F) & 16777215;
 				var8.drawString(this.field_9420_i, -var8.getStringWidth(this.field_9420_i) / 2, -4, var17 + (var16 << 24));
 				GL11.glDisable(GL11.GL_BLEND);
 				GL11.glPopMatrix();
@@ -362,48 +363,6 @@ public class GuiIngame extends Gui {
 	public void func_553_b(String var1) {
 		this.field_9420_i = "Now playing: " + var1;
 		this.field_9419_j = 60;
-	}
-	
-	public static int hsbToRgb(float hue, float saturation, float brightness) {
-	    hue = (hue % 1f) + 1f;
-	    saturation = Math.min(1f, Math.max(0f, saturation));
-	    brightness = Math.min(1f, Math.max(0f, brightness));
-
-	    float q = brightness < 0.5f ? brightness * (1f + saturation) : brightness + saturation - brightness * saturation;
-	    float p = 2f * brightness - q;
-
-	    float r, g, b;
-	    if (hue < 1f/6f) {
-	        r = q;
-	        g = p + (q - p) * 6f * hue;
-	        b = p;
-	    } else if (hue < 2f/6f) {
-	        r = p - (q - p) * 6f * (hue - 1f/6f);
-	        g = q;
-	        b = p;
-	    } else if (hue < 3f/6f) {
-	        r = p;
-	        g = q - (q - p) * 6f * (hue - 2f/6f);
-	        b = p - (q - p) * 6f * (hue - 2f/6f);
-	    } else if (hue < 4f/6f) {
-	        r = p;
-	        g = p;
-	        b = q - (q - p) * 6f * (hue - 3f/6f);
-	    } else if (hue < 5f/6f) {
-	        r = p + (q - p) * 6f * (hue - 4f/6f);
-	        g = p;
-	        b = q;
-	    } else {
-	        r = q;
-	        g = p - (q - p) * 6f * (hue - 5f/6f);
-	        b = p;
-	    }
-
-	    int red = (int) Math.max(0f, Math.min(255f, r * 255f));
-	    int green = (int) Math.max(0f, Math.min(255f, g * 255f));
-	    int blue = (int) Math.max(0f, Math.min(255f, b * 255f));
-
-	    return (red << 16) | (green << 8) | blue;
 	}
 	
 	public void renderCrossHairs(int w, int h) {

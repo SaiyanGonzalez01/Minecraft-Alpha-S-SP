@@ -1024,4 +1024,8 @@ public class RenderGlobal implements IWorldAccess {
 
 	public void func_935_a(int var1, int var2, int var3, TileEntity var4) {
 	}
+
+	public boolean func_27307_a(double var1, double var3, double var5, float var7) {
+		return false;
+	}
 }

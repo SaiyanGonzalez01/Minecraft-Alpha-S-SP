@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.PeytonPlayz585.awt.Color;
 import net.minecraft.client.Minecraft;
 
 public class MobSpawnerBase {
@@ -79,64 +80,9 @@ public class MobSpawnerBase {
 			var1 = 1.0F;
 		}
 
-		return getHSBColor(224.0F / 360.0F - var1 * 0.05F, 0.5F + var1 * 0.1F, 1.0F);
+		return Color.getHSBColor(224.0F / 360.0F - var1 * 0.05F, 0.5F + var1 * 0.1F, 1.0F).getRGB();
 	}
 	
-	public static int getHSBColor(float hue, float saturation, float brightness) {
-	    float r, g, b;
-	    if (saturation == 0) {
-	        r = g = b = brightness;
-	    } else {
-	        float h = (hue - (float) Math.floor(hue)) * 6.0f;
-	        float f = h - (float) Math.floor(h);
-	        float p = brightness * (1.0f - saturation);
-	        float q = brightness * (1.0f - saturation * f);
-	        float t = brightness * (1.0f - (saturation * (1.0f - f)));
-
-	        int hi = (int) h;
-	        switch (hi) {
-	            case 0:
-	                r = brightness;
-	                g = t;
-	                b = p;
-	                break;
-	            case 1:
-	                r = q;
-	                g = brightness;
-	                b = p;
-	                break;
-	            case 2:
-	                r = p;
-	                g = brightness;
-	                b = t;
-	                break;
-	            case 3:
-	                r = p;
-	                g = q;
-	                b = brightness;
-	                break;
-	            case 4:
-	                r = t;
-	                g = p;
-	                b = brightness;
-	                break;
-	            case 5:
-	                r = brightness;
-	                g = p;
-	                b = q;
-	                break;
-	            default:
-	                r = g = b = brightness;
-	                break;
-	        }
-	    }
-
-	    int red = Math.round(r * 255);
-	    int green = Math.round(g * 255);
-	    int blue = Math.round(b * 255);
-	    return (255 << 24) | (red << 16) | (green << 8) | blue;
-	}
-
 	public List getEntitiesForType(EnumCreatureType var1) {
 		if(var1 == EnumCreatureType.monster) {
 			if(this.biomeMonsters.isEmpty()) {

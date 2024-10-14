@@ -1,4 +1,4 @@
-package net.lax1dude.eaglercraft.adapter.teavm;
+package net.PeytonPlayz585.fileutils;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -23,10 +23,6 @@ import org.teavm.jso.indexeddb.IDBVersionChangeEvent;
 import org.teavm.jso.typedarrays.ArrayBuffer;
 import org.teavm.jso.typedarrays.Uint8Array;
 
-import net.PeytonPlayz585.opengl.GL11;
-import net.lax1dude.eaglercraft.adapter.EaglerAdapterImpl2;
-import net.lax1dude.eaglercraft.adapter.EaglerAdapterImpl2.FileEntry;
-
 public class IndexedDBFilesystem {
 	
 	public static enum OpenState {
@@ -37,13 +33,7 @@ public class IndexedDBFilesystem {
 	private static IDBDatabase db = null;
 
 	public static final OpenState initialize() {
-		DatabaseOpen dbo;
-		if(GL11.dataBaseName != null) {
-			System.out.println("Setting custom database name to " + GL11.dataBaseName);
-			dbo = AsyncHandlers.openDB(GL11.dataBaseName);
-		} else {
-			dbo = AsyncHandlers.openDB("_net_lax1dude_eaglercraft_beta_IndexedDBFilesystem_1_3");
-		}
+		DatabaseOpen dbo = AsyncHandlers.openDB("_net_PeytonPlayz585_eaglercraft_Alpha_IndexedDBFilesystem_1_2_6");
 		if(dbo == null) {
 			err = "Unknown Error";
 			return OpenState.ERROR;
@@ -71,11 +61,15 @@ public class IndexedDBFilesystem {
 		return AsyncHandlers.fileGetType(db, path) == FileExists.DIRECTORY;
 	}
 	
+	public static final boolean exists(String path) {
+		return AsyncHandlers.fileGetType(db, path) != FileExists.FALSE;
+	}
+	
 	public static final boolean pathExists(String path) {
 		return AsyncHandlers.fileExists(db, path).bool;
 	}
 	
-	private static final void mkdir(String dir) {
+	public static final void mkdir(String dir) {
 		if(directoryExists(dir)) {
 			return;
 		}
@@ -297,9 +291,9 @@ public class IndexedDBFilesystem {
 		private static native String readKey(JSObject k);
 		
 		@Async
-		protected static native Integer iterateFiles(IDBDatabase db, final String prefix, final boolean listDirs, final boolean recursiveDirs, final Collection<EaglerAdapterImpl2.FileEntry> lst);
+		protected static native Integer iterateFiles(IDBDatabase db, final String prefix, final boolean listDirs, final boolean recursiveDirs, final Collection<FileEntry> lst);
 		
-		private static void iterateFiles(IDBDatabase db, final String prefix, final boolean listDirs, final boolean recursiveDirs, final Collection<EaglerAdapterImpl2.FileEntry> lst, final AsyncCallback<Integer> cb) {
+		private static void iterateFiles(IDBDatabase db, final String prefix, final boolean listDirs, final boolean recursiveDirs, final Collection<FileEntry> lst, final AsyncCallback<Integer> cb) {
 			IDBTransaction tx = db.transaction("filesystem", "readonly");
 			final IDBCursorRequest r = IDBObjectStorePatched.objectStorePatch(tx, "filesystem").openCursor();
 			final int[] res = new int[1];
@@ -317,10 +311,10 @@ public class IndexedDBFilesystem {
 								boolean dir = isRowDirectory(c.getValue());
 								if(dir) {
 									if(listDirs) {
-										lst.add(new EaglerAdapterImpl2.FileEntry(k, true, -1));
+										lst.add(new FileEntry(k, true, -1));
 									}
 								}else {
-									lst.add(new EaglerAdapterImpl2.FileEntry(k, false, eaglercraftEpoch + readLastModified(c.getValue())));
+									lst.add(new FileEntry(k, false, eaglercraftEpoch + readLastModified(c.getValue())));
 								}
 							}
 						}
