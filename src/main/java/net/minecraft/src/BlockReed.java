@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockReed extends Block {
 	protected BlockReed(int var1, int var2) {
@@ -11,7 +11,7 @@ public class BlockReed extends Block {
 		this.setTickOnLoad(true);
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(var1.getBlockId(var2, var3 + 1, var4) == 0) {
 			int var6;
 			for(var6 = 1; var1.getBlockId(var2, var3 - var6, var4) == this.blockID; ++var6) {
@@ -55,7 +55,7 @@ public class BlockReed extends Block {
 		return null;
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return Item.reed.shiftedIndex;
 	}
 

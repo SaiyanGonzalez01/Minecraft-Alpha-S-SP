@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import java.util.List;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public abstract class Entity {
 	private static int field_864_a = 0;
@@ -48,7 +48,7 @@ public abstract class Entity {
 	public boolean field_9314_ba = false;
 	public float field_632_aO = 0.0F;
 	public boolean field_9313_bc = false;
-	protected Random rand = new Random();
+	protected EaglercraftRandom rand = new EaglercraftRandom();
 	public int field_9311_be = 0;
 	public int field_9310_bf = 1;
 	public int fire = 0;

@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import java.util.ArrayList;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockStairs extends Block {
 	private Block modelBlock;
@@ -65,7 +65,7 @@ public class BlockStairs extends Block {
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void randomDisplayTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		this.modelBlock.randomDisplayTick(var1, var2, var3, var4, var5);
 	}
 
@@ -89,11 +89,11 @@ public class BlockStairs extends Block {
 		return this.modelBlock.func_234_g();
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return this.modelBlock.idDropped(var1, var2);
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return this.modelBlock.quantityDropped(var1);
 	}
 
@@ -154,7 +154,7 @@ public class BlockStairs extends Block {
 		this.modelBlock.onEntityWalking(var1, var2, var3, var4, var5);
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		this.modelBlock.updateTick(var1, var2, var3, var4, var5);
 	}
 

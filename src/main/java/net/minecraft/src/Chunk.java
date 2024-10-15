@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class Chunk {
 	public static boolean field_1540_a;
@@ -591,7 +591,7 @@ public class Chunk {
 		return var8;
 	}
 
-	public Random func_997_a(long var1) {
-		return new Random(this.worldObj.randomSeed + (long)(this.xPosition * this.xPosition * 4987142) + (long)(this.xPosition * 5947611) + (long)(this.zPosition * this.zPosition) * 4392871L + (long)(this.zPosition * 389711) ^ var1);
+	public EaglercraftRandom func_997_a(long var1) {
+		return new EaglercraftRandom(this.worldObj.randomSeed + (long)(this.xPosition * this.xPosition * 4987142) + (long)(this.xPosition * 5947611) + (long)(this.zPosition * this.zPosition) * 4392871L + (long)(this.zPosition * 389711) ^ var1);
 	}
 }

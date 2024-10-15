@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import java.util.List;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockPressurePlate extends Block {
 	private EnumMobType triggerMobType;
@@ -50,7 +50,7 @@ public class BlockPressurePlate extends Block {
 
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(!var1.multiplayerWorld) {
 			if(var1.getBlockMetadata(var2, var3, var4) != 0) {
 				this.setStateIfMobInteractsWithPlate(var1, var2, var3, var4);

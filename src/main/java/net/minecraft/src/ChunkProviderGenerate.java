@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class ChunkProviderGenerate implements IChunkProvider {
-	private Random rand;
+	private EaglercraftRandom rand;
 	private NoiseGeneratorOctaves field_912_k;
 	private NoiseGeneratorOctaves field_911_l;
 	private NoiseGeneratorOctaves field_910_m;
@@ -29,7 +29,7 @@ public class ChunkProviderGenerate implements IChunkProvider {
 
 	public ChunkProviderGenerate(World var1, long var2) {
 		this.worldObj = var1;
-		this.rand = new Random(var2);
+		this.rand = new EaglercraftRandom(var2);
 		this.field_912_k = new NoiseGeneratorOctaves(this.rand, 16);
 		this.field_911_l = new NoiseGeneratorOctaves(this.rand, 16);
 		this.field_910_m = new NoiseGeneratorOctaves(this.rand, 8);

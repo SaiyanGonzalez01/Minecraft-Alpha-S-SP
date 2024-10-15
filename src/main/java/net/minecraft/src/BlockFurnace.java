@@ -1,10 +1,10 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockFurnace extends BlockContainer {
 	private final boolean isActive;
-	private Random field_457_a = new Random();
+	private EaglercraftRandom field_457_a = new EaglercraftRandom();
 
 	protected BlockFurnace(int var1, boolean var2) {
 		super(var1, Material.rock);
@@ -12,7 +12,7 @@ public class BlockFurnace extends BlockContainer {
 		this.blockIndexInTexture = 45;
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return Block.stoneOvenIdle.blockID;
 	}
 
@@ -89,7 +89,7 @@ public class BlockFurnace extends BlockContainer {
 		}
 	}
 
-	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void randomDisplayTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(this.isActive) {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
 			float var7 = (float)var2 + 0.5F;

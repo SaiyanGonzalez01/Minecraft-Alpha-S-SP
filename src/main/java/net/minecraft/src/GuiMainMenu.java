@@ -6,14 +6,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 import net.PeytonPlayz585.opengl.GL11;
 import net.PeytonPlayz585.util.glu.GLU;
 import net.minecraft.client.Minecraft;
 
 public class GuiMainMenu extends GuiScreen {
-	private static final Random rand = new Random();
+	private static final EaglercraftRandom rand = new EaglercraftRandom();
 	String[] minecraftLogo = new String[]{" *   * * *   * *** *** *** *** *** ***", " ** ** * **  * *   *   * * * * *    * ", " * * * * * * * **  *   **  *** **   * ", " *   * * *  ** *   *   * * * * *    * ", " *   * * *   * *** *** * * * * *    * "};
 	private LogoEffectRandomizer[][] logoEffects;
 	private float updateCounter = 0.0F;
@@ -222,7 +222,7 @@ public class GuiMainMenu extends GuiScreen {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 	}
 
-	static Random getRand() {
+	static EaglercraftRandom getRand() {
 		return rand;
 	}
 }

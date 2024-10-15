@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockGrass extends Block {
 	protected BlockGrass(int var1) {
@@ -27,7 +27,7 @@ public class BlockGrass extends Block {
 		return ColorizerGrass.func_4147_a(var5, var7);
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(var1.getBlockLightValue(var2, var3 + 1, var4) < 4 && var1.getBlockMaterial(var2, var3 + 1, var4).getCanBlockGrass()) {
 			if(var5.nextInt(4) != 0) {
 				return;
@@ -45,7 +45,7 @@ public class BlockGrass extends Block {
 
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return Block.dirt.idDropped(0, var2);
 	}
 }

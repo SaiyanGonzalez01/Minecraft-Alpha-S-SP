@@ -573,7 +573,7 @@ public class FixedFunctionShader {
 			}
 		}
 		if(fogCfgSerial != GL11.fogCfgSerial) {
-			int fogModex = GL11.fogPremultiply ? 2 : GL11.fogMode;
+			int fogModex = GL11.fogMode;
 			float fogStarty = GL11.fogStart;
 			float fogEndz = GL11.fogEnd - fogStarty;
 			float fogDensityw = GL11.fogDensity;

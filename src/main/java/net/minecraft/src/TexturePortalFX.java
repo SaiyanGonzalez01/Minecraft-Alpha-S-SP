@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class TexturePortalFX extends TextureFX {
 	private int field_4227_g = 0;
@@ -8,7 +8,7 @@ public class TexturePortalFX extends TextureFX {
 
 	public TexturePortalFX() {
 		super(Block.portal.blockIndexInTexture);
-		Random var1 = new Random(100L);
+		EaglercraftRandom var1 = new EaglercraftRandom(100L);
 
 		for(int var2 = 0; var2 < 32; ++var2) {
 			for(int var3 = 0; var3 < 16; ++var3) {

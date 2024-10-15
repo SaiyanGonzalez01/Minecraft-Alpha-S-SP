@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockFlowing extends BlockFluids {
 	int field_460_a = 0;
@@ -18,7 +18,7 @@ public class BlockFlowing extends BlockFluids {
 		var1.func_665_h(var2, var3, var4);
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		int var6 = this.func_290_h(var1, var2, var3, var4);
 		byte var7 = 1;
 		if(this.blockMaterial == Material.lava && !var1.worldProvider.field_6479_d) {

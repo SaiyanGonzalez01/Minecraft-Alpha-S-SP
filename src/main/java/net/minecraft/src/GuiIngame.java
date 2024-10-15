@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 import net.PeytonPlayz585.awt.Color;
 import net.PeytonPlayz585.input.Keyboard;
@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 public class GuiIngame extends Gui {
 	private static RenderItem itemRenderer = new RenderItem();
 	private List chatMessageList = new ArrayList();
-	private Random rand = new Random();
+	private EaglercraftRandom rand = new EaglercraftRandom();
 	private Minecraft mc;
 	public String field_933_a = null;
 	private int updateCounter = 0;

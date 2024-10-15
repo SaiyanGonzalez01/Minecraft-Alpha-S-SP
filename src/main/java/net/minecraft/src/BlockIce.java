@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockIce extends BlockBreakable {
 	public BlockIce(int var1, int var2) {
@@ -25,11 +25,11 @@ public class BlockIce extends BlockBreakable {
 
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return 0;
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(var1.getSavedLightValue(EnumSkyBlock.Block, var2, var3, var4) > 11 - Block.lightOpacity[this.blockID]) {
 			this.dropBlockAsItem(var1, var2, var3, var4, var1.getBlockMetadata(var2, var3, var4));
 			var1.setBlockWithNotify(var2, var3, var4, Block.waterMoving.blockID);

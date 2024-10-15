@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockFire extends Block {
 	private int[] chanceToEncourageFire = new int[256];
@@ -38,7 +38,7 @@ public class BlockFire extends Block {
 		return 3;
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return 0;
 	}
 
@@ -46,7 +46,7 @@ public class BlockFire extends Block {
 		return 10;
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(var1.multiplayerWorld) {
 			return;
 		}
@@ -96,7 +96,7 @@ public class BlockFire extends Block {
 		}
 	}
 
-	private void tryToCatchBlockOnFire(World var1, int var2, int var3, int var4, int var5, Random var6) {
+	private void tryToCatchBlockOnFire(World var1, int var2, int var3, int var4, int var5, EaglercraftRandom var6) {
 		if(var1.multiplayerWorld) {
 			return;
 		}
@@ -173,7 +173,7 @@ public class BlockFire extends Block {
 		}
 	}
 
-	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void randomDisplayTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(var5.nextInt(24) == 0) {
 			var1.playSoundEffect((double)((float)var2 + 0.5F), (double)((float)var3 + 0.5F), (double)((float)var4 + 0.5F), "fire.fire", 1.0F + var5.nextFloat(), var5.nextFloat() * 0.7F + 0.3F);
 		}

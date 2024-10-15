@@ -1,13 +1,13 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 import net.PeytonPlayz585.opengl.GL11;
 import net.PeytonPlayz585.opengl.GL12;
 
 public class RenderItem extends Render {
 	private RenderBlocks renderBlocks = new RenderBlocks();
-	private Random random = new Random();
+	private EaglercraftRandom random = new EaglercraftRandom();
 
 	public RenderItem() {
 		this.field_9246_c = 0.15F;

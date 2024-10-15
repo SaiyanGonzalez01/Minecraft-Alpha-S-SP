@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockChest extends BlockContainer {
-	private Random field_457_a = new Random();
+	private EaglercraftRandom field_457_a = new EaglercraftRandom();
 
 	protected BlockChest(int var1) {
 		super(var1, Material.wood);

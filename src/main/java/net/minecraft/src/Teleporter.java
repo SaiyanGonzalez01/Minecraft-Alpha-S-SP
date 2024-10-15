@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class Teleporter {
-	private Random field_4232_a = new Random();
+	private EaglercraftRandom field_4232_a = new EaglercraftRandom();
 
 	public void func_4107_a(World var1, Entity var2) {
 		if(!this.func_4106_b(var1, var2)) {

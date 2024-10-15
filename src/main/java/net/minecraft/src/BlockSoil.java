@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockSoil extends Block {
 	protected BlockSoil(int var1) {
@@ -27,7 +27,7 @@ public class BlockSoil extends Block {
 		return var1 == 1 && var2 > 0 ? this.blockIndexInTexture - 1 : (var1 == 1 ? this.blockIndexInTexture : 2);
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(var5.nextInt(5) == 0) {
 			if(this.func_274_i(var1, var2, var3, var4)) {
 				var1.setBlockMetadataWithNotify(var2, var3, var4, 7);
@@ -87,7 +87,7 @@ public class BlockSoil extends Block {
 
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return Block.dirt.idDropped(0, var2);
 	}
 }

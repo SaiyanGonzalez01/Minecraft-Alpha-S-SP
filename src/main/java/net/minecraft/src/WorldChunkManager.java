@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class WorldChunkManager {
 	private NoiseGeneratorOctaves2 field_4194_e;
@@ -15,9 +15,9 @@ public class WorldChunkManager {
 	}
 
 	public WorldChunkManager(World var1) {
-		this.field_4194_e = new NoiseGeneratorOctaves2(new Random(var1.randomSeed * 9871L), 4);
-		this.field_4193_f = new NoiseGeneratorOctaves2(new Random(var1.randomSeed * 39811L), 4);
-		this.field_4192_g = new NoiseGeneratorOctaves2(new Random(var1.randomSeed * 543321L), 2);
+		this.field_4194_e = new NoiseGeneratorOctaves2(new EaglercraftRandom(var1.randomSeed * 9871L), 4);
+		this.field_4193_f = new NoiseGeneratorOctaves2(new EaglercraftRandom(var1.randomSeed * 39811L), 4);
+		this.field_4192_g = new NoiseGeneratorOctaves2(new EaglercraftRandom(var1.randomSeed * 543321L), 2);
 	}
 
 	public MobSpawnerBase func_4074_a(ChunkCoordIntPair var1) {

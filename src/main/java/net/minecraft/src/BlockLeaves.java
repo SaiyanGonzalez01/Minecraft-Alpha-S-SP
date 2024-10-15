@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockLeaves extends BlockLeavesBase {
 	private int baseIndexInPNG;
@@ -40,7 +40,7 @@ public class BlockLeaves extends BlockLeavesBase {
 		}
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if (var1.multiplayerWorld) {
 			return;
 		}
@@ -122,11 +122,11 @@ public class BlockLeaves extends BlockLeavesBase {
 		var1.setBlockWithNotify(var2, var3, var4, 0);
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return var1.nextInt(20) == 0 ? 1 : 0;
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return Block.sapling.blockID;
 	}
 

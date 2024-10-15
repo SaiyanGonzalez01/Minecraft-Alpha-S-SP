@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class ChunkProviderHell implements IChunkProvider {
-	private Random field_4170_h;
+	private EaglercraftRandom field_4170_h;
 	private NoiseGeneratorOctaves field_4169_i;
 	private NoiseGeneratorOctaves field_4168_j;
 	private NoiseGeneratorOctaves field_4167_k;
@@ -25,7 +25,7 @@ public class ChunkProviderHell implements IChunkProvider {
 
 	public ChunkProviderHell(World var1, long var2) {
 		this.field_4164_n = var1;
-		this.field_4170_h = new Random(var2);
+		this.field_4170_h = new EaglercraftRandom(var2);
 		this.field_4169_i = new NoiseGeneratorOctaves(this.field_4170_h, 16);
 		this.field_4168_j = new NoiseGeneratorOctaves(this.field_4170_h, 16);
 		this.field_4167_k = new NoiseGeneratorOctaves(this.field_4170_h, 8);

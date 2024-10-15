@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class NoiseGeneratorPerlin extends NoiseGenerator {
 	private int[] permutations;
@@ -9,10 +9,10 @@ public class NoiseGeneratorPerlin extends NoiseGenerator {
 	public double zCoord;
 
 	public NoiseGeneratorPerlin() {
-		this(new Random());
+		this(new EaglercraftRandom());
 	}
 
-	public NoiseGeneratorPerlin(Random var1) {
+	public NoiseGeneratorPerlin(EaglercraftRandom var1) {
 		this.permutations = new int[512];
 		this.xCoord = var1.nextDouble() * 256.0D;
 		this.yCoord = var1.nextDouble() * 256.0D;

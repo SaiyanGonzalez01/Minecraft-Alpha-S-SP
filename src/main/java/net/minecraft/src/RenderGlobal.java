@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 import net.PeytonPlayz585.opengl.GL11;
 import net.minecraft.client.Minecraft;
@@ -107,7 +107,7 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	private void func_950_f() {
-		Random var1 = new Random(10842L);
+		EaglercraftRandom var1 = new EaglercraftRandom(10842L);
 		Tessellator var2 = Tessellator.instance;
 		var2.startDrawingQuads();
 

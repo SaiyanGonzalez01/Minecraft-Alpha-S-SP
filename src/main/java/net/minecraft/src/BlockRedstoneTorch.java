@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockRedstoneTorch extends BlockTorch {
 	private boolean torchActive = false;
@@ -84,7 +84,7 @@ public class BlockRedstoneTorch extends BlockTorch {
 		return var5 == 5 && var1.isBlockIndirectlyProvidingPowerTo(var2, var3 - 1, var4, 0) ? true : (var5 == 3 && var1.isBlockIndirectlyProvidingPowerTo(var2, var3, var4 - 1, 2) ? true : (var5 == 4 && var1.isBlockIndirectlyProvidingPowerTo(var2, var3, var4 + 1, 3) ? true : (var5 == 1 && var1.isBlockIndirectlyProvidingPowerTo(var2 - 1, var3, var4, 4) ? true : var5 == 2 && var1.isBlockIndirectlyProvidingPowerTo(var2 + 1, var3, var4, 5))));
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		boolean var6 = this.func_15232_h(var1, var2, var3, var4);
 
 		while(torchUpdates.size() > 0 && var1.worldTime - ((RedstoneUpdateInfo)torchUpdates.get(0)).updateTime > 100L) {
@@ -120,7 +120,7 @@ public class BlockRedstoneTorch extends BlockTorch {
 		return var5 == 0 ? this.isPoweringTo(var1, var2, var3, var4, var5) : false;
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return Block.torchRedstoneActive.blockID;
 	}
 
@@ -128,7 +128,7 @@ public class BlockRedstoneTorch extends BlockTorch {
 		return true;
 	}
 
-	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void randomDisplayTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(this.torchActive) {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
 			double var7 = (double)((float)var2 + 0.5F) + (double)(var5.nextFloat() - 0.5F) * 0.2D;

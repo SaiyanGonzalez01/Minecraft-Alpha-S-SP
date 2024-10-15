@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockRedstoneWire extends Block {
 	private boolean wiresProvidePower = true;
@@ -245,7 +245,7 @@ public class BlockRedstoneWire extends Block {
 		}
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return Item.redstone.shiftedIndex;
 	}
 
@@ -291,7 +291,7 @@ public class BlockRedstoneWire extends Block {
 		return this.wiresProvidePower;
 	}
 
-	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void randomDisplayTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(var1.getBlockMetadata(var2, var3, var4) > 0) {
 			double var6 = (double)var2 + 0.5D + ((double)var5.nextFloat() - 0.5D) * 0.2D;
 			double var8 = (double)((float)var3 + 1.0F / 16.0F);

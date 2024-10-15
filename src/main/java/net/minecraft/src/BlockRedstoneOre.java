@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockRedstoneOre extends Block {
 	private boolean field_468_a;
@@ -41,22 +41,22 @@ public class BlockRedstoneOre extends Block {
 
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(this.blockID == Block.oreRedstoneGlowing.blockID) {
 			var1.setBlockWithNotify(var2, var3, var4, Block.oreRedstone.blockID);
 		}
 
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return Item.redstone.shiftedIndex;
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return 4 + var1.nextInt(2);
 	}
 
-	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void randomDisplayTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(this.field_468_a) {
 			this.func_319_i(var1, var2, var3, var4);
 		}
@@ -64,7 +64,7 @@ public class BlockRedstoneOre extends Block {
 	}
 
 	private void func_319_i(World var1, int var2, int var3, int var4) {
-		Random var5 = var1.rand;
+		EaglercraftRandom var5 = var1.rand;
 		double var6 = 1.0D / 16.0D;
 
 		for(int var8 = 0; var8 < 6; ++var8) {

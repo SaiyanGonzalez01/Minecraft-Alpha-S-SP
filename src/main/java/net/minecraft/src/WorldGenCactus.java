@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class WorldGenCactus extends WorldGenerator {
-	public boolean generate(World var1, Random var2, int var3, int var4, int var5) {
+	public boolean generate(World var1, EaglercraftRandom var2, int var3, int var4, int var5) {
 		for(int var6 = 0; var6 < 10; ++var6) {
 			int var7 = var3 + var2.nextInt(8) - var2.nextInt(8);
 			int var8 = var4 + var2.nextInt(4) - var2.nextInt(4);

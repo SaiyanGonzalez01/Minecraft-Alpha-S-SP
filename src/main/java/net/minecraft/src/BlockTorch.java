@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockTorch extends Block {
 	protected BlockTorch(int var1, int var2) {
@@ -53,7 +53,7 @@ public class BlockTorch extends Block {
 		var1.setBlockMetadataWithNotify(var2, var3, var4, var6);
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		super.updateTick(var1, var2, var3, var4, var5);
 		if(var1.getBlockMetadata(var2, var3, var4) == 0) {
 			this.onBlockAdded(var1, var2, var3, var4);
@@ -138,7 +138,7 @@ public class BlockTorch extends Block {
 		return super.collisionRayTrace(var1, var2, var3, var4, var5, var6);
 	}
 
-	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void randomDisplayTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		int var6 = var1.getBlockMetadata(var2, var3, var4);
 		double var7 = (double)((float)var2 + 0.5F);
 		double var9 = (double)((float)var3 + 0.7F);

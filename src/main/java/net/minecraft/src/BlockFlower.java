@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockFlower extends Block {
 	protected BlockFlower(int var1, int var2) {
@@ -24,7 +24,7 @@ public class BlockFlower extends Block {
 		this.func_268_h(var1, var2, var3, var4);
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		this.func_268_h(var1, var2, var3, var4);
 	}
 

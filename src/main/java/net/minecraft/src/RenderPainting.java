@@ -1,12 +1,12 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 import net.PeytonPlayz585.opengl.GL11;
 import net.PeytonPlayz585.opengl.GL12;
 
 public class RenderPainting extends Render {
-	private Random rand = new Random();
+	private EaglercraftRandom rand = new EaglercraftRandom();
 
 	public void a(EntityPainting var1, double var2, double var4, double var6, float var8, float var9) {
 		this.rand.setSeed(187L);

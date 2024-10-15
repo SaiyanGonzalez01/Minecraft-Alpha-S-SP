@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class Item {
-	protected static Random itemRand = new Random();
+	protected static EaglercraftRandom itemRand = new EaglercraftRandom();
 	public static Item[] itemsList = new Item[32000];
 	public static Item shovelSteel = (new ItemSpade(0, 2)).setIconIndex(82);
 	public static Item pickaxeSteel = (new ItemPickaxe(1, 2)).setIconIndex(98);

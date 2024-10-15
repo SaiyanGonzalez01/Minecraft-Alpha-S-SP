@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class ModelGhast extends ModelBase {
 	ModelRenderer body;
@@ -11,7 +11,7 @@ public class ModelGhast extends ModelBase {
 		this.body = new ModelRenderer(0, 0);
 		this.body.func_921_a(-8.0F, -8.0F, -8.0F, 16, 16, 16);
 		this.body.offsetY += (float)(24 + var1);
-		Random var2 = new Random(1660L);
+		EaglercraftRandom var2 = new EaglercraftRandom(1660L);
 
 		for(int var3 = 0; var3 < this.tentacles.length; ++var3) {
 			this.tentacles[var3] = new ModelRenderer(0, 0);

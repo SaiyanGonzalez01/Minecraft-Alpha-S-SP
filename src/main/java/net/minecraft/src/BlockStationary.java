@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockStationary extends BlockFluids {
 	protected BlockStationary(int var1, Material var2) {
@@ -29,7 +29,7 @@ public class BlockStationary extends BlockFluids {
 		var1.field_1043_h = false;
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(this.blockMaterial == Material.lava) {
 			int var6 = var5.nextInt(3);
 

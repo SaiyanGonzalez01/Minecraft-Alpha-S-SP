@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockCrops extends BlockFlower {
 	protected BlockCrops(int var1, int var2) {
@@ -15,7 +15,7 @@ public class BlockCrops extends BlockFlower {
 		return var1 == Block.tilledField.blockID;
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		super.updateTick(var1, var2, var3, var4, var5);
 		if(var1.getBlockLightValue(var2, var3 + 1, var4) >= 9) {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
@@ -100,11 +100,11 @@ public class BlockCrops extends BlockFlower {
 
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return var1 == 7 ? Item.wheat.shiftedIndex : -1;
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return 1;
 	}
 }

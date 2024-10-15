@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class NoiseGenerator2 {
 	private static int[][] field_4296_d = new int[][]{{1, 1, 0}, {-1, 1, 0}, {1, -1, 0}, {-1, -1, 0}, {1, 0, 1}, {-1, 0, 1}, {1, 0, -1}, {-1, 0, -1}, {0, 1, 1}, {0, -1, 1}, {0, 1, -1}, {0, -1, -1}};
@@ -12,10 +12,10 @@ public class NoiseGenerator2 {
 	private static final double field_4293_g = (3.0D - Math.sqrt(3.0D)) / 6.0D;
 
 	public NoiseGenerator2() {
-		this(new Random());
+		this(new EaglercraftRandom());
 	}
 
-	public NoiseGenerator2(Random var1) {
+	public NoiseGenerator2(EaglercraftRandom var1) {
 		this.field_4295_e = new int[512];
 		this.field_4292_a = var1.nextDouble() * 256.0D;
 		this.field_4291_b = var1.nextDouble() * 256.0D;

@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.nio.FloatBuffer;
 import java.util.List;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 import net.PeytonPlayz585.glemu.GameOverlayFramebuffer;
 import net.PeytonPlayz585.input.Keyboard;
@@ -27,7 +27,7 @@ public class EntityRenderer {
 	private double cameraYaw = 0.0D;
 	private double cameraPitch = 0.0D;
 	private long field_1384_l = System.currentTimeMillis();
-	private Random field_1383_m = new Random();
+	private EaglercraftRandom field_1383_m = new EaglercraftRandom();
 	volatile int field_1394_b = 0;
 	volatile int field_1393_c = 0;
 	FloatBuffer fogColorBuffer = GLAllocation.createDirectFloatBuffer(16);

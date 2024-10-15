@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public abstract class BlockFluids extends Block {
 	protected BlockFluids(int var1, Material var2) {
@@ -66,11 +66,11 @@ public abstract class BlockFluids extends Block {
 		return 4;
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return 0;
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return 0;
 	}
 
@@ -173,7 +173,7 @@ public abstract class BlockFluids extends Block {
 		return var5 > var6 ? var5 : var6;
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		super.updateTick(var1, var2, var3, var4, var5);
 	}
 
@@ -181,7 +181,7 @@ public abstract class BlockFluids extends Block {
 		return this.blockMaterial == Material.water ? 1 : 0;
 	}
 
-	public void randomDisplayTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void randomDisplayTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(this.blockMaterial == Material.water && var5.nextInt(64) == 0) {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
 			if(var6 > 0 && var6 < 8) {

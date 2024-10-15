@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class WorldGenLightStone1 extends WorldGenerator {
-	public boolean generate(World var1, Random var2, int var3, int var4, int var5) {
+	public boolean generate(World var1, EaglercraftRandom var2, int var3, int var4, int var5) {
 		if(var1.getBlockId(var3, var4, var5) != 0) {
 			return false;
 		} else if(var1.getBlockId(var3, var4 + 1, var5) != Block.bloodStone.blockID) {

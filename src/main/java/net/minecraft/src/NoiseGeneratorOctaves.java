@@ -1,12 +1,12 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class NoiseGeneratorOctaves extends NoiseGenerator {
 	private NoiseGeneratorPerlin[] generatorCollection;
 	private int field_1191_b;
 
-	public NoiseGeneratorOctaves(Random var1, int var2) {
+	public NoiseGeneratorOctaves(EaglercraftRandom var1, int var2) {
 		this.field_1191_b = var2;
 		this.generatorCollection = new NoiseGeneratorPerlin[var2];
 

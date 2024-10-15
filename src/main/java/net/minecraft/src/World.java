@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -41,7 +41,7 @@ public class World implements IBlockAccess {
 	public long field_1054_E;
 	protected int autosavePeriod;
 	public int difficultySetting;
-	public Random rand;
+	public EaglercraftRandom rand;
 	public int spawnX;
 	public int spawnY;
 	public int spawnZ;
@@ -113,7 +113,7 @@ public class World implements IBlockAccess {
 	}
 
 	public World(String var1, String var2) {
-		this(var1, var2, (new Random()).nextLong());
+		this(var1, var2, (new EaglercraftRandom()).nextLong());
 	}
 
 	public World(String var1, WorldProvider var2, long var3) {
@@ -128,12 +128,12 @@ public class World implements IBlockAccess {
 		this.worldTime = 0L;
 		this.field_1019_F = 16777215L;
 		this.skylightSubtracted = 0;
-		this.field_9437_g = (new Random()).nextInt();
+		this.field_9437_g = (new EaglercraftRandom()).nextInt();
 		this.field_9436_h = 1013904223;
 		this.field_1043_h = false;
 		this.field_1054_E = System.currentTimeMillis();
 		this.autosavePeriod = 40;
-		this.rand = new Random();
+		this.rand = new EaglercraftRandom();
 		this.field_1033_r = false;
 		this.worldAccesses = new ArrayList();
 		this.randomSeed = 0L;
@@ -164,12 +164,12 @@ public class World implements IBlockAccess {
 		this.worldTime = 0L;
 		this.field_1019_F = 16777215L;
 		this.skylightSubtracted = 0;
-		this.field_9437_g = (new Random()).nextInt();
+		this.field_9437_g = (new EaglercraftRandom()).nextInt();
 		this.field_9436_h = 1013904223;
 		this.field_1043_h = false;
 		this.field_1054_E = System.currentTimeMillis();
 		this.autosavePeriod = 40;
-		this.rand = new Random();
+		this.rand = new EaglercraftRandom();
 		this.field_1033_r = false;
 		this.worldAccesses = new ArrayList();
 		this.randomSeed = 0L;
@@ -212,12 +212,12 @@ public class World implements IBlockAccess {
 		this.worldTime = 0L;
 		this.field_1019_F = 16777215L;
 		this.skylightSubtracted = 0;
-		this.field_9437_g = (new Random()).nextInt();
+		this.field_9437_g = (new EaglercraftRandom()).nextInt();
 		this.field_9436_h = 1013904223;
 		this.field_1043_h = false;
 		this.field_1054_E = System.currentTimeMillis();
 		this.autosavePeriod = 40;
-		this.rand = new Random();
+		this.rand = new EaglercraftRandom();
 		this.field_1033_r = false;
 		this.worldAccesses = new ArrayList();
 		this.randomSeed = 0L;
@@ -1779,7 +1779,7 @@ public class World implements IBlockAccess {
 
 	public void randomDisplayUpdates(int var1, int var2, int var3) {
 		byte var4 = 16;
-		Random var5 = new Random();
+		EaglercraftRandom var5 = new EaglercraftRandom();
 
 		for(int var6 = 0; var6 < 1000; ++var6) {
 			int var7 = var1 + this.rand.nextInt(var4) - this.rand.nextInt(var4);

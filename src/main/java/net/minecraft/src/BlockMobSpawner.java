@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockMobSpawner extends BlockContainer {
 	protected BlockMobSpawner(int var1, int var2) {
@@ -11,11 +11,11 @@ public class BlockMobSpawner extends BlockContainer {
 		return new TileEntityMobSpawner();
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return 0;
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return 0;
 	}
 

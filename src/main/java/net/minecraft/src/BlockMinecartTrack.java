@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockMinecartTrack extends Block {
 	protected BlockMinecartTrack(int var1, int var2) {
@@ -43,7 +43,7 @@ public class BlockMinecartTrack extends Block {
 		return 9;
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return 1;
 	}
 

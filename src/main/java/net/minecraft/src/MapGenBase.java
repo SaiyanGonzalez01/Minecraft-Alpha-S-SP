@@ -1,10 +1,10 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class MapGenBase {
 	protected int field_1306_a = 8;
-	protected Random field_1305_b = new Random();
+	protected EaglercraftRandom field_1305_b = new EaglercraftRandom();
 
 	public void func_867_a(IChunkProvider var1, World var2, int var3, int var4, byte[] var5) {
 		int var6 = this.field_1306_a;

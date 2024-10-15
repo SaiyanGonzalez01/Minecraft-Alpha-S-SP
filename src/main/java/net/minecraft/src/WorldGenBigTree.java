@@ -1,10 +1,10 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class WorldGenBigTree extends WorldGenerator {
 	static final byte[] field_882_a = new byte[]{(byte)2, (byte)0, (byte)0, (byte)1, (byte)2, (byte)1};
-	Random field_881_b = new Random();
+	EaglercraftRandom field_881_b = new EaglercraftRandom();
 	World worldObj;
 	int[] field_879_d = new int[]{0, 0, 0};
 	int field_878_e = 0;
@@ -324,7 +324,7 @@ public class WorldGenBigTree extends WorldGenerator {
 		this.field_872_k = var5;
 	}
 
-	public boolean generate(World var1, Random var2, int var3, int var4, int var5) {
+	public boolean generate(World var1, EaglercraftRandom var2, int var3, int var4, int var5) {
 		this.worldObj = var1;
 		long var6 = var2.nextLong();
 		this.field_881_b.setSeed(var6);

@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockButton extends Block {
 	protected BlockButton(int var1, int var2) {
@@ -202,7 +202,7 @@ public class BlockButton extends Block {
 		return true;
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		if(!var1.multiplayerWorld) {
 			int var6 = var1.getBlockMetadata(var2, var3, var4);
 			if((var6 & 8) != 0) {

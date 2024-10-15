@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockStep extends Block {
 	private boolean field_469_a;
@@ -41,7 +41,7 @@ public class BlockStep extends Block {
 
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return Block.stairSingle.blockID;
 	}
 

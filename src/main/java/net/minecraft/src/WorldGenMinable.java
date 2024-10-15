@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class WorldGenMinable extends WorldGenerator {
 	private int minableBlockId;
@@ -11,7 +11,7 @@ public class WorldGenMinable extends WorldGenerator {
 		this.numberOfBlocks = var2;
 	}
 
-	public boolean generate(World var1, Random var2, int var3, int var4, int var5) {
+	public boolean generate(World var1, EaglercraftRandom var2, int var3, int var4, int var5) {
 		float var6 = var2.nextFloat() * (float)Math.PI;
 		double var7 = (double)((float)(var3 + 8) + MathHelper.sin(var6) * (float)this.numberOfBlocks / 8.0F);
 		double var9 = (double)((float)(var3 + 8) - MathHelper.sin(var6) * (float)this.numberOfBlocks / 8.0F);

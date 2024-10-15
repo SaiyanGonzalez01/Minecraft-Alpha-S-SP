@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockTNT extends Block {
 	public BlockTNT(int var1, int var2) {
@@ -19,7 +19,7 @@ public class BlockTNT extends Block {
 
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return 0;
 	}
 

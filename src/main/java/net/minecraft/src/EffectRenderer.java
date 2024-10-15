@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 import net.PeytonPlayz585.opengl.GL11;
 
@@ -10,7 +10,7 @@ public class EffectRenderer {
 	protected World worldObj;
 	private List[] field_1728_b = new List[4];
 	private RenderEngine field_1731_c;
-	private Random rand = new Random();
+	private EaglercraftRandom rand = new EaglercraftRandom();
 
 	public EffectRenderer(World var1, RenderEngine var2) {
 		if(var1 != null) {

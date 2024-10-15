@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockLadder extends Block {
 	protected BlockLadder(int var1, int var2) {
@@ -115,7 +115,7 @@ public class BlockLadder extends Block {
 		super.onNeighborBlockChange(var1, var2, var3, var4, var5);
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return 1;
 	}
 }

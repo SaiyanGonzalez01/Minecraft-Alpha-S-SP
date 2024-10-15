@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 import net.minecraft.client.Minecraft;
 
 public class NetClientHandler extends NetHandler {
@@ -12,7 +12,7 @@ public class NetClientHandler extends NetHandler {
 	private Minecraft mc;
 	private WorldClient worldClient;
 	private boolean field_1210_g = false;
-	Random rand = new Random();
+	EaglercraftRandom rand = new EaglercraftRandom();
 
 	public NetClientHandler(Minecraft var1, String var2) throws IOException, UnknownHostException {
 		this.mc = var1;

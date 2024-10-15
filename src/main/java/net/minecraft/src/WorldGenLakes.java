@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class WorldGenLakes extends WorldGenerator {
 	private int field_15235_a;
@@ -9,7 +9,7 @@ public class WorldGenLakes extends WorldGenerator {
 		this.field_15235_a = var1;
 	}
 
-	public boolean generate(World var1, Random var2, int var3, int var4, int var5) {
+	public boolean generate(World var1, EaglercraftRandom var2, int var3, int var4, int var5) {
 		var3 -= 8;
 
 		for(var5 -= 8; var4 > 0 && var1.getBlockId(var3, var4, var5) == 0; --var4) {

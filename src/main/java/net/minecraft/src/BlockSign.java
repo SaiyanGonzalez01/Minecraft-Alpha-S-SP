@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockSign extends BlockContainer {
 	private Class signEntityClass;
@@ -73,7 +73,7 @@ public class BlockSign extends BlockContainer {
 		}
 	}
 
-	public int idDropped(int var1, Random var2) {
+	public int idDropped(int var1, EaglercraftRandom var2) {
 		return Item.sign.shiftedIndex;
 	}
 

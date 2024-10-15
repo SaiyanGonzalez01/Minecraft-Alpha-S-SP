@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 import java.util.Set;
 import javax.sound.sampled.AudioFormat;
 
@@ -98,7 +98,7 @@ public class SoundSystem {
 	/**
 	 * Generates random numbers.
 	 */
-	public Random randomNumberGenerator;
+	public EaglercraftRandom randomNumberGenerator;
 
 	/**
 	 * Name of this class.
@@ -208,7 +208,7 @@ public class SoundSystem {
 				+ "...", 0);
 
 		// create the random number generator:
-		randomNumberGenerator = new Random();
+		randomNumberGenerator = new EaglercraftRandom();
 		// create the command queue:
 		commandQueue = new LinkedList<CommandObject>();
 		// create the working source playlist:

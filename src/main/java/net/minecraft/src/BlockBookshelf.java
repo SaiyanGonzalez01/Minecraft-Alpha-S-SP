@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockBookshelf extends Block {
 	public BlockBookshelf(int var1, int var2) {
@@ -11,7 +11,7 @@ public class BlockBookshelf extends Block {
 		return var1 <= 1 ? 4 : this.blockIndexInTexture;
 	}
 
-	public int quantityDropped(Random var1) {
+	public int quantityDropped(EaglercraftRandom var1) {
 		return 0;
 	}
 }

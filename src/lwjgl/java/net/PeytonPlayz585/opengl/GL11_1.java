@@ -318,7 +318,6 @@ public class GL11_1 {
 	public static int fogCfgSerial = 0;
 	public static int fogMode = 1;
 	static boolean fogEnabled = false;
-	public static boolean fogPremultiply = false;
 	public static float fogStart = 1.0f;
 	public static float fogEnd = 1.0f;
 	public static float fogDensity = 1.0f;
@@ -923,11 +922,6 @@ public class GL11_1 {
 	}
 
 	public static final void glBlendFunc(int srcFactor, int dstFactor) {
-		boolean flag = fogPremultiply;
-		fogPremultiply = (srcFactor == GL_ONE && dstFactor == GL_ONE_MINUS_SRC_ALPHA);
-		if(fogPremultiply != flag) {
-			fogCfgSerial++;
-		}
 		if(overlayFBOBlending) {
 			int srcBits = (srcFactor | (GL_ONE << 16));
 			int dstBits = (dstFactor | (GL_ONE_MINUS_SRC_ALPHA << 16));

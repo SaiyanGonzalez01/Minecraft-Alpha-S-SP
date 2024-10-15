@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class MapGenCavesHell extends MapGenBase {
 	protected void func_4129_a(int var1, int var2, byte[] var3, double var4, double var6, double var8) {
@@ -12,7 +12,7 @@ public class MapGenCavesHell extends MapGenBase {
 		double var19 = (double)(var2 * 16 + 8);
 		float var21 = 0.0F;
 		float var22 = 0.0F;
-		Random var23 = new Random(this.field_1305_b.nextLong());
+		EaglercraftRandom var23 = new EaglercraftRandom(this.field_1305_b.nextLong());
 		if(var14 <= 0) {
 			int var24 = this.field_1306_a * 16 - 16;
 			var14 = var24 - var23.nextInt(var24 / 4);

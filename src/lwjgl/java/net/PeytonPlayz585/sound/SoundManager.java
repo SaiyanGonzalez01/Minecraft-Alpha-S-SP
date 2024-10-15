@@ -2,7 +2,7 @@ package net.PeytonPlayz585.sound;
 
 import java.io.FileNotFoundException;
 import java.util.Map;
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 import net.PeytonPlayz585.opengl.GL11;
 import net.minecraft.client.Minecraft;
@@ -52,7 +52,7 @@ public class SoundManager {
 				}
 			}
 		} else {
-			Random rand = new Random();
+			EaglercraftRandom rand = new EaglercraftRandom();
 			int i1 = rand.nextInt(4 - 1 + 1) + 1;
 			int i2 = GL11.EaglerAdapterImpl2.beginPlayback(file + i1 + ".mp3", f, g, h, i * Minecraft.getMinecraft().gameSettings.soundVolume, j);
 			if(i2 == -1) {
@@ -166,7 +166,7 @@ public class SoundManager {
 		}
 		
 		if(!GL11.EaglerAdapterImpl2.isPlaying(song) && musicFlag && !musicTimerSet) {
-			Random rand = new Random();
+			EaglercraftRandom rand = new EaglercraftRandom();
 			musicTimer = rand.nextInt(6 - 3 + 1) + 3;
 			musicTimer = musicTimer * 60;
 			musicTimer = musicTimer * 20;
@@ -187,7 +187,7 @@ public class SoundManager {
 		}
 		
 		if(!GL11.EaglerAdapterImpl2.isPlaying(song) && !musicFlag) {
-			Random rand = new Random();
+			EaglercraftRandom rand = new EaglercraftRandom();
 			int i = rand.nextInt(2);
 			
 			if(i == 0) {

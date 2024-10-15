@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-import java.util.Random;
+import net.PeytonPlayz585.EaglercraftRandom;
 
 public class BlockSand extends Block {
 	public static boolean fallInstantly = false;
@@ -17,7 +17,7 @@ public class BlockSand extends Block {
 		var1.scheduleBlockUpdate(var2, var3, var4, this.blockID);
 	}
 
-	public void updateTick(World var1, int var2, int var3, int var4, Random var5) {
+	public void updateTick(World var1, int var2, int var3, int var4, EaglercraftRandom var5) {
 		this.tryToFall(var1, var2, var3, var4);
 	}
 
