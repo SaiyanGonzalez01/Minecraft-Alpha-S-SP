@@ -15,7 +15,7 @@ public class Client {
 		GL11.EaglerAdapterImpl2.initializeContext();
 
 		Minecraft mc = new Minecraft();
-		mc.field_6320_i = new Session("Player");
+		mc.session = new Session("Player");
 		mc.run();
 
 	}

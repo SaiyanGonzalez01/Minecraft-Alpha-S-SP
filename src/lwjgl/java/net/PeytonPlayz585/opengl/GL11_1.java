@@ -5505,8 +5505,8 @@ public class GL11_1 {
 				ss.setPitch(name, pitch);
 				ss.setVolume(name, volume);
 				ss.play(name);
-			}else {
-				System.err.println("unknown sound event "+fileName);
+			} else {
+				return -1;
 			}
 			return id;
 		}
@@ -5523,8 +5523,8 @@ public class GL11_1 {
 				ss.setPitch(name, pitch);
 				ss.setVolume(name, volume);
 				ss.play(name);
-			}else {
-				System.err.println("unknown sound event "+fileName);
+			} else {
+				return -1;
 			}
 			return id;
 		}

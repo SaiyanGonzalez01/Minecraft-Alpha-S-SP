@@ -133,4 +133,8 @@ public class NBTTagCompound extends NBTBase {
 	public String toString() {
 		return "" + this.tagMap.size() + " entries";
 	}
+
+	public boolean hasNoTags() {
+		return this.tagMap.isEmpty();
+	}
 }

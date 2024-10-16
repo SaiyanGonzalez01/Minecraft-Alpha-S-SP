@@ -4,7 +4,6 @@ import net.PeytonPlayz585.input.Keyboard;
 import net.PeytonPlayz585.input.Mouse;
 import net.PeytonPlayz585.opengl.Display;
 import net.PeytonPlayz585.opengl.GL11;
-import net.PeytonPlayz585.sound.SoundManager;
 import net.PeytonPlayz585.util.glu.GLU;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Block;
@@ -42,6 +41,7 @@ import net.minecraft.src.RenderGlobal;
 import net.minecraft.src.RenderManager;
 import net.minecraft.src.ScaledResolution;
 import net.minecraft.src.Session;
+import net.minecraft.src.SoundManager;
 import net.minecraft.src.Teleporter;
 import net.minecraft.src.Tessellator;
 import net.minecraft.src.TextureCompassFX;
@@ -73,7 +73,7 @@ public class Minecraft implements Runnable {
 	public RenderGlobal field_6323_f;
 	public EntityPlayerSP thePlayer;
 	public EffectRenderer field_6321_h;
-	public Session field_6320_i = null;
+	public Session session = null;
 	public String field_6319_j;
 	public boolean field_6317_l = true;
 	public volatile boolean field_6316_m = false;
@@ -123,6 +123,7 @@ public class Minecraft implements Runnable {
 
 		RenderManager.instance.field_4236_f = new ItemRenderer(this);
 		this.gameSettings = new GameSettings(this);
+		this.sndManager.func_340_a(gameSettings);
 		this.texturePackList = new TexturePackList(this);
 		this.renderEngine = new RenderEngine(texturePackList, this.gameSettings);
 		this.fontRenderer = new FontRenderer(this.gameSettings, "/font/default.png", this.renderEngine);
@@ -597,11 +598,7 @@ public class Minecraft implements Runnable {
 			this.thePlayer.func_6420_o();
 		}
 		
-		try {
-			this.sndManager.musicTick();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		this.sndManager.func_4033_c();
 
 		if(!this.field_6316_m && this.theWorld != null) {
 			this.field_6327_b.func_6474_c();

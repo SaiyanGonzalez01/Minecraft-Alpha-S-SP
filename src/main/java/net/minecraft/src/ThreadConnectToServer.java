@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
 
-class ThreadConnectToServer extends Thread {
+class ThreadConnectToServer {
 	final Minecraft mc;
 	final String uri;
 	final GuiConnecting connectingGui;
@@ -13,14 +13,14 @@ class ThreadConnectToServer extends Thread {
 		this.uri = var3;
 	}
 
-	public void run() {
+	public void start() {
 		try {
 			GuiConnecting.setNetClientHandler(this.connectingGui, new NetClientHandler(this.mc, this.uri));
 			if(GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 
-			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2Handshake(this.mc.field_6320_i.inventory));
+			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2Handshake(this.mc.session.username));
 		} catch (Exception var4) {
 			if(GuiConnecting.isCancelled(this.connectingGui)) {
 				return;

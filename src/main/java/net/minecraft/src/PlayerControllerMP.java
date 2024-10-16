@@ -155,7 +155,7 @@ public class PlayerControllerMP extends PlayerController {
 	}
 
 	public EntityPlayer func_4087_b(World var1) {
-		return new EntityClientPlayerMP(this.mc, var1, this.mc.field_6320_i, this.field_9438_k);
+		return new EntityClientPlayerMP(this.mc, var1, this.mc.session, this.field_9438_k);
 	}
 
 	public void func_6472_b(EntityPlayer var1, Entity var2) {

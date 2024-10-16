@@ -78,7 +78,7 @@ public class PlayerController {
 	}
 
 	public EntityPlayer func_4087_b(World var1) {
-		return new EntityPlayerSP(this.mc, var1, this.mc.field_6320_i, var1.worldProvider.field_4218_e);
+		return new EntityPlayerSP(this.mc, var1, this.mc.session, var1.worldProvider.field_4218_e);
 	}
 
 	public void func_6475_a(EntityPlayer var1, Entity var2) {

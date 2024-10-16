@@ -75,7 +75,7 @@ public class GuiMainMenu extends GuiScreen {
 		this.controlList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 + 72, "Multiplayer"));
 		this.controlList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 + 96, "Mods and Texture Packs"));
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, "Options..."));
-		if(this.mc.field_6320_i == null) {
+		if(this.mc.session == null) {
 			((GuiButton)this.controlList.get(1)).enabled = false;
 		}
 	}
@@ -90,15 +90,7 @@ public class GuiMainMenu extends GuiScreen {
 		}
 
 		if(var1.id == 2) {
-			try {
-				this.mc.displayGuiScreen(new GuiMultiplayer(this));
-			} catch(Exception e) {
-				//Shit
-				this.mc.gameSettings.field_12259_z = "";
-				this.mc.gameSettings.username = "";
-				this.mc.gameSettings.saveOptions();
-				this.mc.displayGuiScreen(new GuiMultiplayer(this));
-			}
+			this.mc.displayGuiScreen(new GuiMultiplayer(this));
 		}
 
 		if(var1.id == 3) {

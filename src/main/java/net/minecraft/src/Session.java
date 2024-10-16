@@ -5,11 +5,10 @@ import java.util.List;
 
 public class Session {
 	public static List registeredBlocksList = new ArrayList();
-	public String inventory;
-	public String field_6542_d;
+	public String username;
 
 	public Session(String var1) {
-		this.inventory = var1;
+		this.username = var1;
 	}
 
 	static {

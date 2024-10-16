@@ -90,14 +90,6 @@ public class GameSettings {
 					Minecraft.getMinecraft().gameSettings.skin = var3[1];
 				}
 
-				if(var3[0].equals("lastServer")) {
-					Minecraft.getMinecraft().gameSettings.field_12259_z = var3[1];
-				}
-				
-				if(var3[0].equals("username")) {
-					Minecraft.getMinecraft().gameSettings.username = var3[1];
-				}
-
 				for(int var4 = 0; var4 < Minecraft.getMinecraft().gameSettings.keyBindings.length; ++var4) {
 					if(var3[0].equals("key_" + Minecraft.getMinecraft().gameSettings.keyBindings[var4].keyDescription)) {
 						Minecraft.getMinecraft().gameSettings.keyBindings[var4].keyCode = Integer.parseInt(var3[1]);
@@ -129,12 +121,6 @@ public class GameSettings {
 		var1.println("difficulty:" + Minecraft.getMinecraft().gameSettings.difficulty);
 		var1.println("fancyGraphics:" + Minecraft.getMinecraft().gameSettings.fancyGraphics);
 		var1.println("skin:" + Minecraft.getMinecraft().gameSettings.skin);
-		if(Minecraft.getMinecraft().gameSettings.field_12259_z.length() != 0) {
-			var1.println("lastServer:" + Minecraft.getMinecraft().gameSettings.field_12259_z);
-		}
-		if(Minecraft.getMinecraft().gameSettings.username.length() != 0) {
-			var1.println("username:" + Minecraft.getMinecraft().gameSettings.username);
-		}
 
 		for(int var2 = 0; var2 < Minecraft.getMinecraft().gameSettings.keyBindings.length; ++var2) {
 			var1.println("key_" + Minecraft.getMinecraft().gameSettings.keyBindings[var2].keyDescription + ":" + Minecraft.getMinecraft().gameSettings.keyBindings[var2].keyCode);

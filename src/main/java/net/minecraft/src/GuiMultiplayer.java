@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
 import net.PeytonPlayz585.input.Keyboard;
-import net.minecraft.client.Minecraft;
+import net.PeytonPlayz585.profile.Profile;
 
 public class GuiMultiplayer extends GuiScreen {
 	private GuiScreen updateCounter;
@@ -26,8 +26,8 @@ public class GuiMultiplayer extends GuiScreen {
 		this.controlList.clear();
 		this.controlList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 96 + 12, "Connect"));
 		this.controlList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 120 + 12, "Cancel"));
-		this.serverAddress = this.mc.gameSettings.field_12259_z.replaceAll("_", ":");
-		this.username = this.mc.gameSettings.username;
+		this.serverAddress = Profile.getServer();
+		this.username = Profile.getName();
 		((GuiButton)this.controlList.get(0)).enabled = this.serverAddress.length() > 0 && this.username.length() > 0 && !this.serverAddress.isBlank() && !this.username.isBlank() && !this.serverAddress.isEmpty() && !this.username.isEmpty();
 	}
 
@@ -36,11 +36,9 @@ public class GuiMultiplayer extends GuiScreen {
 			if(var1.id == 1) {
 				this.mc.displayGuiScreen(this.updateCounter);
 			} else if(var1.id == 0) {
-				Minecraft.getMinecraft().field_6320_i = new Session(this.username);
-				this.mc.gameSettings.field_12259_z = this.serverAddress.replaceAll(":", "_");
-				this.mc.gameSettings.username = this.username;
-				this.mc.gameSettings.saveOptions();
-				String[] var2 = this.serverAddress.split(":");
+				Profile.setServer(this.serverAddress);
+				Profile.setName(this.username);
+				Profile.save();
 				this.mc.displayGuiScreen(new GuiConnecting(this.mc, serverAddress));
 			}
 

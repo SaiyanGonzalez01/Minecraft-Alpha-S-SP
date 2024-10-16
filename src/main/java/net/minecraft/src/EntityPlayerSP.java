@@ -14,12 +14,12 @@ public class EntityPlayerSP extends EntityPlayer {
 		super(var2);
 		this.mc = var1;
 		this.dimension = var4;
-		if(var3 != null && var3.inventory != null && var3.inventory.length() > 0) {
-			this.skinUrl = "http://www.minecraft.net/skin/" + var3.inventory + ".png";
+		if(var3 != null && var3.username != null && var3.username.length() > 0) {
+			this.skinUrl = "http://www.minecraft.net/skin/" + var3.username + ".png";
 			System.out.println("Loading texture " + this.skinUrl);
 		}
 
-		this.field_771_i = var3.inventory;
+		this.field_771_i = var3.username;
 	}
 
 	public void func_418_b_() {

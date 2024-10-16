@@ -313,7 +313,7 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleHandshake(Packet2Handshake var1) {
-		this.addToSendQueue(new Packet1Login(this.mc.field_6320_i.inventory, "Password", 6));
+		this.addToSendQueue(new Packet1Login(this.mc.session.username, "Password", 6));
 	}
 
 	public void disconnect() {

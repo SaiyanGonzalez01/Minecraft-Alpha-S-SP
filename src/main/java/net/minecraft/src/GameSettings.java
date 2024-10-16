@@ -42,8 +42,6 @@ public class GameSettings {
 	public int numberOfOptions = 10;
 	public int difficulty = 2;
 	public boolean thirdPersonView = false;
-	public String field_12259_z = "";
-	public String username = "";
 	public boolean ofZoom = false;
 
 	public GameSettings(Minecraft var1) {
@@ -126,8 +124,6 @@ public class GameSettings {
 		return var1 == 0 ? "Music: " + (this.musicVolume > 0.0F ? (int)(this.musicVolume * 100.0F) + "%" : "OFF") : (var1 == 1 ? "Sound: " + (this.soundVolume > 0.0F ? (int)(this.soundVolume * 100.0F) + "%" : "OFF") : (var1 == 2 ? "Invert mouse: " + (this.invertMouse ? "ON" : "OFF") : (var1 == 3 ? (this.mouseSensitivity == 0.0F ? "Sensitivity: *yawn*" : (this.mouseSensitivity == 1.0F ? "Sensitivity: HYPERSPEED!!!" : "Sensitivity: " + (int)(this.mouseSensitivity * 200.0F) + "%")) : (var1 == 4 ? "Render distance: " + RENDER_DISTANCES[this.renderDistance] : (var1 == 5 ? "View bobbing: " + (this.viewBobbing ? "ON" : "OFF") : (var1 == 6 ? "3d anaglyph: " + (this.anaglyph ? "ON" : "OFF") : (var1 == 7 ? "Show FPS: " + (this.showFPS ? "ON" : "OFF") : (var1 == 8 ? "Difficulty: " + DIFFICULTY_LEVELS[this.difficulty] : (var1 == 9 ? "Graphics: " + (this.fancyGraphics ? "FANCY" : "FAST") : "")))))))));
 	}
 	
-	private boolean loadOptionsFuckedUp = false;
-
 	public void loadOptions() {
 		if(!GL11.isWebGL) {
 			net.PeytonPlayz585.minecraft.GameSettings.loadOptions();
@@ -197,40 +193,15 @@ public class GameSettings {
 					this.skin = var3[1];
 				}
 				
-				if(!loadOptionsFuckedUp) {
-					if(var3[0].equals("username")) {
-						this.username = var3[1];
-					}
-
-					if(var3[0].equals("lastServer")) {
-						this.field_12259_z = var3[1];
-					}
-				} else {
-					this.username = "";
-					this.field_12259_z = "";
-				}
-				
 				for(int var4 = 0; var4 < this.keyBindings.length; ++var4) {
 					if(var3[0].equals("key_" + this.keyBindings[var4].keyDescription)) {
 						this.keyBindings[var4].keyCode = Integer.parseInt(var3[1]);
 					}
 				}
-				
-				if(loadOptionsFuckedUp) {
-					this.saveOptions();
-				}
 			}
 		} catch (Exception var5) {
-			//What the fuck -_-
-			if(!loadOptionsFuckedUp) {
-				loadOptionsFuckedUp = true;
-				this.loadOptions();
-				return;
-			} else {
-				//womp womp
-				System.out.println("Failed to load options");
-				var5.printStackTrace();
-			}
+			System.out.println("Failed to load options");
+			var5.printStackTrace();
 		}
 
 	}
@@ -258,13 +229,6 @@ public class GameSettings {
 		var1.println("difficulty:" + this.difficulty);
 		var1.println("fancyGraphics:" + this.fancyGraphics);
 		var1.println("skin:" + this.skin);
-		
-		if(!this.field_12259_z.isEmpty() && !this.field_12259_z.isBlank()) {
-			var1.println("lastServer:" + this.field_12259_z);
-		}
-		if(!this.username.isEmpty() && !this.username.isBlank()) {
-			var1.println("username:" + this.username);
-		}
 
 		for(int var2 = 0; var2 < this.keyBindings.length; ++var2) {
 			var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);
