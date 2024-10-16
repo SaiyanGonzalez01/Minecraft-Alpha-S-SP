@@ -5,18 +5,20 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.PeytonPlayz585.opengl.GL11;
+import net.PeytonPlayz585.network.ByteBufferDirectInputStream;
+import net.PeytonPlayz585.network.Socket;
 
 public class NetworkManager {
 	private Object sendQueueLock = new Object();
+	private Socket field_12258_e;
 	private boolean isRunning = true;
+	private List readPackets = Collections.synchronizedList(new ArrayList());
 	private List dataPackets = Collections.synchronizedList(new ArrayList());
 	private List chunkDataPackets = Collections.synchronizedList(new ArrayList());
 	private NetHandler netHandler;
@@ -28,6 +30,7 @@ public class NetworkManager {
 	private int chunkDataSendCounter = 0;
 
 	public NetworkManager(String var4, NetHandler var3) throws IOException {
+		
 		this.netHandler = var3;
 		String uri = null;
 		System.out.println(uri);
@@ -41,9 +44,8 @@ public class NetworkManager {
 		}else {
 			throw new IOException("Invalid URI Protocol!");
 		}
-		if(!GL11.EaglerAdapterImpl2.startConnection(var4)) {
-			throw new IOException("Websocket to " + uri + " failed!");
-		}
+		
+		this.field_12258_e = new Socket(var4);
 	}
 
 	public void addToSendQueue(Packet var1) {
@@ -56,13 +58,13 @@ public class NetworkManager {
 				} else {
 					this.dataPackets.add(var1);
 				}
-				this.sendPacket();
+
 			}
 		}
 	}
 
-	private ByteArrayOutputStream sendBuffer;
-
+	
+	ByteArrayOutputStream os;
 	private void sendPacket() {
 		try {
 			boolean var1 = true;
@@ -76,12 +78,14 @@ public class NetworkManager {
 					this.sendQueueByteLength -= var2.getPacketSize() + 1;
 				}
 
-				sendBuffer = new ByteArrayOutputStream();
-				DataOutputStream yee = new DataOutputStream(sendBuffer);
-				Packet.writePacket(var2, yee);
-				yee.flush();
-				GL11.EaglerAdapterImpl2.writePacket(sendBuffer.toByteArray());
-				sendBuffer.flush();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				DataOutputStream socketOutputStream = new DataOutputStream(baos);
+				Packet.writePacket(var2, socketOutputStream);
+				baos.flush();
+				socketOutputStream.flush();
+				this.field_12258_e.write(baos.toByteArray());
+				baos.flush();
+				socketOutputStream.flush();
 			}
 
 			if((var1 || this.chunkDataSendCounter-- <= 0) && !this.chunkDataPackets.isEmpty()) {
@@ -92,12 +96,14 @@ public class NetworkManager {
 					this.sendQueueByteLength -= var2.getPacketSize() + 1;
 				}
 
-				sendBuffer = new ByteArrayOutputStream();
-				DataOutputStream yee = new DataOutputStream(sendBuffer);
-				Packet.writePacket(var2, yee);
-				yee.flush();
-				GL11.EaglerAdapterImpl2.writePacket(sendBuffer.toByteArray());
-				sendBuffer.flush();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				DataOutputStream socketOutputStream = new DataOutputStream(baos);
+				Packet.writePacket(var2, socketOutputStream);
+				baos.flush();
+				socketOutputStream.flush();
+				this.field_12258_e.write(baos.toByteArray());
+				baos.flush();
+				socketOutputStream.flush();
 				this.chunkDataSendCounter = 50;
 			}
 
@@ -112,82 +118,62 @@ public class NetworkManager {
 		}
 
 	}
-
+	
 	private ByteBuffer oldChunkBuffer = null;
 	private LinkedList<ByteBuffer> readChunks = new LinkedList();
 
 	public void readPacket() {
-		if(this.sendQueueByteLength > 1048576) {
-			this.networkShutdown("Send buffer overflow");
-		}
-
 		readChunks.clear();
-
+		
 		if(oldChunkBuffer != null) {
 			readChunks.add(oldChunkBuffer);
 		}
-
-		byte[] packet;
-		while((packet = GL11.EaglerAdapterImpl2.readPacket()) != null) {
-			readChunks.add(ByteBuffer.wrap(packet));
+		
+		if(this.field_12258_e.open()) {
+			byte[] packet;
+			while((packet = this.field_12258_e.read()) != null) {
+				readChunks.add(ByteBuffer.wrap(packet));
+			}
 		}
+		
 		if(!readChunks.isEmpty()) {
-			this.timeSinceLastRead = 0;
 			int cap = 0;
 			for(ByteBuffer b : readChunks) {
 				cap += b.limit();
 			}
-
+			
 			ByteBuffer stream = ByteBuffer.allocate(cap);
 			for(ByteBuffer b : readChunks) {
 				stream.put(b);
 			}
 			stream.flip();
-
+			
 			DataInputStream packetStream = new DataInputStream(new ByteBufferDirectInputStream(stream));
-			int var1 = 100;
-			while(stream.hasRemaining() && var1-- > 0) {
+			while(stream.hasRemaining()) {
 				stream.mark();
+				
 				try {
-					Packet pkt = Packet.readPacket(packetStream);
-					if(pkt == null) {
-						this.networkShutdown("End of Stream");
+					Packet var1 = Packet.readPacket(packetStream);
+					if(var1 != null) {
+						this.readPackets.add(var1);
+					} else {
+						this.networkShutdown("End of stream");
 					}
-					pkt.processPacket(this.netHandler);
-				} catch (EOFException e) {
+				} catch(EOFException e) {
 					stream.reset();
 					break;
-				}  catch (IOException e) {
-					continue;
-				} catch(ArrayIndexOutOfBoundsException e) {
-					continue;
-				} catch(NullPointerException e) {
-					continue;
 				} catch(Exception e) {
 					continue;
 				} catch(Throwable t) {
 					continue;
 				}
 			}
-
+			
 			if(stream.hasRemaining()) {
 				oldChunkBuffer = stream.slice();
 			}else {
 				oldChunkBuffer = null;
 			}
-
-		}
-		
-		if(this.timeSinceLastRead++ == 1200) {
-			this.networkShutdown("Timed out");
-		}
-		
-		if(!isConnectionOpen() && !this.isTerminating) {
-			this.networkShutdown("Lost connection!");
-		}
-
-		if(this.isTerminating && this.readChunks.isEmpty()) {
-			this.netHandler.handleErrorMessage(this.terminationReason);
 		}
 	}
 
@@ -201,42 +187,55 @@ public class NetworkManager {
 			this.isTerminating = true;
 			this.terminationReason = var1;
 			this.isRunning = false;
-			if(GL11.EaglerAdapterImpl2.connectionOpen()) {
-				GL11.EaglerAdapterImpl2.endConnection();
+
+			try {
+				this.field_12258_e.close();
+				this.field_12258_e = null;
+			} catch (Throwable var3) {
 			}
+
 		}
+	}
+
+	public void processReadPackets() {
+		if(this.sendQueueByteLength > 1048576) {
+			this.networkShutdown("Send buffer overflow");
+		}
+
+		if(this.readPackets.isEmpty()) {
+			if(this.timeSinceLastRead++ == 1200) {
+				this.networkShutdown("Timed out");
+			}
+		} else {
+			this.timeSinceLastRead = 0;
+		}
+
+		int var1 = 100;
+
+		while(!this.readPackets.isEmpty() && var1-- >= 0) {
+			Packet var2 = (Packet)this.readPackets.remove(0);
+			var2.processPacket(this.netHandler);
+		}
+
+		if(this.isTerminating && this.readPackets.isEmpty()) {
+			this.netHandler.handleErrorMessage(this.terminationReason);
+		}
+
 	}
 
 	static boolean isRunning(NetworkManager var0) {
 		return var0.isRunning;
-	}
-	
-	static boolean isConnectionOpen() {
-		return GL11.EaglerAdapterImpl2.connectionOpen();
 	}
 
 	static boolean isServerTerminating(NetworkManager var0) {
 		return var0.isServerTerminating;
 	}
 
-	static void sendNetworkPacket(NetworkManager var0) {
-		var0.sendPacket();
+	static void readNetworkPacket(NetworkManager var0) {
+		var0.readPacket();
 	}
 
-	private static class ByteBufferDirectInputStream extends InputStream {
-		private ByteBuffer buf;
-		private ByteBufferDirectInputStream(ByteBuffer b) {
-			this.buf = b;
-		}
-
-		@Override
-		public int read() throws IOException {
-			return buf.remaining() > 0 ? ((int)buf.get() & 0xFF) : -1;
-		}
-
-		@Override
-		public int available() {
-			return buf.remaining();
-		}
+	static void sendNetworkPacket(NetworkManager var0) {
+		var0.sendPacket();
 	}
 }
