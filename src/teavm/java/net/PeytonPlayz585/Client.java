@@ -45,7 +45,7 @@ public class Client {
 				System.out.println(" -------- starting minecraft -------- ");
 				canvas.focus();
 				Minecraft mc = new Minecraft();
-				mc.field_6320_i = new Session("Player094");
+				mc.session = new Session("Player094");
 				mc.run();
 			//} catch(Exception e) {
 				//rip

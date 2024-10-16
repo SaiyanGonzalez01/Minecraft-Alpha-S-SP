@@ -2,10 +2,10 @@ package net.minecraft.src;
 
 import net.PeytonPlayz585.fileutils.File;
 import net.PeytonPlayz585.fileutils.FileChooserResult;
+import net.PeytonPlayz585.input.Mouse;
 import net.PeytonPlayz585.opengl.GL11;
 
 import java.util.List;
-import org.lwjgl.input.Mouse;
 
 public class GuiTexturePacks extends GuiScreen {
 	protected GuiScreen field_6461_a;

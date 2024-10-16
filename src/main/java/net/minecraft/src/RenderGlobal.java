@@ -225,10 +225,12 @@ public class RenderGlobal implements IWorldAccess {
 			}
 		}
 
-		if(this.worldObj != null) {
+		if(this.mc.theWorld != null) {
 			EntityPlayerSP var7 = this.mc.thePlayer;
-			this.func_956_b(MathHelper.floor_double(var7.posX), MathHelper.floor_double(var7.posY), MathHelper.floor_double(var7.posZ));
-			Arrays.sort(this.field_1445_n, new EntitySorter(var7));
+			if(var7 != null) {
+				this.func_956_b(MathHelper.floor_double(var7.posX), MathHelper.floor_double(var7.posY), MathHelper.floor_double(var7.posZ));
+				Arrays.sort(this.field_1445_n, new EntitySorter(var7));
+			}
 		}
 
 		this.field_1424_I = 2;
