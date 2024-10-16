@@ -23,7 +23,6 @@ public class EntityRenderer {
 	private int field_1386_j;
 	private Entity field_1385_k = null;
 	private boolean cloudFog = false;
-	private double cameraZoom = 1.0D;
 	private double cameraYaw = 0.0D;
 	private double cameraPitch = 0.0D;
 	private long field_1384_l = System.currentTimeMillis();
@@ -250,14 +249,8 @@ public class EntityRenderer {
 		if(this.mc.gameSettings.anaglyph) {
 			GL11.glTranslatef((float)(-(var2 * 2 - 1)) * var3, 0.0F, 0.0F);
 		}
-		
-		if(this.cameraZoom != 1.0D) {
-			GL11.glTranslatef((float)this.cameraYaw, (float)(-this.cameraPitch), 0.0F);
-			GL11.glScaled(this.cameraZoom, this.cameraZoom, 1.0D);
-			GLU.gluPerspective(this.func_914_d(var1), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
-		} else {
-			GLU.gluPerspective(this.func_914_d(var1), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
-		}
+
+		GLU.gluPerspective(this.func_914_d(var1), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
 
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
@@ -467,7 +460,7 @@ public class EntityRenderer {
 			GL11.glDepthMask(true);
 			GL11.glEnable(GL11.GL_CULL_FACE);
 			GL11.glDisable(GL11.GL_BLEND);
-			if(this.cameraZoom == 1.0D && this.mc.objectMouseOver != null && !var2.isInsideOfMaterial(Material.water)) {
+			if(this.mc.objectMouseOver != null && !var2.isInsideOfMaterial(Material.water)) {
 				GL11.glDisable(GL11.GL_ALPHA_TEST);
 				var3.func_959_a(var2, this.mc.objectMouseOver, 0, var2.inventory.getCurrentItem(), var1);
 				var3.drawSelectionBox(var2, this.mc.objectMouseOver, 0, var2.inventory.getCurrentItem(), var1);
@@ -483,10 +476,8 @@ public class EntityRenderer {
 			var3.func_4141_b(var1);
 			GL11.glDisable(GL11.GL_FOG);
 			this.setupFog(1, var1);
-			if(this.cameraZoom == 1.0D) {
-				GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-				this.func_4135_b(var1, var11);
-			}
+			GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+			this.func_4135_b(var1, var11);
 			if(!this.mc.gameSettings.anaglyph) {
 				return;
 			}
