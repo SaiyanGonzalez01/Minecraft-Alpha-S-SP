@@ -211,14 +211,15 @@ public class RenderGlobal implements IWorldAccess {
 		for(var4 = 0; var4 < this.field_1443_p; ++var4) {
 			for(int var5 = 0; var5 < this.field_1442_q; ++var5) {
 				for(int var6 = 0; var6 < this.field_1441_r; ++var6) {
-					this.field_1444_o[(var6 * this.field_1442_q + var5) * this.field_1443_p + var4] = new WorldRenderer(this.worldObj, this.field_1458_a, var4 * 16, var5 * 16, var6 * 16, 16, this.field_1440_s + var2);
-					this.field_1444_o[(var6 * this.field_1442_q + var5) * this.field_1443_p + var4].field_1733_y = false;
-					this.field_1444_o[(var6 * this.field_1442_q + var5) * this.field_1443_p + var4].field_1734_x = true;
-					this.field_1444_o[(var6 * this.field_1442_q + var5) * this.field_1443_p + var4].field_1749_o = true;
-					this.field_1444_o[(var6 * this.field_1442_q + var5) * this.field_1443_p + var4].field_1735_w = var3++;
-					this.field_1444_o[(var6 * this.field_1442_q + var5) * this.field_1443_p + var4].MarkDirty();
-					this.field_1445_n[(var6 * this.field_1442_q + var5) * this.field_1443_p + var4] = this.field_1444_o[(var6 * this.field_1442_q + var5) * this.field_1443_p + var4];
-					this.field_1446_m.add(this.field_1444_o[(var6 * this.field_1442_q + var5) * this.field_1443_p + var4]);
+					int index = (var6 * this.field_1442_q + var5) * this.field_1443_p + var4;
+					WorldRenderer wr = (this.field_1444_o[index] = new WorldRenderer(this.worldObj, this.field_1458_a, var4 * 16, var5 * 16, var6 * 16, 16, this.field_1440_s + var2));
+					wr.field_1733_y = false;
+					wr.field_1734_x = true;
+					wr.field_1749_o = true;
+					wr.field_1735_w = var3++;
+					wr.MarkDirty();
+					this.field_1445_n[(var6 * this.field_1442_q + var5) * this.field_1443_p + var4] = wr;
+					this.field_1446_m.add(wr);
 					var2 += 3;
 				}
 			}
@@ -388,6 +389,8 @@ public class RenderGlobal implements IWorldAccess {
 					++this.field_1416_Q;
 				} else if(!this.field_1445_n[var7].field_1749_o) {
 					++this.field_1419_N;
+				} else if(!this.field_1445_n[var7].field_1734_x) {
+					++this.field_1418_O;
 				} else {
 					++this.field_1417_P;
 				}
@@ -492,7 +495,7 @@ public class RenderGlobal implements IWorldAccess {
 					var11 = (float)var10 * (float)Math.PI * 2.0F / (float)var9;
 					float var12 = MathHelper.sin(var11);
 					float var13 = MathHelper.cos(var11);
-					var14.addVertex((double)(var12 * 120.0F), (double)(var13 * 120.0F), (double)(var13 * 40.0F * var15[3]));
+					var14.addVertex((double)(var12 * 120.0F), (double)(var13 * 120.0F), (double)(-var13 * 40.0F * var15[3]));
 				}
 
 				var14.draw();
@@ -736,32 +739,59 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public boolean func_948_a(EntityPlayer var1, boolean var2) {
-		Collections.sort(this.field_1446_m, new RenderSorter(var1));
-		int var3 = this.field_1446_m.size() - 1;
-		int var4 = this.field_1446_m.size();
+		byte var3 = 2;
+		RenderSorter var4 = new RenderSorter(var1);
+		WorldRenderer[] var5 = new WorldRenderer[var3];
+		ArrayList var6 = null;
+		int var7 = this.field_1446_m.size();
+		int var8 = 0;
+		int var9;
+		WorldRenderer var10;
+		int var11;
+		int var12;
+		List laterUpdateList = new ArrayList(var7);
+		for (var9 = 0; var9 < var7; ++var9) {
+			var10 = (WorldRenderer) this.field_1446_m.get(var9);
 
-		for(int var5 = 0; var5 < var4; ++var5) {
-			WorldRenderer var6 = (WorldRenderer)this.field_1446_m.get(var3 - var5);
-			if(!var2) {
-				if(var6.func_1202_a(var1) > 1024.0F) {
-					if(var6.field_1749_o) {
-						if(var5 >= 3) {
-							return false;
-						}
-					} else if(var5 >= 1) {
-						return false;
+			if (var10 != null) {
+				if (!var10.field_1749_o || !var10.field_1734_x) {
+					laterUpdateList.add(var10);
+				}else {
+					if (var6 == null) {
+						var6 = new ArrayList();
 					}
+	
+					++var8;
+					var6.add(var10);
 				}
-			} else if(!var6.field_1749_o) {
-				continue;
+			}
+		}
+		
+		this.field_1446_m = laterUpdateList;
+
+		int updates = 0;
+		int dropped = 0;
+		if (var6 != null) {
+			if (var6.size() > 1) {
+				Collections.sort(var6, var4);
 			}
 
-			var6.func_1198_a();
-			this.field_1446_m.remove(var6);
-			var6.needsUpdate = false;
+			for (var9 = var6.size() - 1; var9 >= 0; --var9) {
+				var10 = (WorldRenderer) var6.get(var9);
+				if(updates > 1) {
+					this.field_1446_m.add(var10);
+					++dropped;
+				}else {
+					var10.func_1198_a();
+					var10.needsUpdate = false;
+					if(!var10.func_1196_e()) {
+						++updates;
+					}
+				}
+			}
 		}
 
-		return this.field_1446_m.size() == 0;
+		return true;
 	}
 
 	public void func_959_a(EntityPlayer var1, MovingObjectPosition var2, int var3, ItemStack var4, float var5) {
