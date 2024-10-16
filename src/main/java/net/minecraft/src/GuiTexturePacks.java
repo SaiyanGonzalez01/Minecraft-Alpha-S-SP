@@ -1,12 +1,11 @@
 package net.minecraft.src;
 
-import java.util.List;
-
 import net.PeytonPlayz585.fileutils.File;
 import net.PeytonPlayz585.fileutils.FileChooserResult;
-import net.PeytonPlayz585.input.Mouse;
 import net.PeytonPlayz585.opengl.GL11;
-import net.minecraft.client.Minecraft;
+
+import java.util.List;
+import org.lwjgl.input.Mouse;
 
 public class GuiTexturePacks extends GuiScreen {
 	protected GuiScreen field_6461_a;
@@ -17,6 +16,7 @@ public class GuiTexturePacks extends GuiScreen {
 	private int field_6456_m = this.width;
 	private int field_6455_n = -2;
 	private int field_6454_o = -1;
+	private String fileLocation = "texturepacksNEW";
 
 	public GuiTexturePacks(GuiScreen var1) {
 		this.field_6461_a = var1;
@@ -35,7 +35,7 @@ public class GuiTexturePacks extends GuiScreen {
 	protected void actionPerformed(GuiButton var1) {
 		if(var1.enabled) {
 			if(var1.id == 5) {
-				GL11.EaglerAdapterImpl2.displayFileChooser("application/zip", "zip");
+				GL11.EaglerAdapterImpl2.displayFileChooser("zip", "application/zip");
 			}
 
 			if(var1.id == 6) {
@@ -161,6 +161,7 @@ public class GuiTexturePacks extends GuiScreen {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		GL11.glShadeModel(GL11.GL_SMOOTH);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		var16.startDrawingQuads();
 		var16.setColorRGBA_I(0, 0);
@@ -179,26 +180,29 @@ public class GuiTexturePacks extends GuiScreen {
 		var16.addVertexWithUV((double)this.field_6457_l, (double)(this.field_6458_j - var18), 0.0D, 0.0D, 0.0D);
 		var16.draw();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glShadeModel(GL11.GL_FLAT);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glDisable(GL11.GL_BLEND);
+		
+		if(GL11.EaglerAdapterImpl2.fileChooserHasResult()) {
+			FileChooserResult result = GL11.EaglerAdapterImpl2.getFileChooserResult();
+			
+			if(result != null) {
+				File.writeFile(this.fileLocation + "/" + result.fileName, result.fileData);
+			
+				//Refresh GUI to show newly added texture packs
+				this.mc.displayGuiScreen(new GuiTexturePacks(this.field_6461_a));
+			}
+		}
+		
 		this.drawCenteredString(this.fontRenderer, "Select Texture Pack", this.width / 2, 16, 16777215);
-		this.drawCenteredString(this.fontRenderer, "(Upload texture pack files here)", this.width / 2 - 77, this.height - 26, 8421504);
+		this.drawCenteredString(this.fontRenderer, "(Place texture pack files here)", this.width / 2 - 77, this.height - 26, 8421504);
 		super.drawScreen(var1, var2, var3);
 	}
 
 	public void updateScreen() {
 		super.updateScreen();
 		--this.field_6454_o;
-		
-		FileChooserResult packFile = null;
-		if (GL11.EaglerAdapterImpl2.fileChooserHasResult()) {
-			packFile = GL11.EaglerAdapterImpl2.getFileChooserResult();
-		}
-		if(packFile == null) {
-			return;
-		}
-		File.writeFile("texturepacks/" + packFile.fileName, packFile.fileData);
-		Minecraft.getMinecraft().displayGuiScreen(new GuiTexturePacks(field_6461_a));
 	}
 
 	public void func_6452_a(int var1, int var2, int var3, int var4) {
@@ -216,3 +220,4 @@ public class GuiTexturePacks extends GuiScreen {
 		var5.draw();
 	}
 }
+

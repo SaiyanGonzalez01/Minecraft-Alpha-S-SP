@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import net.PeytonPlayz585.awt.image.BufferedImage;
+import net.PeytonPlayz585.awt.image.ImageIO;
 import net.PeytonPlayz585.opengl.GL11;
 
 public class RenderEngine {
@@ -17,7 +19,7 @@ public class RenderEngine {
 		textureMap = new HashMap<String, Integer>();
 		textureNameToImageMap = new HashMap<Integer, BufferedImage>();
 		singleIntBuffer = GLAllocation.createDirectIntBuffer(1);
-		imageDataB1 = GLAllocation.createDirectByteBuffer(0x100000);
+		imageDataB1 = GLAllocation.createDirectByteBuffer(1048576);
 		textureList = new ArrayList<TextureFX>();
 		clampTexture = false;
 		blurTexture = false;
@@ -140,8 +142,10 @@ public class RenderEngine {
 		texturefx.func_783_a();
 	}
 
-	public BufferedImage readTextureImage(byte[] inputstream) throws IOException {
-		return GL11.EaglerAdapterImpl2.loadPNG(inputstream);
+	private BufferedImage readTextureImage(InputStream var1) throws IOException {
+		BufferedImage var2 = ImageIO.read(var1);
+		var1.close();
+		return var2;
 	}
 
 	public void bindTexture(int i) {

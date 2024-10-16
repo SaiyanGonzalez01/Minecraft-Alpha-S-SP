@@ -1,8 +1,9 @@
 package net.minecraft.src;
 
 import java.io.IOException;
+import java.io.InputStream;
 
-import net.PeytonPlayz585.opengl.GL11;
+import net.PeytonPlayz585.awt.image.ImageIO;
 import net.minecraft.client.Minecraft;
 
 public abstract class TexturePackBase {
@@ -26,7 +27,7 @@ public abstract class TexturePackBase {
 	public void func_6483_c(Minecraft var1) {
 	}
 
-	public byte[] func_6481_a(String s) {
-		return GL11.EaglerAdapterImpl2.loadResourceBytes(s);
+	public InputStream func_6481_a(String var1) {
+		return ImageIO.getResourceAsStream(var1);
 	}
 }

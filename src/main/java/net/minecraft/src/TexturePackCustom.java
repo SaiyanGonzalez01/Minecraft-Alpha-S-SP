@@ -1,56 +1,27 @@
 package net.minecraft.src;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Collection;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
-import net.PeytonPlayz585.fileutils.File;
+import net.PeytonPlayz585.awt.image.BufferedImage;
+import net.PeytonPlayz585.awt.image.ImageIO;
 import net.PeytonPlayz585.fileutils.FileEntry;
-import net.PeytonPlayz585.opengl.GL11;
+import net.PeytonPlayz585.util.zip.ZipFile;
 import net.minecraft.client.Minecraft;
+import org.lwjgl.opengl.GL11;
 
 public class TexturePackCustom extends TexturePackBase {
-	
-	public TexturePackCustom(String s) {
-		this.texturePackFileName = s;
-		
-		try {
-			deleteExistingTexturePackFiles();
-			byte[] data = File.readFile("texturepacks/" + s);
-			ByteArrayInputStream bais = new ByteArrayInputStream(data);
-			ZipInputStream zis = new ZipInputStream(bais);
-		
-			ZipEntry entry;
-			while ((entry = zis.getNextEntry()) != null) {
-				try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-					byte[] buffer = new byte[(int)entry.getSize()];
-					int len;
-					while ((len = zis.read(buffer)) > 0) {
-						baos.write(buffer, 0, len);
-					}
-				
-					byte[] fileData = baos.toByteArray();
-				    System.out.println(entry.getName());
-				    String name = entry.getName();
-				    if(name.startsWith("/")) {
-				    	name = name.substring(1, name.length() - 1);
-					}
-				    File.writeFile("texturepackdata/" + name.replace(" ", ""), fileData);
-				}
-			
-				zis.closeEntry();
-			}
-		
-			zis.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private ZipFile field_6496_e;
+	private int texturePackName = -1;
+	private BufferedImage field_6494_g;
+	private FileEntry field_6493_h;
+
+	public TexturePackCustom(FileEntry var1) {
+		this.texturePackFileName = var1.getName();
+		this.field_6493_h = var1;
 	}
 
 	private String func_6492_b(String var1) {
@@ -62,76 +33,94 @@ public class TexturePackCustom extends TexturePackBase {
 	}
 
 	public void func_6485_a(Minecraft var1) throws IOException {
+		ZipFile var2 = null;
+		InputStream var3 = null;
+
 		try {
-			byte[] data = File.readFile("texturepackdata/pack.txt");
-			InputStream var3 = new ByteArrayInputStream(data);
-			BufferedReader var4 = new BufferedReader(new InputStreamReader(var3));
-			this.firstDescriptionLine = this.func_6492_b(var4.readLine());
-			this.secondDescriptionLine = this.func_6492_b(var4.readLine());
-			var4.close();
-			var3.close();
-		} catch(IOException e) {
-			e.printStackTrace();
+			var2 = new ZipFile(this.field_6493_h);
+
+			try {
+				var3 = var2.getInputStream(var2.getEntry("pack.txt"));
+				BufferedReader var4 = new BufferedReader(new InputStreamReader(var3));
+				this.firstDescriptionLine = this.func_6492_b(var4.readLine());
+				this.secondDescriptionLine = this.func_6492_b(var4.readLine());
+				var4.close();
+				var3.close();
+			} catch (Exception var20) {
+			}
+
+			try {
+				var3 = var2.getInputStream(var2.getEntry("pack.png"));
+				this.field_6494_g = ImageIO.read(var3);
+				var3.close();
+			} catch (Exception var19) {
+			}
+
+			var2.close();
+		} catch (Exception var21) {
+			var21.printStackTrace();
+		} finally {
+			try {
+				var3.close();
+			} catch (Exception var18) {
+			}
+
+			try {
+				var2.close();
+			} catch (Exception var17) {
+			}
+
 		}
+
 	}
-	
-	int packPNG = -1;
+
+	public void func_6484_b(Minecraft var1) {
+		if(this.field_6494_g != null) {
+			var1.renderEngine.deleteTexture(this.texturePackName);
+		}
+
+		this.closeTexturePackFile();
+	}
 
 	public void func_6483_c(Minecraft var1) {
-		byte[] data = File.readFile("texturepackdata/pack.png");
-		if(data != null) {
-			if(packPNG == -1) {
-				packPNG = getTexture("pack.png");
-			}
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, packPNG);
+		if(this.field_6494_g != null && this.texturePackName < 0) {
+			this.texturePackName = var1.renderEngine.allocateAndSetupTexture(this.field_6494_g);
+		}
+
+		if(this.field_6494_g != null) {
+			var1.renderEngine.bindTexture(this.texturePackName);
 		} else {
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, var1.renderEngine.getTexture("/gui/unknown_pack.png"));
 		}
 
 	}
-	
-	private int getTexture(String s) {
+
+	public void func_6482_a() {
 		try {
-			byte[] b = File.readFile("texturepackdata/" + s);
-			Minecraft.getMinecraft().renderEngine.singleIntBuffer.clear();
-			GLAllocation.generateTextureNames(Minecraft.getMinecraft().renderEngine.singleIntBuffer);
-			int i = Minecraft.getMinecraft().renderEngine.singleIntBuffer.get(0);
-			Minecraft.getMinecraft().renderEngine.setupTexture(Minecraft.getMinecraft().renderEngine.readTextureImage(b), i);
-			return i;
-		} catch (IOException e) {
-			throw new RuntimeException("!!");
+			this.field_6496_e = new ZipFile(this.field_6493_h);
+		} catch (Exception var2) {
 		}
+
 	}
 
-	public byte[] func_6481_a(String var1) {
-		String path = var1;
-		if(path.startsWith("/")) {
-			path = path.substring(1);
+	public void closeTexturePackFile() {
+		try {
+			this.field_6496_e.close();
+		} catch (Exception var2) {
 		}
-		System.out.println(path);
-		byte[] data = File.readFile("texturepackdata/" + path.replace(" ", ""));
-		
-		if(data == null) {
-			return GL11.EaglerAdapterImpl2.loadResourceBytes(var1);
-		}
-		
-		System.out.println("Texture Found in texture pack: " + path);
-		return data;
+
+		this.field_6496_e = null;
 	}
-	
-	 private void deleteExistingTexturePackFiles() {
-		 String path = "texturepackdata/";
-		 Collection<FileEntry> lst = File.listFiles(path, true, true);
-		 for(FileEntry t : lst) {
-			 if(!t.isDirectory) {
-				 File.deleteFile(t.path);
-			 }
-		 }
-		 for(FileEntry t : lst) {
-			 if(t.isDirectory) {
-				 File.deleteFile(t.path);
-			 }
-		 }
-		 File.deleteFile(path);
-	 }
+
+	public InputStream func_6481_a(String var1) {
+		try {
+			ZipEntry var2 = this.field_6496_e.getEntry(var1.substring(1));
+			if(var2 != null) {
+				return this.field_6496_e.getInputStream(var2);
+			}
+		} catch (Exception var3) {
+		}
+
+		return ImageIO.getResourceAsStream(var1);
+	}
 }

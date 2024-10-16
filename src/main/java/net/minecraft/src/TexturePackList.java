@@ -2,7 +2,6 @@ package net.minecraft.src;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.Map;
 
 import net.PeytonPlayz585.fileutils.File;
 import net.PeytonPlayz585.fileutils.FileEntry;
-import net.PeytonPlayz585.opengl.GL11;
 import net.minecraft.client.Minecraft;
 
 public class TexturePackList {
@@ -19,10 +17,12 @@ public class TexturePackList {
 	public TexturePackBase selectedTexturePack;
 	private Map field_6538_d = new HashMap();
 	private Minecraft mc;
+	private String texturePackDir = "texturepacksNEW";
 	private String field_6535_g;
 
 	public TexturePackList(Minecraft var1) {
 		this.mc = var1;
+
 		this.field_6535_g = var1.gameSettings.skin;
 		this.func_6532_a();
 		this.selectedTexturePack.func_6482_a();
@@ -41,39 +41,42 @@ public class TexturePackList {
 			return true;
 		}
 	}
-	
+
 	public void func_6532_a() {
 		ArrayList var1 = new ArrayList();
 		this.selectedTexturePack = null;
 		var1.add(this.defaultTexturePack);
-		
-		Collection<FileEntry> var2 = File.listFiles("texturepacks/", false, false);
-		Collection<FileEntry> var3 = var2;
-		int var4 = var2.size();
-		
-		for(int var5 = 0; var5 < var4; ++var5) {
-			FileEntry var6 = (FileEntry) var2.toArray()[var5];
-			String var7 = var6.getName();
-			
-			try {
-				if(!this.field_6538_d.containsKey(var7)) {
-					TexturePackCustom var8 = new TexturePackCustom(var6.getName());
-					var8.field_6488_d = var7;
-					this.field_6538_d.put(var7, var8);
-					var8.func_6485_a(this.mc);
-				}
-				
-				TexturePackBase var12 = (TexturePackBase)this.field_6538_d.get(var7);
-				if(var12.texturePackFileName.equals(this.field_6535_g)) {
-					this.selectedTexturePack = var12;
-				}
+		//if(this.texturePackDir.exists() && this.texturePackDir.isDirectory()) {
+			FileEntry[] var2 = File.listFiles(this.texturePackDir);
+			FileEntry[] var3 = var2;
+			int var4 = var2.length;
 
-				var1.add(var12);
-			} catch(IOException e) {
-				e.printStackTrace();
+			for(int var5 = 0; var5 < var4; ++var5) {
+				FileEntry var6 = var3[var5];
+				if(var6.isFile() && var6.getName().toLowerCase().endsWith(".zip")) {
+					String var7 = var6.getName() + ":" + var6.length() + ":" + var6.lastModified();
+
+					try {
+						if(!this.field_6538_d.containsKey(var7)) {
+							TexturePackCustom var8 = new TexturePackCustom(var6);
+							var8.field_6488_d = var7;
+							this.field_6538_d.put(var7, var8);
+							var8.func_6485_a(this.mc);
+						}
+
+						TexturePackBase var12 = (TexturePackBase)this.field_6538_d.get(var7);
+						if(var12.texturePackFileName.equals(this.field_6535_g)) {
+							this.selectedTexturePack = var12;
+						}
+
+						var1.add(var12);
+					} catch (IOException var9) {
+						var9.printStackTrace();
+					}
+				}
 			}
-		}
-		
+		//}
+
 		if(this.selectedTexturePack == null) {
 			this.selectedTexturePack = this.defaultTexturePack;
 		}
