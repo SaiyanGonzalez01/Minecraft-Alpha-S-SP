@@ -287,7 +287,7 @@ public class EntityRenderer {
 			this.func_917_f(var1);
 		}
 
-		if(!this.mc.gameSettings.thirdPersonView && !(Keyboard.getEventKey() == 33 && Keyboard.isKeyDown(2))) {
+		if(!this.mc.gameSettings.thirdPersonView && !Keyboard.isFunctionKeyDown(this.mc.gameSettings.keyBindFunction.keyCode, 2)) {
 			this.field_1395_a.renderItemInFirstPerson(var1);
 		}
 

@@ -1,40 +1,49 @@
 package net.PeytonPlayz585.network;
 
-import net.PeytonPlayz585.opengl.GL11;
-
 import java.io.IOException;
-import java.io.OutputStream;
+
+import net.PeytonPlayz585.opengl.GL11;
 
 public class Socket {
 	
-	public Socket(String ip) throws IOException {
-		if(!GL11.EaglerAdapterImpl2.startConnection(ip)) {
-			throw new IOException("Failed to connect to '" + ip + "'!");
+	public Socket(String hostName, int port) throws IOException {
+		if(!GL11.EaglerAdapterImpl2.startConnection(hostName + ":" + port)) {
+			IOException e = new IOException("Connection failed: " + hostName + ":" + port);
+			e.printStackTrace();
+			throw e;
 		}
 	}
 	
-	public void close() {
-		if(!GL11.EaglerAdapterImpl2.connectionOpen()) {
-			return;
+	public Socket(String hostName) throws IOException {
+		if(!GL11.EaglerAdapterImpl2.startConnection(hostName)) {
+			IOException e = new IOException("Connection failed: " + hostName);
+			e.printStackTrace();
+			throw e;
 		}
-		GL11.EaglerAdapterImpl2.endConnection();
-	}
-	
-	public boolean open() {
-		return GL11.EaglerAdapterImpl2.connectionOpen();
 	}
 	
 	public void write(byte[] data) {
-		if(open()) {
+		if(socketOpen()) {
 			GL11.EaglerAdapterImpl2.writePacket(data);
 		}
 	}
 	
 	public byte[] read() {
-		if(open()) {
+		if(socketOpen()) {
 			return GL11.EaglerAdapterImpl2.readPacket();
+		} else {
+			return null;
 		}
-		return null;
+	}
+	
+	public void close() {
+		if(socketOpen()) {
+			GL11.EaglerAdapterImpl2.endConnection();
+		}
+	}
+	
+	public boolean socketOpen() {
+		return GL11.EaglerAdapterImpl2.connectionOpen();
 	}
 
 }

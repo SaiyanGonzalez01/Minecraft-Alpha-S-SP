@@ -20,14 +20,14 @@ class ThreadConnectToServer {
 				return;
 			}
 
-			GuiConnecting.getNetClientHandler(this.connectingGui).addToSendQueue(new Packet2Handshake(this.mc.session.username));
-		} catch (Exception var4) {
+			GuiConnecting.getNetClientHandler(this.connectingGui).handleHandshake();
+		} catch (Throwable var4) {
 			if(GuiConnecting.isCancelled(this.connectingGui)) {
 				return;
 			}
 
-			var4.printStackTrace();
 			this.mc.displayGuiScreen(new GuiConnectFailed("Failed to connect to the server", var4.toString()));
+			var4.printStackTrace();
 		}
 
 	}

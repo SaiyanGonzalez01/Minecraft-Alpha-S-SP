@@ -29,23 +29,9 @@ public class NetworkManager {
 	private int sendQueueByteLength = 0;
 	private int chunkDataSendCounter = 0;
 
-	public NetworkManager(String var4, NetHandler var3) throws IOException {
-		
+	public NetworkManager(Socket var1, String var2, NetHandler var3) throws IOException {
 		this.netHandler = var3;
-		String uri = null;
-		System.out.println(uri);
-		if(var4.startsWith("ws://")) {
-			uri = var4.substring(5);
-		}else if(var4.startsWith("wss://")){
-			uri = var4.substring(6);
-		}else if(!var4.contains("://")){
-			uri = var4;
-			var4 = "ws://" + var4;
-		}else {
-			throw new IOException("Invalid URI Protocol!");
-		}
-		
-		this.field_12258_e = new Socket(var4);
+		this.field_12258_e = var1;
 	}
 
 	public void addToSendQueue(Packet var1) {
@@ -58,7 +44,8 @@ public class NetworkManager {
 				} else {
 					this.dataPackets.add(var1);
 				}
-
+				sendPacket();
+				
 			}
 		}
 	}
@@ -129,7 +116,7 @@ public class NetworkManager {
 			readChunks.add(oldChunkBuffer);
 		}
 		
-		if(this.field_12258_e.open()) {
+		if(this.field_12258_e.socketOpen()) {
 			byte[] packet;
 			while((packet = this.field_12258_e.read()) != null) {
 				readChunks.add(ByteBuffer.wrap(packet));
@@ -159,13 +146,12 @@ public class NetworkManager {
 					} else {
 						this.networkShutdown("End of stream");
 					}
+					
+					processReadPackets();
 				} catch(EOFException e) {
 					stream.reset();
 					break;
-				} catch(Exception e) {
-					continue;
 				} catch(Throwable t) {
-					continue;
 				}
 			}
 			

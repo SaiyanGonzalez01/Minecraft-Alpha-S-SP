@@ -293,11 +293,11 @@ public class Minecraft implements Runnable {
 			this.sndManager.func_338_a(this.thePlayer, this.timer.renderPartialTicks);
 			this.checkGLError("Pre render");
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			if(this.theWorld != null  && !this.theWorld.multiplayerWorld) {
+			if(this.theWorld != null && !this.theWorld.multiplayerWorld) {
 				while(this.theWorld.func_6465_g()) {
 				}
 			}
-			
+
 			if(this.theWorld != null && this.theWorld.multiplayerWorld) {
 				this.theWorld.func_6465_g();
 			}

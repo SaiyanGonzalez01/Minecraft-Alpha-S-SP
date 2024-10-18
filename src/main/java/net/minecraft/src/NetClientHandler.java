@@ -3,6 +3,8 @@ package net.minecraft.src;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import net.PeytonPlayz585.EaglercraftRandom;
+import net.PeytonPlayz585.network.Socket;
+import net.PeytonPlayz585.opengl.GL11;
 import net.minecraft.client.Minecraft;
 
 public class NetClientHandler extends NetHandler {
@@ -16,13 +18,31 @@ public class NetClientHandler extends NetHandler {
 
 	public NetClientHandler(Minecraft var1, String var2) throws IOException, UnknownHostException {
 		this.mc = var1;
-		this.netManager = new NetworkManager(var2, this);
+		
+		String uri = null;
+		if(var2.startsWith("ws://")) {
+			uri = var2.substring(5);
+		}else if(var2.startsWith("wss://")){
+			uri = var2.substring(6);
+		}else if(!var2.contains("://")){
+			uri = var2;
+			if(GL11.EaglerAdapterImpl2.isSSLPage()) {
+				var2 = "wss://" + var2;
+			} else {
+				var2 = "ws://" + var2;
+			}
+		}else {
+			throw new IOException("Invalid URI Protocol!");
+		}
+		
+		Socket var4 = new Socket(var2);
+		
+		this.netManager = new NetworkManager(var4, "Client", this);
 	}
 
 	public void processReadPackets() {
 		if(!this.disconnected) {
 			this.netManager.readPacket();
-			this.netManager.processReadPackets();
 		}
 	}
 
@@ -313,6 +333,10 @@ public class NetClientHandler extends NetHandler {
 	}
 
 	public void handleHandshake(Packet2Handshake var1) {
+		this.addToSendQueue(new Packet1Login(this.mc.session.username, "Password", 6));
+	}
+	
+	public void handleHandshake() {
 		this.addToSendQueue(new Packet1Login(this.mc.session.username, "Password", 6));
 	}
 
