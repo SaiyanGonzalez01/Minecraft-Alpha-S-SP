@@ -1,4 +1,4 @@
 gradle/
 .gradle/
-desktopRuntime/
+desktopRuntime/filesystem
 build/

@@ -72,7 +72,8 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.Tessellator;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
-import paulscode.sound.libraries.LibraryLWJGLOpenAL;
+import paulscode.sound.codecs.CodecJOrbis;
+import net.lax1dude.eaglercraft.adapter.sound.LibraryLWJGLOpenAL;
 
 import org.lwjgl.opengl.ARBDebugOutput;
 import org.lwjgl.opengl.ARBDebugOutputCallback;
@@ -5047,6 +5048,7 @@ public class GL11_1 {
 			
 			try {
 				SoundSystemConfig.addLibrary(LibraryLWJGLOpenAL.class);
+				SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
 				SoundSystemConfig.setCodec("mp3", CodecJLayerMP3.class);
 				ss = new SoundSystem();
 			}catch(Throwable t) {

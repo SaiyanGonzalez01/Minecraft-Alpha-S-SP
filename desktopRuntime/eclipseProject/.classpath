@@ -15,5 +15,8 @@
 	<classpathentry kind="lib" path="jars/teavm-interop-0.6.1.jar"/>
 	<classpathentry kind="lib" path="jars/teavm-jso-0.6.1.jar"/>
 	<classpathentry kind="lib" path="jars/teavm-jso-apis-0.6.1.jar"/>
+	<classpathentry kind="lib" path="jars/codecjorbis-20101023.jar"/>
+	<classpathentry kind="lib" path="jars/codecwav-20101023.jar"/>
+	<classpathentry kind="lib" path="jars/soundsystem-20120107.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

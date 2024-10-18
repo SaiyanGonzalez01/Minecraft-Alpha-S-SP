@@ -17,7 +17,7 @@ public class SoundManager {
 	private static List<Integer> sounds = new ArrayList<Integer>();
 	private static int BgMusic = -1;
 	
-	static String[] music = new String[] {"music.calm1_mp3", "music.calm2_mp3", "music.calm3_mp3", "newMusic.hal1_mp3", "newMusic.hal2_mp3", "newMusic.hal3_mp3", "newMusic.hal4_mp3", "newMusic.nuance1_mp3", "newMusic.nuance2_mp3", "newMusic.piano1_mp3", "newMusic.piano2_mp3", "newMusic.piano3_mp3"};
+	static String[] music = new String[] {"music.calm1_ogg", "music.calm2_ogg", "music.calm3_ogg", "newMusic.hal1_ogg", "newMusic.hal2_ogg", "newMusic.hal3_ogg", "newMusic.hal4_ogg", "newMusic.nuance1_ogg", "newMusic.nuance2_ogg", "newMusic.piano1_ogg", "newMusic.piano2_ogg", "newMusic.piano3_ogg"};
 
 	public void func_340_a(GameSettings var1) {
 		this.options = var1;
@@ -135,7 +135,7 @@ public class SoundManager {
 			}
 			
 			String var7;
-			var7 = "sounds/" + var1.replace(".", "/") + number + ".mp3";
+			var7 = "sounds/" + var1.replace(".", "/") + number + ".ogg";
 			if(var7 != null && var5 > 0.0F) {
 				if(var5 > 1.0F) {
 					var5 = 1.0F;
@@ -172,7 +172,7 @@ public class SoundManager {
 			}
 			
 			String var7;
-			var7 = "sounds/" + var1.replace(".", "/") + number + ".mp3";
+			var7 = "sounds/" + var1.replace(".", "/") + number + ".ogg";
 			if(var7 != null && var5 > 0.0F) {
 				if(var5 > 1.0F) {
 					var5 = 1.0F;
@@ -204,7 +204,7 @@ public class SoundManager {
 		}
 		
 		if(loaded && this.options.soundVolume != 0.0F) {
-			String var4 = "sounds/" + var1.replace(".", "/") + number + ".mp3";
+			String var4 = "sounds/" + var1.replace(".", "/") + number + ".ogg";
 			if(var4 != null) {
 				if(var2 > 1.0F) {
 					var2 = 1.0F;
