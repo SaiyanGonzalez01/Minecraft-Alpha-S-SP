@@ -31,6 +31,6 @@ public class ItemSword extends Item {
 	}
 
 	public boolean isFull3D() {
-		return true;
+		return false;
 	}
 }
