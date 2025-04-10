@@ -1,4 +1,4 @@
-# Minecraft Alpha-v1.2.6
+# ![minecraft_title (2)](https://github.com/user-attachments/assets/c031a6ad-7bcb-4265-9981-875bf1bb4c7b)
 
 This is based off of real Minecraft Alpha v1.2.6, the decompiled source code has been ported to TeaVM with the goal of being as close to the real Alpha v1.2.6 as possible. Worlds and settings are saved to your browsers local storage using IndexedDB, worlds are then compressed using jzlib's `GZIP`, existing uncompressed worlds will be loaded uncompressed and will then be compressed when the game writes to the file.
 
