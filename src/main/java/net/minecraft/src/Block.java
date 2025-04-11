@@ -111,6 +111,8 @@ public class Block {
 	public static final Block lightStone = (new BlockLightStone(89, 105, Material.glass)).setHardness(0.3F).setStepSound(soundGlassFootstep).setLightValue(1.0F);
 	public static final BlockPortal portal = (BlockPortal)((BlockPortal)(new BlockPortal(90, 14)).setHardness(-1.0F).setStepSound(soundGlassFootstep).setLightValue(12.0F / 16.0F));
 	public static final Block pumpkinLantern = (new BlockPumpkin(91, 102, true)).setHardness(1.0F).setStepSound(soundWoodFootstep).setLightValue(1.0F);
+	public static final Block grimStone = (new BlockStone(87, 29)).setHardness(1.5F).setResistance(10.0F).setStepSound(soundStoneFootstep);
+	public static final Block grimCobbleStone = (new Block(87, 45, Material.rock)).setHardness(2.0F).setResistance(10.0F).setStepSound(soundStoneFootstep);
 	public int blockIndexInTexture;
 	public final int blockID;
 	protected float blockHardness;
