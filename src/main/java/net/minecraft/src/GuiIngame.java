@@ -161,7 +161,7 @@ public class GuiIngame extends Gui {
 			this.drawString(var8, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
 			this.drawString(var8, "z: " + this.mc.thePlayer.posZ, 2, 80, 14737632);
 		} else {
-			var8.drawStringWithShadow("Minecraft Alpha v1.2.6", 2, 2, 16777215);
+			var8.drawStringWithShadow("Minecraft S-SP (Build 1.2.6)", 2, 2, 16777215);
 		}
 
 		if(this.field_9419_j > 0) {
