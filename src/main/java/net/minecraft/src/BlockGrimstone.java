@@ -8,6 +8,6 @@ public class BlockGrimstone extends Block {
 	}
 
 	public int idDropped(int var1, EaglercraftRandom var2) {
-		return Block.grimcCbblestone.blockID;
+		return Block.grimCobbleStone.blockID;
 	}
 }
