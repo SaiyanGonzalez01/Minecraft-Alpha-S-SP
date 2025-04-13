@@ -1,7 +1,7 @@
 package net.minecraft.src;
 
-public class EntityZombie extends EntityMobs {
-	public EntityZombie(World var1) {
+public class EntitySkinWalker extends EntityMobs {
+	public EntitySkinWalker(World var1) {
 		super(var1);
 		this.texture = "/mob/char.png";
 		this.field_9333_am = 0.5F;
