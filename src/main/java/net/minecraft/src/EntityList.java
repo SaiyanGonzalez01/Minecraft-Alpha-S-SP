@@ -177,6 +177,11 @@ public class EntityList {
 		if(c == EntityLiving.class) {
 			return new EntityLiving(Minecraft.getMinecraft().theWorld);
 		}
+
+		if(c == EntitySkinWalker.class) {
+			return new EntitySkinWalker(Minecraft.getMinecraft().theWorld);
+
+		}
 		
 		return null;
 	}
@@ -196,6 +201,7 @@ public class EntityList {
 		addMapping(EntitySlime.class, "Slime", 55);
 		addMapping(EntityGhast.class, "Ghast", 56);
 		addMapping(EntityPigZombie.class, "PigZombie", 57);
+		addMapping(EntitySkinWalker.class, "SkinWalker", 58);
 		addMapping(EntityPig.class, "Pig", 90);
 		addMapping(EntitySheep.class, "Sheep", 91);
 		addMapping(EntityCow.class, "Cow", 92);
