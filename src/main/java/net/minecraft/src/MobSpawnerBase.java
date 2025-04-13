@@ -104,6 +104,7 @@ public class MobSpawnerBase {
 		biomeMonsters.add(new EntityZombie(Minecraft.getMinecraft().theWorld));
 		biomeMonsters.add(new EntitySkeleton(Minecraft.getMinecraft().theWorld));
 		biomeMonsters.add(new EntityCreeper(Minecraft.getMinecraft().theWorld));
+		biomeMonsters.add(new EntitySkinWalker(Minecraft.getMinecraft().theWorld));
 	}
 	
 	public void initBiomeCreatures() {
