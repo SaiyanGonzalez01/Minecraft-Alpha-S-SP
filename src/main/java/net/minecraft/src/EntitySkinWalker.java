@@ -9,15 +9,15 @@ public class EntitySkinWalker extends EntityMobs {
 	}
 
 	protected String getLivingSound() {
-		return "mob.zombie";
+		return "mob.skin";
 	}
 
 	protected String getHurtSound() {
-		return "mob.zombiehurt";
+		return "mob.skinhurt";
 	}
 
 	protected String getDeathSound() {
-		return "mob.zombiedeath";
+		return "mob.skindeath";
 	}
 
 	protected int getDropItemId() {
