@@ -182,6 +182,10 @@ public final class SpawnerAnimals {
     	if(e instanceof EntityPigZombie) {
     		return new EntityPigZombie(Minecraft.getMinecraft().theWorld);
     	}
+
+        if(e instanceof EntitySkinWalker) {
+    		return new EntitySkinWalker(Minecraft.getMinecraft().theWorld);
+        }
     	
     	return null;
     }
