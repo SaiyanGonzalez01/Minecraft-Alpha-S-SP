@@ -1,15 +1,8 @@
-# ![minecraft_title (2)](https://github.com/user-attachments/assets/c031a6ad-7bcb-4265-9981-875bf1bb4c7b)
+## ![promo](https://github.com/user-attachments/assets/9d728288-e69d-47ae-bab4-a8940d5f37ab)
 
 This is based off of real Minecraft Alpha v1.2.6, the decompiled source code has been ported to TeaVM with the goal of being as close to the real Alpha v1.2.6 as possible. Worlds and settings are saved to your browsers local storage using IndexedDB, worlds are then compressed using jzlib's `GZIP`, existing uncompressed worlds will be loaded uncompressed and will then be compressed when the game writes to the file.
 
-![h12mgp8oidpc1](https://github.com/PeytonPlayz595/Alpha-v1.2.6/assets/106421860/324a94c1-468f-4907-9127-64bdf12906c8)
-
-
-### [Play the official release (No download required)](https://peytonplayz595.github.io/Alpha-v1.2.6/web/)
-
-### [Download offline HTML file](https://github.com/PeytonPlayz595/Alpha-v1.2.6/blob/main/offline_download/Alpha_Offline_Download.html)
-
-# Making a client
+# Making The client
 
 ### Gradle
 After modifying files in `src/main/java` you can compile your changes to the javascript client by running `gradlew generatejavascript`, for linux run `./gradlew generatejavascript`. This will then transpile the Java code into javascript files in `web/js/`.
