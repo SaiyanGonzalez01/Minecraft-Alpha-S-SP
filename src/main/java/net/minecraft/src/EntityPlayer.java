@@ -102,7 +102,7 @@ public class EntityPlayer extends EntityLiving {
 		this.setSize(0.2F, 0.2F);
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.motionY = (double)0.1F;
-		this.mc.sndManager.func_337_a("portal.trigger", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
+		this.mc.sndManager.func_337_a("mob.playerdeath", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
 		if(this.field_771_i.equals("Notch")) {
 			this.dropPlayerItemWithRandomChoice(new ItemStack(Item.appleRed, 1), true);
 		}
