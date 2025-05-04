@@ -111,6 +111,6 @@ public class WorldGenDungeons extends WorldGenerator {
 
 	private String pickMobSpawner(EaglercraftRandom var1) {
 		int var2 = var1.nextInt(4);
-		return var2 == 0 ? "Skeleton" : (var2 == 1 ? "Zombie" : (var2 == 2 ? "Zombie" : (var2 == 3 ? "Spider" : "")));
+		return var2 == 0 ? "Skeleton" : (var2 == 1 ? "Zombie" : (var2 == 2 ? "Creeper" : (var2 == 3 ? "Spider" : "")));
 	}
 }
