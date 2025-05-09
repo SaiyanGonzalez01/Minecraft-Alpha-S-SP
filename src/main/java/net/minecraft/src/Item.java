@@ -100,6 +100,7 @@ public class Item {
 	public static Item lightStoneDust = (new Item(92)).setIconIndex(73);
 	public static Item fishRaw = (new ItemFood(93, 2)).setIconIndex(89);
 	public static Item fishCooked = (new ItemFood(94, 5)).setIconIndex(90);
+	public static Item goldbucketEmpty = (new Item(95)).setIconIndex(106);
 	public static Item record13 = (new ItemRecord(2000, "13")).setIconIndex(240);
 	public static Item recordCat = (new ItemRecord(2001, "cat")).setIconIndex(241);
 	public final int shiftedIndex;
