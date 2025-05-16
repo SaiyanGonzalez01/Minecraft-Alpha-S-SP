@@ -65,6 +65,7 @@ public class CraftingManager {
 		this.addRecipe(new ItemStack(Item.goldbucketEmpty, 1), new Object[]{"# #", " # ", Character.valueOf('#'), Item.ingotGold});
 		this.addRecipe(new ItemStack(Item.dyeRed, 2), new Object[]{"#", Character.valueOf('#'), Block.plantRed});
 		this.addRecipe(new ItemStack(Item.dyeYellow, 2), new Object[]{"#", Character.valueOf('#'), Block.plantYellow});
+		this.addRecipe(new ItemStack(Item.plankRed, 8), new Object[]{"###", "#X#", "###" Character.valueOf('#'), Block.planks, Character.valueOf('X'), Item.dyeRed});
 		Collections.sort(this.recipes, new RecipeSorter(this));
 		System.out.println(this.recipes.size() + " recipes");
 	}
