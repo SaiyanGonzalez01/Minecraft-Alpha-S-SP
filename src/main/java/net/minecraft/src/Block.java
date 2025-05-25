@@ -115,6 +115,7 @@ public class Block {
 	public static final Block grimCobbleStone = (new Block(93, 46, Material.rock)).setHardness(2.0F).setResistance(10.0F).setStepSound(soundStoneFootstep);
 	public static final Block glassPlank = (new BlockGrimstone(94, 62)).setHardness(2.0F).setResistance(5.0F).setStepSound(soundWoodFootstep);
 	public static final Block planksRed = (new Block(95, 114, Material.wood)).setHardness(2.0F).setResistance(5.0F).setStepSound(soundWoodFootstep);
+	public static final Block planksYellow = (new Block(96, 130, Material.wood)).setHardness(2.0F).setResistance(5.0F).setStepSound(soundWoodFootstep);
 	public int blockIndexInTexture;
 	public final int blockID;
 	protected float blockHardness;
